@@ -1,0 +1,26 @@
+# Android/Gradle/IntelliJ/VSCode exclusions
+.gradle/
+.idea/
+build/
+app/build/
+local.properties
+*.iml
+
+# Build artifacts
+*.apk
+*.aar
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.bin
+
+# Log files
+*.log
+build_log.txt
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Project-specific
+.gradle_home/
+RCLONE_TEST

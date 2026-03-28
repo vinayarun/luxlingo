@@ -1,0 +1,3660 @@
+{
+  "vocabulary": [
+    {
+      "surface_id": "w_ech",
+      "lemma_id": "l_ech",
+      "word_lu": "Ech",
+      "audio_ref": "audio/ech.mp3"
+    },
+    {
+      "surface_id": "w_du",
+      "lemma_id": "l_du",
+      "word_lu": "Du",
+      "audio_ref": "audio/du.mp3"
+    },
+    {
+      "surface_id": "w_ass",
+      "lemma_id": "l_sinn",
+      "word_lu": "ass",
+      "audio_ref": "audio/ass.mp3"
+    },
+    {
+      "surface_id": "w_sinn",
+      "lemma_id": "l_sinn",
+      "word_lu": "sinn",
+      "audio_ref": "audio/sinn.mp3"
+    },
+    {
+      "surface_id": "w_kaffi",
+      "lemma_id": "l_kaffi",
+      "word_lu": "Kaffi",
+      "audio_ref": "audio/kaffi.mp3"
+    },
+    {
+      "surface_id": "w_waarm",
+      "lemma_id": "l_waarm",
+      "word_lu": "waarm",
+      "audio_ref": "audio/waarm.mp3"
+    },
+    {
+      "surface_id": "w_gëtt",
+      "lemma_id": "l_ginn",
+      "word_lu": "gëtt",
+      "audio_ref": "audio/ginn.mp3"
+    },
+    {
+      "surface_id": "w_net",
+      "lemma_id": "l_net",
+      "word_lu": "net",
+      "audio_ref": "audio/net.mp3"
+    },
+    {
+      "surface_id": "w_brout",
+      "lemma_id": "l_brout",
+      "word_lu": "Brout",
+      "audio_ref": "audio/brout.mp3"
+    },
+    {
+      "surface_id": "w_iessen",
+      "lemma_id": "l_iessen",
+      "word_lu": "iessen",
+      "audio_ref": "audio/iessen.mp3"
+    },
+    {
+      "surface_id": "w_drénken",
+      "lemma_id": "l_drénken",
+      "word_lu": "drénken",
+      "audio_ref": "audio/drenken.mp3"
+    },
+    {
+      "surface_id": "w_waasser",
+      "lemma_id": "l_waasser",
+      "word_lu": "Waasser",
+      "audio_ref": "audio/waasser.mp3"
+    },
+    {
+      "surface_id": "w_merci",
+      "lemma_id": "l_merci",
+      "word_lu": "Merci",
+      "audio_ref": "audio/merci.mp3"
+    },
+    {
+      "surface_id": "w_mëllech",
+      "lemma_id": "l_mellech",
+      "word_lu": "Mëllech",
+      "audio_ref": "audio/mellech.mp3"
+    },
+    {
+      "surface_id": "w_moien",
+      "lemma_id": "l_moien",
+      "word_lu": "Moien",
+      "audio_ref": "audio/moien.mp3"
+    },
+    {
+      "surface_id": "w_addi",
+      "lemma_id": "l_addi",
+      "word_lu": "Äddi",
+      "audio_ref": "audio/addi.mp3"
+    },
+    {
+      "surface_id": "w_wannechgelift",
+      "lemma_id": "l_wannechgelift",
+      "word_lu": "Wannechgelift",
+      "audio_ref": "audio/wannechgelift.mp3"
+    },
+    {
+      "surface_id": "w_main",
+      "lemma_id": "l_main",
+      "word_lu": "Mäi",
+      "audio_ref": "audio/main.mp3"
+    },
+    {
+      "surface_id": "w_numm",
+      "lemma_id": "l_numm",
+      "word_lu": "Numm",
+      "audio_ref": "audio/numm.mp3"
+    },
+    {
+      "surface_id": "w_wat",
+      "lemma_id": "l_wat",
+      "word_lu": "Wat",
+      "audio_ref": "audio/wat.mp3"
+    },
+    {
+      "surface_id": "w_wei",
+      "lemma_id": "l_wei",
+      "word_lu": "Wéi",
+      "audio_ref": "audio/wei.mp3"
+    },
+    {
+      "surface_id": "w_an",
+      "lemma_id": "l_an",
+      "word_lu": "an",
+      "audio_ref": "audio/an.mp3"
+    },
+    {
+      "surface_id": "w_oder",
+      "lemma_id": "l_oder",
+      "word_lu": "oder",
+      "audio_ref": "audio/oder.mp3"
+    },
+    {
+      "surface_id": "w_dai",
+      "lemma_id": "l_dai",
+      "word_lu": "däi",
+      "audio_ref": "audio/dai.mp3"
+    },
+    {
+      "surface_id": "w_dir_formal",
+      "lemma_id": "l_dir",
+      "word_lu": "Dir",
+      "audio_ref": "audio/dir.mp3"
+    },
+    {
+      "surface_id": "w_iech",
+      "lemma_id": "l_iech",
+      "word_lu": "Iech",
+      "audio_ref": "audio/iech.mp3"
+    },
+    {
+      "surface_id": "w_verstoen",
+      "lemma_id": "l_verstoen",
+      "word_lu": "verstoen",
+      "audio_ref": "audio/verstoen.mp3"
+    },
+    {
+      "surface_id": "w_verstinn",
+      "lemma_id": "l_verstoen",
+      "word_lu": "verstinn",
+      "audio_ref": "audio/verstoen.mp3"
+    },
+    {
+      "surface_id": "w_midd",
+      "lemma_id": "l_midd",
+      "word_lu": "midd",
+      "audio_ref": "audio/midd.mp3"
+    },
+    {
+      "surface_id": "w_heeschen",
+      "lemma_id": "l_heeschen",
+      "word_lu": "heeschen",
+      "audio_ref": "audio/heeschen.mp3"
+    },
+    {
+      "surface_id": "w_heescht",
+      "lemma_id": "l_heeschen",
+      "word_lu": "heescht",
+      "audio_ref": "audio/heeschen.mp3"
+    },
+    {
+      "surface_id": "w_lues",
+      "lemma_id": "l_lues",
+      "word_lu": "lues",
+      "audio_ref": "audio/lues.mp3"
+    },
+    {
+      "surface_id": "w_dat",
+      "lemma_id": "l_dat",
+      "word_lu": "dat",
+      "audio_ref": "audio/dat.mp3"
+    },
+    {
+      "surface_id": "w_mir",
+      "lemma_id": "l_ech",
+      "word_lu": "mir",
+      "audio_ref": "audio/mir.mp3"
+    },
+    {
+      "surface_id": "w_gutt",
+      "lemma_id": "l_gutt",
+      "word_lu": "gutt",
+      "audio_ref": "audio/gutt.mp3"
+    },
+    {
+      "surface_id": "w_geet",
+      "lemma_id": "l_goen",
+      "word_lu": "geet",
+      "audio_ref": "audio/geet.mp3"
+    },
+    {
+      "surface_id": "w_et",
+      "lemma_id": "l_et",
+      "word_lu": "et",
+      "audio_ref": "audio/et.mp3"
+    },
+    {
+      "surface_id": "w_mat",
+      "lemma_id": "l_mat",
+      "word_lu": "mat",
+      "audio_ref": "audio/mat.mp3"
+    },
+    {
+      "surface_id": "w_ouni",
+      "lemma_id": "l_ouni",
+      "word_lu": "ouni",
+      "audio_ref": "audio/ouni.mp3"
+    },
+    {
+      "surface_id": "w_ganz",
+      "lemma_id": "l_ganz",
+      "word_lu": "ganz",
+      "audio_ref": "audio/ganz.mp3"
+    },
+    {
+      "surface_id": "w_wann",
+      "lemma_id": "l_wann",
+      "word_lu": "wann",
+      "audio_ref": "audio/wann.mp3"
+    }
+  ],
+  "senses": [
+    {
+      "sense_id": "s_ech_1",
+      "surface_id": "w_ech",
+      "primary_en": "I",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_du_1",
+      "surface_id": "w_du",
+      "primary_en": "you",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_sinn_is_1",
+      "surface_id": "w_ass",
+      "primary_en": "is",
+      "pos": "verb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_sinn_are_1",
+      "surface_id": "w_sinn",
+      "primary_en": "are",
+      "pos": "verb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_kaffi_1",
+      "surface_id": "w_kaffi",
+      "primary_en": "coffee",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true,
+      "tags": {
+        "domain": "food"
+      }
+    },
+    {
+      "sense_id": "s_waarm_1",
+      "surface_id": "w_waarm",
+      "primary_en": "warm",
+      "pos": "adjective",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_ginn_become_1",
+      "surface_id": "w_gëtt",
+      "primary_en": "becomes",
+      "pos": "verb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_net_1",
+      "surface_id": "w_net",
+      "primary_en": "not",
+      "pos": "adverb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_brout_1",
+      "surface_id": "w_brout",
+      "primary_en": "bread",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true
+    },
+    {
+      "sense_id": "s_iessen_1",
+      "surface_id": "w_iessen",
+      "primary_en": "eat",
+      "pos": "verb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_drenken_1",
+      "surface_id": "w_drénken",
+      "primary_en": "drink",
+      "pos": "verb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_waasser_1",
+      "surface_id": "w_waasser",
+      "primary_en": "water",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true
+    },
+    {
+      "sense_id": "s_merci_1",
+      "surface_id": "w_merci",
+      "primary_en": "thank you",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_mellech_1",
+      "surface_id": "w_mëllech",
+      "primary_en": "milk",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true
+    },
+    {
+      "sense_id": "s_moien_1",
+      "surface_id": "w_moien",
+      "primary_en": "Hello",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_addi_1",
+      "surface_id": "w_addi",
+      "primary_en": "Goodbye",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wannechgelift_1",
+      "surface_id": "w_wannechgelift",
+      "primary_en": "Please",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_main_1",
+      "surface_id": "w_main",
+      "primary_en": "My",
+      "pos": "determiner",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_numm_1",
+      "surface_id": "w_numm",
+      "primary_en": "Name",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wat_1",
+      "surface_id": "w_wat",
+      "primary_en": "What",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wei_1",
+      "surface_id": "w_wei",
+      "primary_en": "How",
+      "pos": "adverb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_an_1",
+      "surface_id": "w_an",
+      "primary_en": "and",
+      "pos": "conjunction",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_oder_1",
+      "surface_id": "w_oder",
+      "primary_en": "or",
+      "pos": "conjunction",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_dai_1",
+      "surface_id": "w_dai",
+      "primary_en": "your",
+      "pos": "determiner",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_dat_1",
+      "surface_id": "w_dat",
+      "primary_en": "that",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_dir_formal",
+      "surface_id": "w_dir_formal",
+      "primary_en": "You (formal)",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_iech",
+      "surface_id": "w_iech",
+      "primary_en": "You (formal/object)",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_verstoen_1",
+      "surface_id": "w_verstoen",
+      "primary_en": "understand",
+      "pos": "verb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_midd_1",
+      "surface_id": "w_midd",
+      "primary_en": "tired",
+      "pos": "adjective",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_heeschen_1",
+      "surface_id": "w_heeschen",
+      "primary_en": "to be called",
+      "pos": "verb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_lues_1",
+      "surface_id": "w_lues",
+      "primary_en": "slowly",
+      "pos": "adverb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_mir_dat",
+      "surface_id": "w_mir",
+      "primary_en": "me/to me",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_gutt_1",
+      "surface_id": "w_gutt",
+      "primary_en": "good/well",
+      "pos": "adjective",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_goen_geet_1",
+      "surface_id": "w_geet",
+      "primary_en": "goes",
+      "pos": "verb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_et_1",
+      "surface_id": "w_et",
+      "primary_en": "it",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_mat_1",
+      "surface_id": "w_mat",
+      "primary_en": "with",
+      "pos": "preposition",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_ouni_1",
+      "surface_id": "w_ouni",
+      "primary_en": "without",
+      "pos": "preposition",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_ganz_1",
+      "surface_id": "w_ganz",
+      "primary_en": "very",
+      "pos": "adverb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wann_1",
+      "surface_id": "w_wann",
+      "primary_en": "if",
+      "pos": "conjunction",
+      "is_golden_key": true,
+      "is_picturable": false
+    }
+  ],
+  "sentences": [
+    {
+      "sentence_id": "sent_001",
+      "text_lu": "De Kaffi ass waarm.",
+      "text_en": "The coffee is warm.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_002",
+      "text_lu": "De Kaffi gëtt waarm.",
+      "text_en": "The coffee becomes warm.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_ginn_become_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_003",
+      "text_lu": "Ech sinn do.",
+      "text_en": "I am there.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_are_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_004",
+      "text_lu": "Ech iesse Brout.",
+      "text_en": "I eat bread.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iessen_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_005",
+      "text_lu": "Brout ass gutt.",
+      "text_en": "Bread is good.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_006",
+      "text_lu": "Merci fir de Kaffi.",
+      "text_en": "Thank you for the coffee.",
+      "sense_ids": [
+        "s_merci_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_007",
+      "text_lu": "Ech drénke Kaffi.",
+      "text_en": "I drink coffee.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_008",
+      "text_lu": "Ech sinn hei.",
+      "text_en": "I am here.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_are_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_009",
+      "text_lu": "Ech si frou.",
+      "text_en": "I am happy.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_are_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_010",
+      "text_lu": "Merci, ech si gutt.",
+      "text_en": "Thank you, I am good.",
+      "sense_ids": [
+        "s_merci_1",
+        "s_ech_1",
+        "s_sinn_are_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_011",
+      "text_lu": "De Brout gëtt kal.",
+      "text_en": "The bread becomes cold.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_012",
+      "text_lu": "Ech ginn midd.",
+      "text_en": "I become tired.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_013",
+      "text_lu": "Merci fir alles.",
+      "text_en": "Thank you for everything.",
+      "sense_ids": [
+        "s_merci_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_014",
+      "text_lu": "Kaffi ass schwaarz.",
+      "text_en": "Coffee is black.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_015",
+      "text_lu": "Ech hu Kaffi.",
+      "text_en": "I have coffee.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_016",
+      "text_lu": "Brout a Kaffi.",
+      "text_en": "Bread and coffee.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_017",
+      "text_lu": "De Kaffi ass hei.",
+      "text_en": "The coffee is here.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_018",
+      "text_lu": "Ech ginn frou.",
+      "text_en": "I become happy.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_019",
+      "text_lu": "Merci, dat ass Brout.",
+      "text_en": "Thank you, that is bread.",
+      "sense_ids": [
+        "s_merci_1",
+        "s_sinn_is_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_020",
+      "text_lu": "Mäi Brout ass waarm.",
+      "text_en": "My bread is warm.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_021",
+      "text_lu": "Ech iessen de Kaffi net.",
+      "text_en": "I do not eat the coffee.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iessen_1",
+        "s_kaffi_1",
+        "s_net_1"
+      ],
+      "cloze_index": 4,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_022",
+      "text_lu": "Brout gëtt deier.",
+      "text_en": "Bread becomes expensive.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_023",
+      "text_lu": "Ech drénken de Kaffi.",
+      "text_en": "I drink the coffee.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_024",
+      "text_lu": "D'Brout ass fir ech.",
+      "text_en": "The bread is for me.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_sinn_is_1",
+        "s_ech_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_025",
+      "text_lu": "Alles gëtt gutt.",
+      "text_en": "Everything becomes good.",
+      "sense_ids": [
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_026",
+      "text_lu": "Du bass hei.",
+      "text_en": "You are here.",
+      "sense_ids": [
+        "s_du_1",
+        "s_sinn_are_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_027",
+      "text_lu": "Du iessen net.",
+      "text_en": "You do not eat.",
+      "sense_ids": [
+        "s_du_1",
+        "s_iessen_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_028",
+      "text_lu": "Ech drénke Waasser.",
+      "text_en": "I drink water.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_029",
+      "text_lu": "Du drénks Mëllech.",
+      "text_en": "You drink milk.",
+      "sense_ids": [
+        "s_du_1",
+        "s_drenken_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_030",
+      "text_lu": "Waasser ass net waarm.",
+      "text_en": "Water is not warm.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_sinn_is_1",
+        "s_net_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_031",
+      "text_lu": "Mëllech ass gutt.",
+      "text_en": "Milk is good.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_032",
+      "text_lu": "Ech iessen net Brout.",
+      "text_en": "I do not eat bread.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_net_1",
+        "s_iessen_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_033",
+      "text_lu": "Ech drénke Mëllech.",
+      "text_en": "I drink milk.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_034",
+      "text_lu": "Mëllech ass waarm.",
+      "text_en": "Milk is warm.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_035",
+      "text_lu": "Huel d'Mëllech.",
+      "text_en": "Take the milk.",
+      "sense_ids": [
+        "s_mellech_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_036",
+      "text_lu": "D'Mëllech ass kal.",
+      "text_en": "The milk is cold.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_037",
+      "text_lu": "Ech hu Mëllech.",
+      "text_en": "I have milk.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_038",
+      "text_lu": "D'Mëllech gëtt waarm.",
+      "text_en": "The milk becomes warm.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_ginn_become_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_039",
+      "text_lu": "Mëllech a Brout.",
+      "text_en": "Milk and bread.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_040",
+      "text_lu": "Ech iessen net Mëllech.",
+      "text_en": "I do not eat milk.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_net_1",
+        "s_iessen_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_041",
+      "text_lu": "D'Waasser ass kal.",
+      "text_en": "The water is cold.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_042",
+      "text_lu": "Ech hu Waasser.",
+      "text_en": "I have water.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_043",
+      "text_lu": "D'Waasser ass gutt.",
+      "text_en": "The water is good.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_044",
+      "text_lu": "Du drénks Waasser.",
+      "text_en": "You drink water.",
+      "sense_ids": [
+        "s_du_1",
+        "s_drenken_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_045",
+      "text_lu": "Waasser ass net deier.",
+      "text_en": "Water is not expensive.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_sinn_is_1",
+        "s_net_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_046",
+      "text_lu": "Ech drénken net Waasser.",
+      "text_en": "I do not drink water.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_net_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_047",
+      "text_lu": "Waasser a Kaffi.",
+      "text_en": "Water and coffee.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_048",
+      "text_lu": "D'Waasser gëtt waarm.",
+      "text_en": "The water becomes warm.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_ginn_become_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_049",
+      "text_lu": "Et ass waarm haut.",
+      "text_en": "It is warm today.",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_050",
+      "text_lu": "D'Iessen ass waarm.",
+      "text_en": "The food is warm.",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_051",
+      "text_lu": "Ech sinn net waarm.",
+      "text_en": "I am not warm.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_are_1",
+        "s_net_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_052",
+      "text_lu": "D'Mëllech ass waarm.",
+      "text_en": "The milk is warm.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_053",
+      "text_lu": "De Brout ass waarm.",
+      "text_en": "The bread is warm.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_054",
+      "text_lu": "Du bass waarm.",
+      "text_en": "You are warm.",
+      "sense_ids": [
+        "s_du_1",
+        "s_sinn_are_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_055",
+      "text_lu": "Kaffi ass net kal.",
+      "text_en": "The coffee is not cold.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_sinn_is_1",
+        "s_net_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_056",
+      "text_lu": "Ech sinn net do.",
+      "text_en": "I am not there.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_are_1",
+        "s_net_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_057",
+      "text_lu": "Du drénks net.",
+      "text_en": "You do not drink.",
+      "sense_ids": [
+        "s_du_1",
+        "s_drenken_1",
+        "s_net_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_058",
+      "text_lu": "Dat ass net gutt.",
+      "text_en": "That is not good.",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_net_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_059",
+      "text_lu": "Brout ass net kal.",
+      "text_en": "Bread is not cold.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_sinn_is_1",
+        "s_net_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_060",
+      "text_lu": "Mëllech ass net kal.",
+      "text_en": "Milk is not cold.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_sinn_is_1",
+        "s_net_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_061",
+      "text_lu": "Du bass gutt.",
+      "text_en": "You are good.",
+      "sense_ids": [
+        "s_du_1",
+        "s_sinn_are_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_062",
+      "text_lu": "Du hu Kaffi.",
+      "text_en": "You have coffee.",
+      "sense_ids": [
+        "s_du_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_063",
+      "text_lu": "Du iesse Brout.",
+      "text_en": "You eat bread.",
+      "sense_ids": [
+        "s_du_1",
+        "s_iessen_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_064",
+      "text_lu": "Du bass frou.",
+      "text_en": "You are happy.",
+      "sense_ids": [
+        "s_du_1",
+        "s_sinn_are_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_065",
+      "text_lu": "Du hu Waasser.",
+      "text_en": "You have water.",
+      "sense_ids": [
+        "s_du_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_066",
+      "text_lu": "Du bass net hei.",
+      "text_en": "You are not here.",
+      "sense_ids": [
+        "s_du_1",
+        "s_sinn_are_1",
+        "s_net_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_067",
+      "text_lu": "Ech iessen hei.",
+      "text_en": "I eat here.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iessen_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_068",
+      "text_lu": "Du iesse Brout hei.",
+      "text_en": "You eat bread here.",
+      "sense_ids": [
+        "s_du_1",
+        "s_iessen_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_069",
+      "text_lu": "Ech iesse gutt.",
+      "text_en": "I eat well.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iessen_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_070",
+      "text_lu": "Ech iesse Waasser net.",
+      "text_en": "I do not eat water.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iessen_1",
+        "s_waasser_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_071",
+      "text_lu": "Du iesse gutt.",
+      "text_en": "You eat well.",
+      "sense_ids": [
+        "s_du_1",
+        "s_iessen_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_072",
+      "text_lu": "Mir iesse Brout a Kaffi.",
+      "text_en": "We eat bread and coffee.",
+      "sense_ids": [
+        "s_iessen_1",
+        "s_brout_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_073",
+      "text_lu": "Ech iesse Mëllech net.",
+      "text_en": "I do not eat milk.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iessen_1",
+        "s_mellech_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_074",
+      "text_lu": "Du drénks Kaffi.",
+      "text_en": "You drink coffee.",
+      "sense_ids": [
+        "s_du_1",
+        "s_drenken_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_075",
+      "text_lu": "Ech drénken net Kaffi.",
+      "text_en": "I do not drink coffee.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_net_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_076",
+      "text_lu": "Du drénks gutt.",
+      "text_en": "You drink well.",
+      "sense_ids": [
+        "s_du_1",
+        "s_drenken_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_077",
+      "text_lu": "Mir drénke Waasser.",
+      "text_en": "We drink water.",
+      "sense_ids": [
+        "s_drenken_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_078",
+      "text_lu": "Ech drénken net Mëllech.",
+      "text_en": "I do not drink milk.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_net_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_079",
+      "text_lu": "Du drénks Waasser a Mëllech.",
+      "text_en": "You drink water and milk.",
+      "sense_ids": [
+        "s_du_1",
+        "s_drenken_1",
+        "s_waasser_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_080",
+      "text_lu": "Ech drénken hei.",
+      "text_en": "I drink here.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_081",
+      "text_lu": "D'Waasser gëtt kal.",
+      "text_en": "The water becomes cold.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_082",
+      "text_lu": "Du gëtts midd.",
+      "text_en": "You become tired.",
+      "sense_ids": [
+        "s_du_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_083",
+      "text_lu": "Kaffi gëtt kal.",
+      "text_en": "The coffee becomes cold.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_084",
+      "text_lu": "Ech ginn gutt.",
+      "text_en": "I become good.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_085",
+      "text_lu": "Alles gëtt besser.",
+      "text_en": "Everything gets better.",
+      "sense_ids": [
+        "s_ginn_become_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_086",
+      "text_lu": "Moie!",
+      "text_en": "Hello!",
+      "sense_ids": [
+        "s_moien_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_087",
+      "text_lu": "Moien, ech sinn de Lutz.",
+      "text_en": "Hello, I am Lutz.",
+      "sense_ids": [
+        "s_moien_1",
+        "s_ech_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_088",
+      "text_lu": "Moie, wéi geet et?",
+      "text_en": "Hello, how is it going?",
+      "sense_ids": [
+        "s_moien_1",
+        "s_wei_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_089",
+      "text_lu": "Moien a Äddi.",
+      "text_en": "Hello and goodbye.",
+      "sense_ids": [
+        "s_moien_1",
+        "s_an_1",
+        "s_addi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_090",
+      "text_lu": "Moie, Kaffi wannechgelift.",
+      "text_en": "Hello, coffee please.",
+      "sense_ids": [
+        "s_moien_1",
+        "s_kaffi_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_091",
+      "text_lu": "Moie, Mäi Numm ass User.",
+      "text_en": "Hello, my name is User.",
+      "sense_ids": [
+        "s_moien_1",
+        "s_main_1",
+        "s_numm_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_092",
+      "text_lu": "Moie, Wat ass dat?",
+      "text_en": "Hello, what is that?",
+      "sense_ids": [
+        "s_moien_1",
+        "s_wat_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_093",
+      "text_lu": "Äddi!",
+      "text_en": "Goodbye!",
+      "sense_ids": [
+        "s_addi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_094",
+      "text_lu": "Äddi a Merci.",
+      "text_en": "Goodbye and thank you.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_an_1",
+        "s_merci_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_095",
+      "text_lu": "Äddi, ech ginn.",
+      "text_en": "Goodbye, I am going.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_ech_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_096",
+      "text_lu": "Äddi, du.",
+      "text_en": "Goodbye, you.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_du_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_097",
+      "text_lu": "Äddi, Kaffi ass net waarm.",
+      "text_en": "Goodbye, coffee is not warm.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_kaffi_1",
+        "s_net_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_098",
+      "text_lu": "Kaffi, wannechgelift.",
+      "text_en": "Coffee, please.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_099",
+      "text_lu": "Brout, wannechgelift.",
+      "text_en": "Bread, please.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_100",
+      "text_lu": "Mëllech, wannechgelift.",
+      "text_en": "Milk, please.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_101",
+      "text_lu": "Waasser, wannechgelift.",
+      "text_en": "Water, please.",
+      "sense_ids": [
+        "s_waasser_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_102",
+      "text_lu": "Net waarm, wannechgelift.",
+      "text_en": "Not warm, please.",
+      "sense_ids": [
+        "s_net_1",
+        "s_waarm_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_103",
+      "text_lu": "Ech iesse, wannechgelift.",
+      "text_en": "I eat, please.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iessen_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_104",
+      "text_lu": "Mäi Numm ass Lutz.",
+      "text_en": "My name is Lutz.",
+      "sense_ids": [
+        "s_main_1",
+        "s_numm_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_105",
+      "text_lu": "Wéi ass däi Numm?",
+      "text_en": "How/What is your name?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_sinn_is_1",
+        "s_dai_1",
+        "s_numm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_106",
+      "text_lu": "Mäi Kaffi ass waarm.",
+      "text_en": "My coffee is warm.",
+      "sense_ids": [
+        "s_main_1",
+        "s_kaffi_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_107",
+      "text_lu": "Mäi Brout ass net waarm.",
+      "text_en": "My bread is not warm.",
+      "sense_ids": [
+        "s_main_1",
+        "s_brout_1",
+        "s_sinn_is_1",
+        "s_net_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_108",
+      "text_lu": "Mäi Waasser ass net waarm.",
+      "text_en": "My water is not warm.",
+      "sense_ids": [
+        "s_main_1",
+        "s_waasser_1",
+        "s_sinn_is_1",
+        "s_net_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_109",
+      "text_lu": "Mäi Numm ass net Lutz.",
+      "text_en": "My name is not Lutz.",
+      "sense_ids": [
+        "s_main_1",
+        "s_numm_1",
+        "s_sinn_is_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_110",
+      "text_lu": "Wat ass dat?",
+      "text_en": "What is that?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_111",
+      "text_lu": "Wat iessen ech?",
+      "text_en": "What do I eat?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_iessen_1",
+        "s_ech_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_112",
+      "text_lu": "Wat iessen du?",
+      "text_en": "What do you eat?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_iessen_1",
+        "s_du_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_113",
+      "text_lu": "Wat drénken ech?",
+      "text_en": "What do I drink?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_drenken_1",
+        "s_ech_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_114",
+      "text_lu": "Wat drénken du?",
+      "text_en": "What do you drink?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_drenken_1",
+        "s_du_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_115",
+      "text_lu": "Wat ass waarm?",
+      "text_en": "What is warm?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_116",
+      "text_lu": "Kaffi a Brout.",
+      "text_en": "Coffee and bread.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_an_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_117",
+      "text_lu": "Kaffi oder Waasser.",
+      "text_en": "Coffee or water.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_oder_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_118",
+      "text_lu": "Mëllech oder Waasser.",
+      "text_en": "Milk or water.",
+      "sense_ids": [
+        "s_mellech_1",
+        "s_oder_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_119",
+      "text_lu": "Ech drénke Kaffi a Waasser.",
+      "text_en": "I drink coffee and water.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_kaffi_1",
+        "s_an_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_120",
+      "text_lu": "Du iesse Brout oder Kaffi.",
+      "text_en": "You eat bread or coffee.",
+      "sense_ids": [
+        "s_du_1",
+        "s_iessen_1",
+        "s_brout_1",
+        "s_oder_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_121",
+      "text_lu": "Moien, ech drénke Mëllech.",
+      "text_en": "Hello, I drink milk.",
+      "sense_ids": [
+        "s_moien_1",
+        "s_ech_1",
+        "s_drenken_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_122",
+      "text_lu": "Moie, Kaffi oder Waasser?",
+      "text_en": "Hello, coffee or water?",
+      "sense_ids": [
+        "s_moien_1",
+        "s_kaffi_1",
+        "s_oder_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_123",
+      "text_lu": "Moie, Mäi Brout ass waarm.",
+      "text_en": "Hello, my bread is warm.",
+      "sense_ids": [
+        "s_moien_1",
+        "s_main_1",
+        "s_brout_1",
+        "s_sinn_is_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_124",
+      "text_lu": "Äddi, Kaffi wannechgelift.",
+      "text_en": "Goodbye, coffee please.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_kaffi_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_125",
+      "text_lu": "Äddi, du iessen net.",
+      "text_en": "Goodbye, you do not eat.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_du_1",
+        "s_iessen_1",
+        "s_net_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_126",
+      "text_lu": "Äddi, Wat drénken du?",
+      "text_en": "Goodbye, what do you drink?",
+      "sense_ids": [
+        "s_addi_1",
+        "s_wat_1",
+        "s_drenken_1",
+        "s_du_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_127",
+      "text_lu": "Äddi a Gudde Moie.",
+      "text_en": "Goodbye and good morning.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_an_1",
+        "s_moien_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_128",
+      "text_lu": "Kaffi oder Mëllech, wannechgelift.",
+      "text_en": "Coffee or milk, please.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_oder_1",
+        "s_mellech_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_129",
+      "text_lu": "Ech drénken net, wannechgelift.",
+      "text_en": "I do not drink, please.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_net_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_130",
+      "text_lu": "Wéi iessen du, wannechgelift?",
+      "text_en": "How do you eat, please?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_iessen_1",
+        "s_du_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_131",
+      "text_lu": "Mäi Numm ass Numm.",
+      "text_en": "My name is Name.",
+      "sense_ids": [
+        "s_main_1",
+        "s_numm_1",
+        "s_sinn_is_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_132",
+      "text_lu": "Wat ass mäi Numm?",
+      "text_en": "What is my name?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_sinn_is_1",
+        "s_main_1",
+        "s_numm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_133",
+      "text_lu": "Mäi Kaffi oder mäi Waasser.",
+      "text_en": "My coffee or my water.",
+      "sense_ids": [
+        "s_main_1",
+        "s_kaffi_1",
+        "s_oder_1",
+        "s_main_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_134",
+      "text_lu": "Wéi ass mäi Numm?",
+      "text_en": "How is my name (What is my name)?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_sinn_is_1",
+        "s_main_1",
+        "s_numm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_135",
+      "text_lu": "Däi Numm a mäi Numm.",
+      "text_en": "Your name and my name.",
+      "sense_ids": [
+        "s_dai_1",
+        "s_numm_1",
+        "s_an_1",
+        "s_main_1",
+        "s_numm_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_136",
+      "text_lu": "Ass dat däi Numm?",
+      "text_en": "Is that your name?",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_dat_1",
+        "s_dai_1",
+        "s_numm_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_137",
+      "text_lu": "Wéi drénken ech?",
+      "text_en": "How do I drink?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_drenken_1",
+        "s_ech_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_138",
+      "text_lu": "Wéi iessen du?",
+      "text_en": "How do you eat?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_iessen_1",
+        "s_du_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_139",
+      "text_lu": "Wéi ass dat?",
+      "text_en": "How is that?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_sinn_is_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_140",
+      "text_lu": "Wéi gëtt dat waarm?",
+      "text_en": "How does that become warm?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_ginn_become_1",
+        "s_dat_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_141",
+      "text_lu": "Wéi ass däi Kaffi?",
+      "text_en": "How is your coffee?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_sinn_is_1",
+        "s_dai_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_142",
+      "text_lu": "Wéi ass mäi Brout?",
+      "text_en": "How is my bread?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_sinn_is_1",
+        "s_main_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_143",
+      "text_lu": "Däi Kaffi ass net waarm.",
+      "text_en": "Your coffee is not warm.",
+      "sense_ids": [
+        "s_dai_1",
+        "s_kaffi_1",
+        "s_sinn_is_1",
+        "s_net_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_144",
+      "text_lu": "Däi Brout an däi Mëllech.",
+      "text_en": "Your bread and your milk.",
+      "sense_ids": [
+        "s_dai_1",
+        "s_brout_1",
+        "s_an_1",
+        "s_dai_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_145",
+      "text_lu": "Ass dat däi Waasser?",
+      "text_en": "Is that your water?",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_dat_1",
+        "s_dai_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_146",
+      "text_lu": "Wat iessen däi Numm?",
+      "text_en": "What does your name eat? (weird but ok)",
+      "sense_ids": [
+        "s_wat_1",
+        "s_iessen_1",
+        "s_dai_1",
+        "s_numm_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_147",
+      "text_lu": "Äddi, däi Numm.",
+      "text_en": "Goodbye, your name.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_dai_1",
+        "s_numm_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_148",
+      "text_lu": "Dat ass Kaffi.",
+      "text_en": "That is coffee.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_sinn_is_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_149",
+      "text_lu": "Wat ass dat?",
+      "text_en": "What is that?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_sinn_is_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_150",
+      "text_lu": "Dat ass mäi Brout.",
+      "text_en": "That is my bread.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_sinn_is_1",
+        "s_main_1",
+        "s_brout_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_151",
+      "text_lu": "Is dat waarm?",
+      "text_en": "Is that warm?",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_dat_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_152",
+      "text_lu": "Dat an dat.",
+      "text_en": "That and that.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_an_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_153",
+      "text_lu": "Dat oder dat.",
+      "text_en": "That or that.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_oder_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_154",
+      "text_lu": "Dat gëtt waarm.",
+      "text_en": "That becomes warm.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_ginn_become_1",
+        "s_waarm_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_155",
+      "text_lu": "Dat ass net Waasser.",
+      "text_en": "That is not water.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_sinn_is_1",
+        "s_net_1",
+        "s_waasser_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_156",
+      "text_lu": "Ech drénken dat.",
+      "text_en": "I drink that.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_drenken_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_157",
+      "text_lu": "Du iessen dat.",
+      "text_en": "You eat that.",
+      "sense_ids": [
+        "s_du_1",
+        "s_iessen_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_158",
+      "text_lu": "Wéi heescht Dir?",
+      "text_en": "What is your name? (formal)",
+      "sense_ids": [
+        "s_wei_1",
+        "s_heeschen_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_159",
+      "text_lu": "Ech heesche Lutz, an Dir?",
+      "text_en": "My name is Lutz, and you?",
+      "sense_ids": [
+        "s_ech_1",
+        "s_heeschen_1",
+        "s_an_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_160",
+      "text_lu": "Heescht Dir Lutz?",
+      "text_en": "Is your name Lutz?",
+      "sense_ids": [
+        "s_heeschen_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_161",
+      "text_lu": "Dir heescht net du.",
+      "text_en": "Your name is not du.",
+      "sense_ids": [
+        "s_dir_formal",
+        "s_heeschen_1",
+        "s_net_1",
+        "s_du_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_162",
+      "text_lu": "Wéi heescht du?",
+      "text_en": "What is your name?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_heeschen_1",
+        "s_du_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_163",
+      "text_lu": "Ech heeschen net Lutz.",
+      "text_en": "My name is not Lutz.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_heeschen_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_164",
+      "text_lu": "Ech verstinn dat net.",
+      "text_en": "I do not understand that.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_verstoen_1",
+        "s_dat_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_165",
+      "text_lu": "Ech si midd.",
+      "text_en": "I am tired.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_is_1",
+        "s_midd_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_166",
+      "text_lu": "Mir geet et gutt.",
+      "text_en": "I am doing well.",
+      "sense_ids": [
+        "s_mir_dat",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_gutt_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_167",
+      "text_lu": "Wéi geet et?",
+      "text_en": "How is it going?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_goen_geet_1",
+        "s_et_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_168",
+      "text_lu": "Gutt, merci.",
+      "text_en": "Good, thank you.",
+      "sense_ids": [
+        "s_gutt_1",
+        "s_merci_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_169",
+      "text_lu": "Du verstinn dat.",
+      "text_en": "You understand that.",
+      "sense_ids": [
+        "s_du_1",
+        "s_verstoen_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_170",
+      "text_lu": "Dir verstinn dat net.",
+      "text_en": "You (formal) do not understand that.",
+      "sense_ids": [
+        "s_dir_formal",
+        "s_verstoen_1",
+        "s_dat_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_171",
+      "text_lu": "Äddi, ech si midd.",
+      "text_en": "Goodbye, I am tired.",
+      "sense_ids": [
+        "s_addi_1",
+        "s_ech_1",
+        "s_sinn_is_1",
+        "s_midd_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_172",
+      "text_lu": "Wannechgelift lues.",
+      "text_en": "Please, slowly.",
+      "sense_ids": [
+        "s_wannechgelift_1",
+        "s_lues_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_173",
+      "text_lu": "Dir drénke lues.",
+      "text_en": "You (formal) drink slowly.",
+      "sense_ids": [
+        "s_dir_formal",
+        "s_drenken_1",
+        "s_lues_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_174",
+      "text_lu": "Wat verstinn du?",
+      "text_en": "What do you understand?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_verstoen_1",
+        "s_du_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_175",
+      "text_lu": "Heescht dat gutt?",
+      "text_en": "Does that mean good?",
+      "sense_ids": [
+        "s_heeschen_1",
+        "s_dat_1",
+        "s_gutt_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_176",
+      "text_lu": "Dat ass lues.",
+      "text_en": "That is slow.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_sinn_is_1",
+        "s_lues_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_177",
+      "text_lu": "Ech verstinn net lues.",
+      "text_en": "I do not understand slowly.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_verstoen_1",
+        "s_net_1",
+        "s_lues_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_178",
+      "text_lu": "Du gesäis midd aus.",
+      "text_en": "You look tired.",
+      "sense_ids": [
+        "s_du_1",
+        "s_midd_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_179",
+      "text_lu": "Ech sinn net midd.",
+      "text_en": "I am not tired.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_is_1",
+        "s_net_1",
+        "s_midd_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_180",
+      "text_lu": "Dir sidd midd.",
+      "text_en": "You (formal) are tired.",
+      "sense_ids": [
+        "s_dir_formal",
+        "s_sinn_are_1",
+        "s_midd_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_181",
+      "text_lu": "Ass du midd?",
+      "text_en": "Are you tired?",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_du_1",
+        "s_midd_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_182",
+      "text_lu": "Dir verstoen net.",
+      "text_en": "You (formal) do not understand.",
+      "sense_ids": [
+        "s_dir_formal",
+        "s_verstoen_1",
+        "s_net_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_183",
+      "text_lu": "Wat verstinn Dir?",
+      "text_en": "What do you understand?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_verstoen_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_184",
+      "text_lu": "Iessen ass gutt, verstinn du?",
+      "text_en": "Food is good, do you understand?",
+      "sense_ids": [
+        "s_iessen_1",
+        "s_sinn_is_1",
+        "s_gutt_1",
+        "s_verstoen_1",
+        "s_du_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_185",
+      "text_lu": "Mir geet et net gutt.",
+      "text_en": "I am not doing well.",
+      "sense_ids": [
+        "s_mir_dat",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_net_1",
+        "s_gutt_1"
+      ],
+      "cloze_index": 4,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_186",
+      "text_lu": "Geet et gutt?",
+      "text_en": "Is it going well?",
+      "sense_ids": [
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_gutt_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_187",
+      "text_lu": "Wéi geet et Dir?",
+      "text_en": "How are you doing? (formal)",
+      "sense_ids": [
+        "s_wei_1",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_188",
+      "text_lu": "Et geet.",
+      "text_en": "It goes (I am okay).",
+      "sense_ids": [
+        "s_et_1",
+        "s_goen_geet_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_189",
+      "text_lu": "Dat geet gutt.",
+      "text_en": "That goes well.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_goen_geet_1",
+        "s_gutt_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_190",
+      "text_lu": "Moie, wéi geet et du?",
+      "text_en": "Hello, how are you doing?",
+      "sense_ids": [
+        "s_moien_1",
+        "s_wei_1",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_du_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_191",
+      "text_lu": "Ech gesinn Iech.",
+      "text_en": "I see you (formal).",
+      "sense_ids": [
+        "s_ech_1",
+        "s_iech"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_192",
+      "text_lu": "Ech verstoen Iech.",
+      "text_en": "I understand you (formal).",
+      "sense_ids": [
+        "s_ech_1",
+        "s_verstoen_1",
+        "s_iech"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_193",
+      "text_lu": "Wat soen ech Iech?",
+      "text_en": "What do I say to you?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_ech_1",
+        "s_iech"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_194",
+      "text_lu": "Ech merci Iech.",
+      "text_en": "I thank you.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_merci_1",
+        "s_iech"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_195",
+      "text_lu": "Wéi heescht Dir haut?",
+      "text_en": "What is your name today?",
+      "sense_ids": [
+        "s_wei_1",
+        "s_heeschen_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_196",
+      "text_lu": "Ech heeschen net du, ech heeschen Dir.",
+      "text_en": "I am not called du, I am called Dir.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_heeschen_1",
+        "s_net_1",
+        "s_du_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_197",
+      "text_lu": "Lues a gutt.",
+      "text_en": "Slowly and well.",
+      "sense_ids": [
+        "s_lues_1",
+        "s_an_1",
+        "s_gutt_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_198",
+      "text_lu": "Lues, wannechgelift.",
+      "text_en": "Slowly, please.",
+      "sense_ids": [
+        "s_lues_1",
+        "s_wannechgelift_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_199",
+      "text_lu": "Wat heescht dat op Lëtzebuergesch?",
+      "text_en": "What does that mean in Luxembourgish?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_heeschen_1",
+        "s_dat_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_200",
+      "text_lu": "Mir geet et haut midd.",
+      "text_en": "I am feeling tired today.",
+      "sense_ids": [
+        "s_mir_dat",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_midd_1"
+      ],
+      "cloze_index": 3,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_201",
+      "text_lu": "Iech merci.",
+      "text_en": "Thank you.",
+      "sense_ids": [
+        "s_iech",
+        "s_merci_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_202",
+      "text_lu": "Ech gesinn Iech net.",
+      "text_en": "I do not see you (formal).",
+      "sense_ids": [
+        "s_ech_1",
+        "s_net_1",
+        "s_iech"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_203",
+      "text_lu": "Verstinn Dir Iech?",
+      "text_en": "Do you understand each other?",
+      "sense_ids": [
+        "s_verstoen_1",
+        "s_dir_formal",
+        "s_iech"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_204",
+      "text_lu": "Mir geet et haut lues.",
+      "text_en": "I am going slowly today.",
+      "sense_ids": [
+        "s_mir_dat",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_lues_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_205",
+      "text_lu": "Geet et Mir?",
+      "text_en": "Is it for me?",
+      "sense_ids": [
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_mir_dat"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_206",
+      "text_lu": "Wat geet Mir?",
+      "text_en": "What is for me?",
+      "sense_ids": [
+        "s_wat_1",
+        "s_goen_geet_1",
+        "s_mir_dat"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_207",
+      "text_lu": "Mäi Numm geet Mir gutt.",
+      "text_en": "My name goes well for me.",
+      "sense_ids": [
+        "s_main_1",
+        "s_numm_1",
+        "s_goen_geet_1",
+        "s_mir_dat",
+        "s_gutt_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_208",
+      "text_lu": "Ass dat fir Mir?",
+      "text_en": "Is that for me? (fir is new, wait)",
+      "sense_ids": [
+        "s_sinn_is_1",
+        "s_dat_1",
+        "s_mir_dat"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_zoah_glue_0",
+      "text_lu": "Ech si mat Dir.",
+      "text_en": "I am with you.",
+      "sense_ids": [
+        "s_ech_1",
+        "s_sinn_is_1",
+        "s_mat_1",
+        "s_dir_formal"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_zoah_glue_1",
+      "text_lu": "Brout mat Kaffi.",
+      "text_en": "Bread with coffee.",
+      "sense_ids": [
+        "s_brout_1",
+        "s_mat_1",
+        "s_kaffi_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_zoah_glue_2",
+      "text_lu": "Kaffi ouni Mëllech.",
+      "text_en": "Coffee without milk.",
+      "sense_ids": [
+        "s_kaffi_1",
+        "s_ouni_1",
+        "s_mellech_1"
+      ],
+      "cloze_index": 1,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_zoah_glue_3",
+      "text_lu": "Dat ass ganz gutt.",
+      "text_en": "That is very good.",
+      "sense_ids": [
+        "s_dat_1",
+        "s_sinn_is_1",
+        "s_ganz_1",
+        "s_gutt_1"
+      ],
+      "cloze_index": 2,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    },
+    {
+      "sentence_id": "sent_zoah_glue_4",
+      "text_lu": "Wann Dir verstitt.",
+      "text_en": "If you (formal) understand.",
+      "sense_ids": [
+        "s_wann_1",
+        "s_dir_formal",
+        "s_verstoen_1"
+      ],
+      "cloze_index": 0,
+      "lex_coverage": 1.0,
+      "syn_density": 1,
+      "is_handcrafted": true
+    }
+  ],
+  "curriculum": [
+    {
+      "lesson_id": "L_01",
+      "title_en": "Social Basics",
+      "core_senses": [
+        "s_moien_1",
+        "s_addi_1",
+        "s_merci_1",
+        "s_wannechgelift_1"
+      ],
+      "secondary_senses": [
+        "s_wat_1",
+        "s_an_1",
+        "s_oder_1"
+      ],
+      "theme_tag": "Social"
+    },
+    {
+      "lesson_id": "L_02",
+      "title_en": "Identity",
+      "core_senses": [
+        "s_ech_1",
+        "s_du_1",
+        "s_dir_formal",
+        "s_heeschen_1",
+        "s_numm_1"
+      ],
+      "secondary_senses": [
+        "s_main_1",
+        "s_dai_1",
+        "s_sinn_is_1"
+      ],
+      "prereqs": [
+        "L_01"
+      ],
+      "theme_tag": "Basics"
+    },
+    {
+      "lesson_id": "L_03",
+      "title_en": "Feelings",
+      "core_senses": [
+        "s_mir_dat",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_gutt_1",
+        "s_midd_1"
+      ],
+      "secondary_senses": [
+        "s_verstoen_1",
+        "s_lues_1",
+        "s_dat_1",
+        "s_wei_1"
+      ],
+      "prereqs": [
+        "L_02"
+      ],
+      "theme_tag": "Basics"
+    },
+    {
+      "lesson_id": "L_04",
+      "title_en": "Café",
+      "core_senses": [
+        "s_kaffi_1",
+        "s_brout_1",
+        "s_net_1"
+      ],
+      "secondary_senses": [
+        "s_waarm_1",
+        "s_an_1",
+        "s_oder_1"
+      ],
+      "prereqs": [
+        "L_03"
+      ],
+      "theme_tag": "Food"
+    },
+    {
+      "lesson_id": "L_05",
+      "title_en": "Drinks",
+      "core_senses": [
+        "s_waasser_1",
+        "s_mellech_1",
+        "s_drenken_1"
+      ],
+      "secondary_senses": [
+        "s_ech_1",
+        "s_du_1",
+        "s_an_1"
+      ],
+      "prereqs": [
+        "L_04"
+      ],
+      "theme_tag": "Food"
+    },
+    {
+      "lesson_id": "L_06",
+      "title_en": "Actions",
+      "core_senses": [
+        "s_iessen_1",
+        "s_ginn_become_1",
+        "s_waarm_1"
+      ],
+      "secondary_senses": [
+        "s_net_1",
+        "s_brout_1",
+        "s_wat_1"
+      ],
+      "prereqs": [
+        "L_05"
+      ],
+      "theme_tag": "Actions"
+    }
+  ]
+}
