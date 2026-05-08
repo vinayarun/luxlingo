@@ -1,0 +1,903 @@
+import Foundation
+import SwiftData
+
+// MARK: - Exercise UI State
+struct ExerciseUiState {
+    var lessonTitle: String = ""
+    var currentSentence: SentencesEntity? = nil
+    var targetWord: String = ""
+    var displayedTargetWord: String = ""
+    var targetTranslation: String = ""
+    var promptText: String = ""
+    var sentenceParts: [String] = []
+    var sentenceWithBlank: String = ""
+    var multipleChoiceOptions: [String] = []
+    var currentExerciseType: ExerciseTypeNew = .reading
+    var userInput: String = ""
+    var feedback: AnswerFeedback = .none
+    var progress: Float = 0
+    var totalSentences: Int = 0
+    var currentSentenceIndex: Int = 0
+    var isLessonFinished: Bool = false
+    var masteredSenses: [String] = []
+    var shuffledTokens: [String] = []
+    var matchingPairs: [MatchingItemModel] = []
+    var isLoading: Bool = false
+    var recentSentenceIds: [String] = []
+    var failureCount: Int = 0
+    var consecutiveSenseCount: Int = 0
+    var lastSenseId: String = ""
+    var exampleSentenceLu: String = ""
+    var exampleSentenceEn: String = ""
+    var phase: String = "Introduction"
+    var sessionXP: Int = 0
+    var currentMastery: Int = 0
+    var maxMastery: Int = 0
+    var isFeedbackVisible: Bool = false
+    var selectedOption: String? = nil
+    var correctOption: String? = nil
+    var masteryChange: Int = 0
+    var promptSubtitle: String = ""
+    var isJumbledCorrectOrder: Bool = false
+    
+    // Conjugation panel
+    var paradigm: [String]? = nil          // present tense rows, e.g. ["ech kann", ...]
+    var sentenceClozeIndex: Int = 0        // word index in example sentence to highlight
+    var targetLodAudioUrl: String? = nil   // lod.lu AAC URL for the target word
+    var nRuleFormInSentence: String? = nil // e.g. "de" when targetWord is "den" (n-rule drop)
+
+    // N-Rule fields
+    var nRuleSelection: String = ""
+    var nRuleWordIndex: Int = 0
+    var showNRuleHint: Bool = false
+    
+    // Speed Run fields
+    var timeRemaining: Float = 1.0
+    var isSpeedRunProposedCorrect: Bool = false
+    var speedRunCountdown: Int = 0   // 3,2,1 before the card appears; 0 = live
+
+    // Tap-bleed protection: set when a new exercise loads, cleared after 350ms
+    var exerciseLoadedAt: Date = .distantPast
+
+    // Rapid Fire (end-of-lesson burst)
+    var isRapidFire: Bool = false
+    var rapidFireQueue: [String] = []
+    var rapidFireCorrect: Int = 0
+    var rapidFireTotal: Int = 0
+}
+
+// MARK: - Exercise ViewModel (port of ExerciseViewModel.kt — ~426 lines)
+@MainActor
+@Observable
+final class ExerciseViewModel {
+    var uiState = ExerciseUiState()
+
+    /// True for 350ms after each exercise loads — blocks tap bleed-through.
+    var isInteractionReady: Bool {
+        Date().timeIntervalSince(uiState.exerciseLoadedAt) > 0.35
+    }
+
+    private let lessonId: String
+    private let repository: ContentRepository
+
+    init(lessonId: String, repository: ContentRepository) {
+        self.lessonId = lessonId
+        self.repository = repository
+        loadNextExercise()
+    }
+
+    // MARK: - Load Next Exercise
+
+    func loadNextExercise() {
+        stopCountdown()
+        stopSpeedRunTimer()
+
+        // Rapid fire: serve from the pre-built queue
+        if uiState.isRapidFire {
+            if uiState.rapidFireQueue.isEmpty {
+                uiState.isRapidFire = false
+                finishLesson()
+            } else {
+                loadRapidFireExercise()
+            }
+            return
+        }
+
+        // All senses mastered → kick off the rapid fire round instead of going straight to summary
+        if repository.areAllCoreSensesMastered(lessonId: lessonId) {
+            let coreSenses = repository.getLessonCoreSenses(lessonId: lessonId)
+            let queue = Array(coreSenses.map { $0.senseId }.shuffled().prefix(8))
+            uiState.rapidFireQueue = queue
+            uiState.rapidFireTotal = queue.count
+            uiState.rapidFireCorrect = 0
+            uiState.isRapidFire = true
+            loadRapidFireExercise()
+            return
+        }
+
+        uiState.isLoading = true
+        uiState.failureCount = 0
+        uiState.isFeedbackVisible = false
+        uiState.userInput = ""
+        uiState.selectedOption = nil
+        uiState.correctOption = nil
+        uiState.masteryChange = 0
+        uiState.shuffledTokens = []
+        uiState.matchingPairs = []
+        uiState.promptSubtitle = ""
+
+        let coreSenses = repository.getLessonCoreSenses(lessonId: lessonId)
+        if coreSenses.isEmpty {
+            finishLesson()
+            return
+        }
+
+        // 1. Phase Detection
+        let unintroducedSenses = coreSenses.filter { sense in
+            repository.getSenseMastery(senseId: sense.senseId) < 1
+        }
+        let isIntroPhase = !unintroducedSenses.isEmpty
+
+        // 2. Sense Selection
+        let lastSenseId = uiState.lastSenseId
+        let consecutiveCount = uiState.consecutiveSenseCount
+
+        let targetSense: SensesEntity
+        if isIntroPhase {
+            // Introduce some variety in introduction phase (cycle through first 3 unintroduced)
+            let queue = unintroducedSenses.prefix(3).shuffled()
+            targetSense = queue.first ?? coreSenses.randomElement()!
+        } else if consecutiveCount >= 3 {
+            // Force a switch if we're hitting the same word too much
+            let others = coreSenses.filter { $0.senseId != lastSenseId }
+            let unmasteredOthers = others.filter { repository.getSenseMastery(senseId: $0.senseId) < 20 }
+            targetSense = unmasteredOthers.randomElement() ?? others.min(by: { repository.getSenseMastery(senseId: $0.senseId) < repository.getSenseMastery(senseId: $1.senseId) }) ?? coreSenses.randomElement()!
+        } else {
+            // Priortize unmastered senses across the board
+            let unmastered = coreSenses.filter { repository.getSenseMastery(senseId: $0.senseId) < 20 }
+            targetSense = unmastered.randomElement() ?? coreSenses.randomElement()!
+        }
+
+
+        // 3. Fetch Sentence
+        let recentIds = uiState.recentSentenceIds
+        guard let sentence = repository.getSentenceForLesson(lessonId: lessonId, excludeSentenceIds: recentIds, targetSenseId: targetSense.senseId) else {
+            if repository.areAllCoreSensesMastered(lessonId: lessonId) {
+                finishLesson()
+            } else {
+                loadNextExercise()
+            }
+            return
+        }
+
+        let senseId = targetSense.senseId
+        let mastery = repository.getSenseMastery(senseId: senseId)
+        let senseData = repository.getSense(senseId: senseId)
+        let translation = senseData?.translations ?? ""
+
+        // Get canonical word text
+        let vocab = repository.getVocabularyById(id: targetSense.surfaceId)
+        let targetWord = vocab?.wordText ?? ""
+
+        // 4. Determine Exercise Type based on mastery
+        var type: ExerciseTypeNew
+        switch mastery {
+        case ..<1:   type = .flashcard
+        case ..<6:   type = .reading
+        case ..<10:  type = .multipleChoice
+        case ..<15:  type = (Int.random(in: 0...1) == 0) ? .matching : .jumbledEn
+        case ..<20:  type = .jumbledLu
+        default:     type = .cloze
+        }
+        
+        // 4a. Check for innovative type overrides
+        if mastery >= 8 && mastery <= 18 {
+            if findNRuleCandidate(in: sentence.textLu) != nil {
+                // 30% chance to give n-rule if possible
+                if Float.random(in: 0...1) < 0.3 { type = .nRuleHunter }
+            }
+        }
+        
+        if mastery >= 12 && mastery <= 25 {
+            // 20% chance for speed run in range
+            if Float.random(in: 0...1) < 0.2 { type = .zipfSpeedRun }
+        }
+
+        // 4b. Phase Detection (Update)
+        let phaseName: String
+        if isIntroPhase {
+            phaseName = "Introduction"
+        } else {
+            switch type {
+            case .flashcard, .reading: phaseName = "Introduction"
+            case .multipleChoice, .matching: phaseName = "Reinforcement"
+            default: phaseName = "Challenge"
+            }
+        }
+
+        // 5. Jumbled Tokens
+        let tokens: [String]
+        switch type {
+        case .jumbledLu:
+            var baseTokens = cleanAndShuffleTokens(sentence.textLu)
+            if baseTokens.count < 5 {
+                let distractors = repository.getRandomDistractorsLu(target: targetWord, count: 2)
+                    .filter { word in
+                        // Heuristic: Avoid common English words in LU distractor pool
+                        !["is", "the", "a", "and", "in", "to", "for", "with", "on", "he", "she", "it", "we", "they"].contains(word.lowercased())
+                    }
+                baseTokens = (baseTokens + distractors).shuffled()
+            }
+            tokens = baseTokens
+        case .jumbledEn:
+            var baseTokens = cleanAndShuffleTokens(sentence.textEn)
+            if baseTokens.count < 5 {
+                let distractors = repository.getRandomDistractorsEn(target: translation, count: 2)
+                    .filter { word in
+                        // Heuristic: Avoid common Luxembourgish words in EN distractor pool
+                        !["an", "ech", "du", "hien", "si", "et", "mir", "dir", "fir", "mat"].contains(word.lowercased())
+                    }
+                baseTokens = (baseTokens + distractors).shuffled()
+            }
+            tokens = baseTokens
+        default:
+            tokens = []
+        }
+
+        let prompt: String
+        var subtitle = ""
+        switch type {
+        case .jumbledEn: 
+            prompt = sentence.textLu
+            subtitle = "Translate to English"
+        case .jumbledLu: 
+            prompt = sentence.textEn
+            subtitle = "Translate to Luxembourgish"
+        case .multipleChoice: 
+            prompt = sentence.textEn
+            subtitle = "Pick the correct word"
+        case .cloze: 
+            prompt = sentence.textEn
+            subtitle = "Type the missing word"
+        case .reading: 
+            prompt = "" // Sentence is already shown in the body via HighlightedText
+            subtitle = "Read this aloud"
+        case .flashcard: 
+            prompt = "" // Translation is already shown on the card
+            subtitle = "New word!"
+        case .nRuleHunter:
+            prompt = ""
+            subtitle = "Keep or Drop the 'n'?"
+        case .zipfSpeedRun:
+            prompt = ""
+            subtitle = "Swift Recall!"
+        case .matching:
+            prompt = "Match the pairs"
+            subtitle = "Tap corresponding words"
+        default:         
+            prompt = sentence.textEn
+            subtitle = ""
+        }
+
+        // Update History Buffer
+        let newRecentIds = Array((recentIds + [sentence.sentenceId]).suffix(8))
+        let nextIndex = uiState.currentSentenceIndex + 1
+
+        // Progress calculation (cap each sense at 20 for progress)
+        let currentM = coreSenses.reduce(0) { $0 + min(repository.getSenseMastery(senseId: $1.senseId), 20) }
+        let maxM = coreSenses.count * 20
+        let progressVal = maxM > 0 ? min(max(Float(currentM) / Float(maxM), 0), 1) : 0
+
+        // MCQ-specific (currently always LU options for LU sentence)
+        var sentenceWithBlank = ""
+        var mcqOptions: [String] = []
+        if type == .multipleChoice {
+            let words = sentence.textLu.split(separator: " ").map { String($0) }
+            let safeIndex = min(max(sentence.clozeIndex, 0), words.count - 1)
+            let targetInSentence = safeIndex < words.count ? words[safeIndex] : ""
+            sentenceWithBlank = words.enumerated().map { i, w in i == safeIndex ? "______" : w }.joined(separator: " ")
+
+            // Strip trailing punctuation from the answer so it matches the displayed option exactly.
+            // Preserve the sentence's capitalisation (e.g. "An" at position 0, "sinn" mid-sentence).
+            let punctSet = CharacterSet(charactersIn: ".,!?;:'\"()")
+            let answerOption = targetInSentence.trimmingCharacters(in: punctSet)
+            let answerIsCapitalised = answerOption.first?.isUppercase ?? false
+
+            // POS-matched distractors; then match capitalisation to the answer option.
+            let rawDistractors = repository.getSmartDistractorsLu(target: answerOption, senseId: senseId, count: 3)
+            let distractors = rawDistractors.map { word -> String in
+                answerIsCapitalised
+                    ? word.prefix(1).uppercased() + word.dropFirst()
+                    : word.prefix(1).lowercased() + word.dropFirst()
+            }
+
+            mcqOptions = (distractors + [answerOption]).shuffled()
+        }
+
+        // Extract paradigm from sense (stored as JSON string)
+        let decoder = JSONDecoder()
+        if let paradigmJson = senseData?.paradigm,
+           let data = paradigmJson.data(using: .utf8),
+           let parsed = try? decoder.decode(SeedParadigm.self, from: data) {
+            uiState.paradigm = parsed.present
+            print("[LuxLingo] Flashcard paradigm loaded for \(senseId): \(parsed.present.first ?? "?")")
+        } else {
+            uiState.paradigm = nil
+        }
+        print("[LuxLingo] Flashcard: type=\(type), word=\(targetWord), lodAudio=\(vocab?.lodAudioUrl ?? "none"), paradigm=\(uiState.paradigm != nil)")
+        uiState.sentenceClozeIndex = sentence.clozeIndex
+        uiState.targetLodAudioUrl = vocab?.lodAudioUrl
+
+        // N-rule: read directly from seed annotation — no runtime heuristics.
+        uiState.nRuleFormInSentence = sentence.nRuleForm
+
+        uiState.currentSentence = sentence
+        uiState.promptText = prompt
+        uiState.targetWord = targetWord
+        uiState.targetTranslation = translation
+        uiState.sentenceParts = splitSentence(sentence.textLu, index: sentence.clozeIndex)
+        uiState.currentExerciseType = type
+        uiState.sentenceWithBlank = sentenceWithBlank
+        uiState.multipleChoiceOptions = mcqOptions
+        uiState.shuffledTokens = tokens
+        uiState.currentSentenceIndex = nextIndex
+        uiState.progress = progressVal
+        uiState.currentMastery = currentM
+        uiState.maxMastery = maxM
+        uiState.isLoading = false
+        uiState.recentSentenceIds = newRecentIds
+        uiState.lastSenseId = senseId
+        uiState.consecutiveSenseCount = (senseId == lastSenseId) ? consecutiveCount + 1 : 1
+        uiState.exampleSentenceLu = sentence.textLu
+        uiState.exampleSentenceEn = sentence.textEn
+        uiState.phase = phaseName
+        uiState.promptSubtitle = subtitle
+        
+        // Conjugation: use cloze_index from seed (annotated by annotate_sentences.py).
+        // The word at cloze_index is the actual form used in the sentence.
+        let lessonNum = Int(lessonId.components(separatedBy: "_").last ?? "") ?? 999
+        let displayedTarget = targetWord
+        if type == .flashcard || type == .reading {
+            let words = sentence.textLu.split(separator: " ").map { String($0) }
+            let safeIdx = min(max(sentence.clozeIndex, 0), words.count - 1)
+            let actualForm = words[safeIdx].trimmingCharacters(in: .punctuationCharacters)
+            // Only show conjugated/n-rule form in later lessons — in early lessons keep it as the lemma
+            if actualForm.lowercased() != targetWord.lowercased() && lessonNum > 2 {
+                uiState.targetWord = actualForm
+            }
+        }
+        uiState.displayedTargetWord = displayedTarget
+
+        // Suppress paradigm chip when the sentence uses the lemma unchanged
+        if uiState.targetWord.lowercased() == targetWord.lowercased() {
+            uiState.paradigm = nil
+        }
+
+        // Suppress all grammar hints for introductory lessons
+        if lessonNum <= 2 {
+            uiState.paradigm = nil
+            uiState.nRuleFormInSentence = nil
+        }
+
+        // Finalize N-Rule Setup
+        if type == .nRuleHunter {
+            if let idx = findNRuleCandidate(in: sentence.textLu) {
+                uiState.nRuleWordIndex = idx
+                // Start with a random state to force the user to evaluate the rule
+                uiState.nRuleSelection = ""
+                uiState.showNRuleHint = false
+                uiState.userInput = ""
+            }
+        }
+        
+        // Finalize Speed Run Setup
+        if type == .zipfSpeedRun {
+            uiState.isSpeedRunProposedCorrect = Bool.random()
+            if !uiState.isSpeedRunProposedCorrect {
+                let distractors = repository.getRandomDistractorsEn(target: translation, count: 1)
+                uiState.targetTranslation = distractors.first ?? "something else"
+            }
+            startCountdown()
+        }
+        
+        // Finalize Matching Setup
+        if type == .matching {
+            uiState.matchingPairs = repository.getMatchingPairs(lessonId: lessonId)
+        }
+        
+        if uiState.failureCount > 0 {
+            uiState.promptSubtitle = "Try again! " + uiState.promptSubtitle
+        }
+
+        // Stamp load time — isInteractionReady becomes true 350ms later (tap bleed-through guard)
+        uiState.exerciseLoadedAt = Date()
+    }
+
+    // MARK: - User Input
+
+    func onInputChanged(_ newInput: String) {
+        uiState.userInput = newInput
+        uiState.feedback = .none
+    }
+
+    func onOptionSelected(_ option: String) {
+        if uiState.isFeedbackVisible { return } // Prevent double submission
+        uiState.selectedOption = option
+        onInputChanged(option)
+        checkAnswer()
+    }
+
+    func onNRuleToggle(to value: String) {
+        uiState.nRuleSelection = value
+        onInputChanged(value)
+    }
+    
+    func onShowNRuleHint() {
+        uiState.showNRuleHint = true
+    }
+    
+    // MARK: - Eifeler Regel Logic
+    
+    private func shouldDropN(word: String, nextWord: String?) -> Bool {
+        let normalizedWord = word.lowercased().replacingOccurrences(of: "[.,?!:;\"()]", with: "", options: .regularExpression)
+        
+        // 1. Check if the word is a candidate for dropping -n
+        // Regular words ending in -en, plus specific irregulars
+        let isCandidate = normalizedWord.hasSuffix("en") || ["hunn", "sinn", "keen", "ee", "mengem", "dengem", "sengem", "engem"].contains(normalizedWord)
+        
+        if !isCandidate { return false }
+        
+        // 2. If it's the end of the sentence/phrase, keep the -n
+        guard let next = nextWord?.lowercased().replacingOccurrences(of: "[.,?!:;\"()]", with: "", options: .regularExpression), !next.isEmpty else {
+            return false // Keep -n
+        }
+        
+        // 3. Check the first letter of the next word
+        let firstChar = String(next.prefix(1))
+        
+        // "D'Hunn am Nascht" rule: Keep -n if next word starts with d, h, n, t, z or a vowel
+        let keepChars = ["d", "h", "n", "t", "z", "a", "e", "i", "o", "u"]
+        if keepChars.contains(firstChar) {
+            return false // Keep -n
+        }
+        
+        // Before other consonants, drop the -n
+        return true
+    }
+    
+    func onSpeedRunSwipe(correct: Bool) {
+        stopSpeedRunTimer()
+        uiState.userInput = correct ? "TRUE" : "FALSE"
+        checkAnswer()
+    }
+
+    func onReadingContinue() {
+        uiState.feedback = .correct
+        uiState.sessionXP += 5
+        uiState.isFeedbackVisible = true // Show banner with EN translation
+        recordResult(.reading)
+        // loadNextExercise() happens when user taps "Continue" in the banner
+    }
+
+    func onFlashcardContinue() {
+        uiState.feedback = .correct
+        uiState.sessionXP += 5
+        recordResult(.reading)
+        loadNextExercise()
+    }
+    
+    func onContinueAfterFeedback() {
+        guard isInteractionReady else { return }
+        if uiState.feedback != .wrong {
+            loadNextExercise()
+        } else {
+            // Reset input for retry if wrong, or just move on if failure count high
+            if uiState.failureCount >= 2 {
+                loadNextExercise()
+            } else {
+                uiState.isFeedbackVisible = false
+                uiState.feedback = .none
+                uiState.userInput = ""
+                if uiState.currentExerciseType == .nRuleHunter {
+                    uiState.nRuleSelection = ""
+                }
+            }
+        }
+    }
+
+    func onSkipExercise() {
+        loadNextExercise()
+    }
+
+    func onMatchingWrongPair() {
+        uiState.failureCount += 1
+    }
+
+    // MARK: - Check Answer
+
+    func checkAnswer() {
+        let type = uiState.currentExerciseType
+
+        // Matching auto-advances silently after a short delay — no feedback banner.
+        // The guard ensures the timer is a no-op if the user already tapped Continue.
+        if type == .matching {
+            uiState.feedback = .correct
+            recordResult(.matching)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self, self.uiState.currentExerciseType == .matching else { return }
+                self.loadNextExercise()
+            }
+            return
+        }
+
+        uiState.isFeedbackVisible = true
+
+        guard let sentence = uiState.currentSentence else { return }
+        let userInput = normalizeText(uiState.userInput)
+
+        let comparisonTargetRaw: String
+        switch type {
+        case .jumbledLu:
+            comparisonTargetRaw = sentence.textLu
+        case .jumbledEn:
+            comparisonTargetRaw = sentence.textEn
+        case .cloze, .multipleChoice:
+            let words = sentence.textLu.split(separator: " ").map { String($0) }
+            let safeIndex = min(max(sentence.clozeIndex, 0), words.count - 1)
+            comparisonTargetRaw = safeIndex < words.count ? words[safeIndex] : ""
+        case .nRuleHunter:
+            let sentencesWords = sentence.textLu.split(separator: " ").map { String($0) }
+            let word = sentencesWords[uiState.nRuleWordIndex]
+            let nextWord = (uiState.nRuleWordIndex + 1 < sentencesWords.count) ? sentencesWords[uiState.nRuleWordIndex + 1] : nil
+            
+            let mustDrop = shouldDropN(word: word, nextWord: nextWord)
+            comparisonTargetRaw = mustDrop ? "" : "n"
+        case .zipfSpeedRun:
+            comparisonTargetRaw = uiState.isSpeedRunProposedCorrect ? "TRUE" : "FALSE"
+        default:
+            comparisonTargetRaw = uiState.targetWord
+        }
+
+        let comparisonTarget = normalizeText(comparisonTargetRaw)
+
+        let feedback: AnswerFeedback
+        let result: ExerciseResult
+
+        switch type {
+        case .jumbledLu, .jumbledEn:
+            if userInput == comparisonTarget {
+                feedback = .correct; result = .cloze
+            } else {
+                feedback = .wrong; result = .error
+            }
+        case .multipleChoice:
+            if userInput == comparisonTarget {
+                feedback = .correct; result = .multipleChoice
+            } else {
+                feedback = .wrong; result = .error
+            }
+        case .nRuleHunter:
+            if userInput == comparisonTarget {
+                feedback = .correct; result = .cloze
+            } else {
+                feedback = .wrong; result = .error
+            }
+        default:
+            let distance = levenshtein(userInput, comparisonTarget)
+            let trimmedUser = userInput.hasSuffix("n") ? String(userInput.dropLast()) : userInput
+            let trimmedTarget = comparisonTarget.hasSuffix("n") ? String(comparisonTarget.dropLast()) : comparisonTarget
+            let isNRule = distance == 1 && trimmedUser == trimmedTarget
+
+            if distance == 0 {
+                feedback = .correct; result = .cloze
+            } else if isNRule {
+                feedback = .nRule; result = .cloze
+            } else if distance == 1 {
+                feedback = .typo; result = .cloze
+            } else {
+                feedback = .wrong; result = .error
+            }
+        }
+
+        uiState.feedback = feedback
+        uiState.isFeedbackVisible = true
+        // For MC, strip punctuation so correctOption matches the displayed option string exactly.
+        let punctSet = CharacterSet(charactersIn: ".,!?;:'\"()")
+        uiState.correctOption = (type == .multipleChoice)
+            ? comparisonTargetRaw.trimmingCharacters(in: punctSet)
+            : comparisonTargetRaw
+        uiState.failureCount = (feedback == .wrong) ? uiState.failureCount + 1 : 0
+
+        // Map to correct result type
+        let resultType: ExerciseResult
+        if result == .error {
+            resultType = .error
+        } else {
+            switch type {
+            case .multipleChoice: resultType = .multipleChoice
+            case .jumbledLu: resultType = .jumbledLu
+            case .jumbledEn: resultType = .jumbledEn
+            default: resultType = result
+            }
+        }
+
+        recordResult(resultType)
+
+        // Calculate and set mastery change and XP
+        let mChange: Int
+        let xpGained: Int
+        
+        if feedback == .wrong {
+            mChange = -2
+            xpGained = 1
+        } else {
+            switch type {
+            case .multipleChoice: 
+                mChange = 4
+                xpGained = 10
+            case .jumbledLu, .jumbledEn: 
+                mChange = 8
+                xpGained = 15
+            case .nRuleHunter:
+                mChange = 6
+                xpGained = 12
+            case .zipfSpeedRun:
+                mChange = 5
+                xpGained = 8
+            case .cloze: 
+                mChange = 10
+                xpGained = (feedback == .correct) ? 25 : 10
+            default: 
+                mChange = 1
+                xpGained = 5
+            }
+        }
+        uiState.masteryChange = mChange
+        uiState.sessionXP += xpGained
+
+        // Rapid fire: count correct, then auto-advance after a brief flash
+        if uiState.isRapidFire && type == .zipfSpeedRun {
+            if feedback == .correct { uiState.rapidFireCorrect += 1 }
+            Task { @MainActor [weak self] in
+                try? await Task.sleep(nanoseconds: 700_000_000)
+                guard let self, self.uiState.isFeedbackVisible else { return }
+                self.onContinueAfterFeedback()
+            }
+        }
+    }
+
+    // MARK: - Finish Lesson
+
+    private func finishLesson() {
+        repository.completeLesson(lessonId: lessonId)
+        let coreSenses = repository.getLessonCoreSenses(lessonId: lessonId)
+        // Build human-readable labels: "hunn → have"
+        let masteredLabels = coreSenses.map { sense -> String in
+            let vocab = repository.getVocabularyById(id: sense.surfaceId)
+            let luWord = vocab?.wordText ?? "?"
+            let enWord = sense.translations
+            return "\(luWord) → \(enWord)"
+        }
+        uiState.isLessonFinished = true
+        uiState.masteredSenses = masteredLabels
+        uiState.isLoading = false
+    }
+
+    // MARK: - Record Result (mastery weighting)
+
+    private func recordResult(_ result: ExerciseResult) {
+        func getWeight(_ res: ExerciseResult) -> Int {
+            switch res {
+            case .reading: return 1
+            case .matching: return 3
+            case .multipleChoice: return 4
+            case .jumbledLu, .jumbledEn: return 8
+            case .cloze: return 10
+            case .nRuleHunter: return 6
+            case .zipfSpeedRun: return 5
+            case .error: return -2
+            }
+        }
+
+        if uiState.currentExerciseType == .matching {
+            for item in uiState.matchingPairs {
+                repository.recordExerciseResult(senseId: item.id, weight: getWeight(.matching))
+            }
+            return
+        }
+
+        guard let sentence = uiState.currentSentence else { return }
+        let isCloze = result == .cloze
+
+        if result == .error {
+            if let senseId = repository.getSenseIdForCloze(sentence: sentence) {
+                repository.recordExerciseResult(senseId: senseId, weight: getWeight(result), isCloze: false)
+            }
+        } else {
+            let lessonCoreSenseIds = Set(repository.getLessonCoreSenses(lessonId: lessonId).map { $0.senseId })
+            let sentenceSenseIds = Set(sentence.senseIds.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) })
+            let targetSenseId = repository.getSenseIdForCloze(sentence: sentence)
+
+            if let targetId = targetSenseId {
+                repository.recordExerciseResult(senseId: targetId, weight: getWeight(result), isCloze: isCloze)
+            }
+
+            let secondarySenses = sentenceSenseIds.intersection(lessonCoreSenseIds).subtracting([targetSenseId ?? ""])
+            for senseId in secondarySenses {
+                let mastery = repository.getSenseMastery(senseId: senseId)
+                let secondaryWeight = (uiState.currentExerciseType == .multipleChoice || uiState.currentExerciseType == .cloze) ? 2 : 1
+
+                if mastery == 0 {
+                    for _ in 0..<3 {
+                        repository.recordExerciseResult(senseId: senseId, weight: secondaryWeight, isCloze: false)
+                    }
+                } else {
+                    repository.recordExerciseResult(senseId: senseId, weight: secondaryWeight, isCloze: false)
+                }
+            }
+
+            let fillerSenses = sentenceSenseIds.subtracting(lessonCoreSenseIds)
+            for senseId in fillerSenses {
+                repository.recordExerciseResult(senseId: senseId, weight: getWeight(.reading), isCloze: false)
+            }
+        }
+    }
+
+    // MARK: - Innovations Logic
+    
+    private func findNRuleCandidate(in sentence: String) -> Int? {
+        let words = sentence.split(separator: " ").map(String.init)
+        if words.count < 2 { return nil }
+        
+        // Potential candidates: words where Eifeler Regel *could* apply (ending in -n or -en)
+        let candidates = words.indices.filter { i in
+            if i >= words.count - 1 { return false }
+            let word = words[i].lowercased().replacingOccurrences(of: "[.,?!:;\"()]", with: "", options: .regularExpression)
+            return word.hasSuffix("n") || ["hunn", "sinn", "keen", "ee", "mengem", "dengem", "sengem", "engem"].contains(word)
+        }
+        
+        return candidates.randomElement()
+    }
+
+    // MARK: - Rapid Fire
+
+    private func loadRapidFireExercise() {
+        guard !uiState.rapidFireQueue.isEmpty else {
+            uiState.isRapidFire = false
+            finishLesson()
+            return
+        }
+        let senseId = uiState.rapidFireQueue.removeFirst()
+
+        uiState.isLoading = true
+        uiState.failureCount = 0
+        uiState.isFeedbackVisible = false
+        uiState.userInput = ""
+        uiState.selectedOption = nil
+        uiState.correctOption = nil
+        uiState.masteryChange = 0
+        uiState.shuffledTokens = []
+        uiState.matchingPairs = []
+
+        guard let senseData = repository.getSense(senseId: senseId),
+              let vocab = repository.getVocabularyById(id: senseData.surfaceId) else {
+            loadRapidFireExercise()
+            return
+        }
+
+        let translation = senseData.translations
+        uiState.isSpeedRunProposedCorrect = Bool.random()
+        if uiState.isSpeedRunProposedCorrect {
+            uiState.targetTranslation = translation
+        } else {
+            let distractors = repository.getRandomDistractorsEn(target: translation, count: 1)
+            uiState.targetTranslation = distractors.first ?? "something else"
+        }
+
+        let done = uiState.rapidFireTotal - uiState.rapidFireQueue.count
+        uiState.currentExerciseType = .zipfSpeedRun
+        uiState.targetWord = vocab.wordText
+        uiState.displayedTargetWord = vocab.wordText
+        uiState.currentSentenceIndex += 1
+        uiState.promptText = "Rapid Fire!"
+        uiState.promptSubtitle = "\(done) / \(uiState.rapidFireTotal)"
+        uiState.isLoading = false
+
+        // Countdown only before the first card; subsequent words jump straight in
+        if done == 1 {
+            startCountdown()
+        } else {
+            startSpeedRunTimer()
+        }
+    }
+
+    private var speedRunTimer: Timer?
+    private var countdownTimer: Timer?
+
+    private func startCountdown() {
+        stopCountdown()
+        uiState.speedRunCountdown = 3
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            Task { @MainActor in
+                if self.uiState.speedRunCountdown > 1 {
+                    self.uiState.speedRunCountdown -= 1
+                } else {
+                    self.stopCountdown()
+                    self.startSpeedRunTimer()
+                }
+            }
+        }
+    }
+
+    private func stopCountdown() {
+        countdownTimer?.invalidate()
+        countdownTimer = nil
+        uiState.speedRunCountdown = 0
+    }
+
+    private func startSpeedRunTimer() {
+        speedRunTimer?.invalidate()
+        uiState.timeRemaining = 1.0
+        // Use a background timer but update UI on MainActor
+        speedRunTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            Task { @MainActor in
+                self.uiState.timeRemaining -= 0.025 // 2 seconds total
+                if self.uiState.timeRemaining <= 0 {
+                    self.stopSpeedRunTimer()
+                    self.uiState.userInput = "TIMEOUT"
+                    self.checkAnswer()
+                }
+            }
+        }
+    }
+
+    private func stopSpeedRunTimer() {
+        speedRunTimer?.invalidate()
+        speedRunTimer = nil
+    }
+
+    // MARK: - Helpers
+
+    private func splitSentence(_ sentence: String, index: Int) -> [String] {
+        if sentence.isEmpty { return ["", ""] }
+        let words = sentence.split(separator: " ").map { String($0) }
+        let safeIndex = min(max(index, 0), words.count - 1)
+        let before = words.prefix(safeIndex).joined(separator: " ")
+        let after = words.dropFirst(safeIndex + 1).joined(separator: " ")
+        return [before, after]
+    }
+
+    private func cleanAndShuffleTokens(_ text: String) -> [String] {
+        return text.split(separator: " ")
+            .map { $0.trimmingCharacters(in: CharacterSet(charactersIn: ".,?!:;\"()")) }
+            .filter { !$0.isEmpty }
+            .shuffled()
+    }
+
+    private func normalizeText(_ text: String) -> String {
+        return text.trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+            .replacingOccurrences(of: "[.,?!:;\"()]", with: "", options: .regularExpression)
+    }
+
+    private func levenshtein(_ lhs: String, _ rhs: String) -> Int {
+        let lhsChars = Array(lhs)
+        let rhsChars = Array(rhs)
+        let len0 = lhsChars.count + 1
+        let len1 = rhsChars.count + 1
+        var cost = Array(0..<len0)
+        var newCost = Array(repeating: 0, count: len0)
+
+        for i in 1..<len1 {
+            newCost[0] = i
+            for j in 1..<len0 {
+                let match = (lhsChars[j - 1] == rhsChars[i - 1]) ? 0 : 1
+                newCost[j] = min(newCost[j - 1] + 1, min(cost[j] + 1, cost[j - 1] + match))
+            }
+            swap(&cost, &newCost)
+        }
+        return cost[len0 - 1]
+    }
+}

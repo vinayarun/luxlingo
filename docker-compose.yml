@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  android-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - gradle_cache:/home/developer/.gradle
+      - android_sdk:/opt/android-sdk
+    working_dir: /app
+    environment:
+      - ANDROID_SDK_ROOT=/opt/android-sdk
+      - GRADLE_USER_HOME=/app/.gradle_home
+    # Entrypoint override to keep the container running for debugging, or to execute custom commands
+    # Use 'docker compose run android-builder <command>' to execute a command
+    entrypoint: ["tail", "-f", "/dev/null"] # Keep container running by default
+
+volumes:
+  gradle_cache:
+  android_sdk:

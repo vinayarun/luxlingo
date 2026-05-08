@@ -1,0 +1,56 @@
+# ── macOS ──────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ── Xcode ──────────────────────────────────────────────────────────────────
+ios/LuxLingo/LuxLingo.xcodeproj/xcuserdata/
+ios/LuxLingo/LuxLingo.xcodeproj/project.xcworkspace/xcuserdata/
+ios/LuxLingo/LuxLingo.xcodeproj/*.xcscmblueprint
+ios/*/DerivedData/
+ios/*/.build/
+*.xccheckout
+*.moved-aside
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# ── Seed backup files (auto-generated, easily regenerated) ─────────────────
+*.bak_*
+*.bak_annotate_*
+*.bak_import_*
+
+# ── Python ─────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+LuxMT/venv/
+.venv/
+*.egg-info/
+
+# ── Build artefacts ─────────────────────────────────────────────────────────
+build/
+*.class
+*.apk
+*.aab
+.gradle/
+local.properties
+app/build/
+
+# ── Logs & temp ─────────────────────────────────────────────────────────────
+*.log
+build_log.txt
+build_output.txt
+/tmp/
+
+# ── Sensitive / secrets ─────────────────────────────────────────────────────
+.env
+*.pem
+*.p12
+*.mobileprovision
+
+# ── Large generated images ──────────────────────────────────────────────────
+simulator_state*.png
+.claude/
+LuxMT/*.sb-*

@@ -1,0 +1,2502 @@
+[
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "simple",
+    "text_en": "Marc and Anna are at home."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "simple",
+    "text_en": "Lena and Paul work."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "simple",
+    "text_en": "Bello runs and plays."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "simple",
+    "text_en": "Anna has bread and milk."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "simple",
+    "text_en": "Claire and Anna read a book."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc and Anna play in the garden with Bello."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena makes breakfast and Paul reads a book."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss talks and the students listen to him."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "advanced",
+    "text_en": "When Marc and Anna go to school, Bello waits in the house."
+  },
+  {
+    "sense_id": "s_an_1",
+    "difficulty": "advanced",
+    "text_en": "Claire and Anna are friends because they go to the same school."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "simple",
+    "text_en": "I am Marc."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "simple",
+    "text_en": "Anna is a girl."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "simple",
+    "text_en": "Bello is a dog."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "simple",
+    "text_en": "We are at school."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "simple",
+    "text_en": "The book is on the table."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna is in the kitchen and Marc is outside."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss is a teacher at the school."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "intermediate",
+    "text_en": "The water is cold but the milk is warm."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "advanced",
+    "text_en": "Paul is happy when he drives his car to the park."
+  },
+  {
+    "sense_id": "s_sinn_1",
+    "difficulty": "advanced",
+    "text_en": "It is a good day to play with the dog in the garden."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "simple",
+    "text_en": "I have a dog."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "simple",
+    "text_en": "Marc has a ball."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "simple",
+    "text_en": "Anna has a book."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "simple",
+    "text_en": "We have water."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "simple",
+    "text_en": "Paul has a car."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena has an apple and she gives it to Marc."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss has many books on his table."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire has a cat but Anna has a dog."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "advanced",
+    "text_en": "Marc and Anna have time to play after they come home from school."
+  },
+  {
+    "sense_id": "s_hunn_1",
+    "difficulty": "advanced",
+    "text_en": "The house has a garden where the children like to run every day."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "simple",
+    "text_en": "I see a house."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "simple",
+    "text_en": "I am a boy."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "simple",
+    "text_en": "I drink milk."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "simple",
+    "text_en": "I go to school."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "simple",
+    "text_en": "I like the dog."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "intermediate",
+    "text_en": "I am Anna and Marc is my brother."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "intermediate",
+    "text_en": "I read a book while Paul drives the car."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena says that I have to eat my bread."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "advanced",
+    "text_en": "I always listen to Mr. Weiss when he speaks to the class."
+  },
+  {
+    "sense_id": "s_ech_1",
+    "difficulty": "advanced",
+    "text_en": "When I go to the park, I take Bello with me to play."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "simple",
+    "text_en": "The book is for Marc."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "simple",
+    "text_en": "I have water for the dog."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "simple",
+    "text_en": "This is for Anna."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "simple",
+    "text_en": "Lena cooks for us."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "simple",
+    "text_en": "We wait for Mr. Weiss."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul buys a new ball for Marc and Anna."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "intermediate",
+    "text_en": "The morning is a good time for a walk."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire looks for her book in the house."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "advanced",
+    "text_en": "Lena makes hot bread for the children before they go to school."
+  },
+  {
+    "sense_id": "s_fir_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss has a book for every student in his class today."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "simple",
+    "text_en": "Marc gives Anna a book."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "simple",
+    "text_en": "I give water to the dog."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "simple",
+    "text_en": "Lena gives us bread."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "simple",
+    "text_en": "Paul gives me a ball."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "simple",
+    "text_en": "Mr. Weiss gives a test."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc gives Anna his old book from school."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna gives an apple to Claire in the park."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul gives water to Bello when it is hot."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "advanced",
+    "text_en": "Every morning Marc gives Anna an apple from the kitchen before they go."
+  },
+  {
+    "sense_id": "s_ginn_1",
+    "difficulty": "advanced",
+    "text_en": "Lena gives milk to the cat when she comes home in the evening."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "simple",
+    "text_en": "The book is on the table."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "simple",
+    "text_en": "Bello sits on the chair."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "simple",
+    "text_en": "We play on the grass."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "simple",
+    "text_en": "The apple is on the book."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "simple",
+    "text_en": "Marc stands on the chair."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna puts her bag on the chair in the kitchen."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "intermediate",
+    "text_en": "Bello sleeps on the floor and Marc reads a book."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss writes a word on the door."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "advanced",
+    "text_en": "Paul leaves his car on the street when he goes into the house."
+  },
+  {
+    "sense_id": "s_op_1",
+    "difficulty": "advanced",
+    "text_en": "Claire likes to sit on the chair in the garden to read."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "simple",
+    "text_en": "She is my mother."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "simple",
+    "text_en": "She has a dog."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "simple",
+    "text_en": "Anna says she is happy."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "simple",
+    "text_en": "She reads a book."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "simple",
+    "text_en": "I see her in the park."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire is a girl and she goes to school."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena cooks bread and she gives it to Marc."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna plays with Bello when she comes home."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "advanced",
+    "text_en": "When Lena has time, she likes to read a book in the garden."
+  },
+  {
+    "sense_id": "s_si_1",
+    "difficulty": "advanced",
+    "text_en": "Because she is tired, Anna drinks warm milk in the evening."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "simple",
+    "text_en": "Marc plays with Bello."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "simple",
+    "text_en": "I go with Anna."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "simple",
+    "text_en": "Lena comes with Paul."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "simple",
+    "text_en": "Anna plays with Claire."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "simple",
+    "text_en": "He eats bread with milk."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc goes to the park with his friend Claire."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss comes into the room with a book."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul washes the car with water from the house."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "advanced",
+    "text_en": "Anna likes to eat her bread with warm milk in the morning."
+  },
+  {
+    "sense_id": "s_mat_1",
+    "difficulty": "advanced",
+    "text_en": "Lena makes a beautiful garden with many flowers for the house."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "simple",
+    "text_en": "He is my brother."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "simple",
+    "text_en": "He plays with a ball."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "simple",
+    "text_en": "Marc says he is hungry."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "simple",
+    "text_en": "He has a big dog."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "simple",
+    "text_en": "I give him a book."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul is my father and he has a car."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc likes to run because he is very fast."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss reads a book when he has time."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "advanced",
+    "text_en": "When Marc comes home from school, he plays with Bello in the garden."
+  },
+  {
+    "sense_id": "s_hien_1",
+    "difficulty": "advanced",
+    "text_en": "Paul drives his car to work after he eats breakfast in the kitchen."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "simple",
+    "text_en": "Anna comes from school."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "simple",
+    "text_en": "Marc takes water from Anna."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "simple",
+    "text_en": "I have bread from Lena."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "simple",
+    "text_en": "The bag is from Paul."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "simple",
+    "text_en": "Bello takes the ball from Marc."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss comes from the school and walks home."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna gets a book from Claire in the morning."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena gives water from the kitchen to the dog."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "advanced",
+    "text_en": "Every evening Paul drives his car from work to the house."
+  },
+  {
+    "sense_id": "s_vun_1",
+    "difficulty": "advanced",
+    "text_en": "Marc and Anna get milk from Lena before they go to school."
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "How is Anna?"
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "How does Marc run?"
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "How is the bread?"
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "How does Claire play?"
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "How is the dog?"
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "How does Paul make the car go so fast?"
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna asks how Claire reads the book so fast."
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc asks Mr. Weiss how to read the book."
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "advanced",
+    "text_en": "Lena shows Anna how to make warm milk in the kitchen."
+  },
+  {
+    "sense_id": "s_w\u00e9i_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss tells the students how they must listen in school."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "simple",
+    "text_en": "I see that dog."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "simple",
+    "text_en": "That is my book."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "simple",
+    "text_en": "Marc wants that ball."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "simple",
+    "text_en": "Anna likes that bag."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "simple",
+    "text_en": "That house is big."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire says that she has a cat at home."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul knows that Marc is in the garden."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena sees that Bello is on the chair."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss hopes that all the students read the book."
+  },
+  {
+    "sense_id": "s_dat_1",
+    "difficulty": "advanced",
+    "text_en": "Anna tells Marc that he must give the water to Bello."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "simple",
+    "text_en": "Marc is a boy."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "simple",
+    "text_en": "I see a house."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "simple",
+    "text_en": "Lena has a car."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "simple",
+    "text_en": "Paul reads a book."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "simple",
+    "text_en": "Bello is a dog."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire has a cat and Marc has a dog."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna takes a bag to school in the morning."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss is a teacher at the school."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "advanced",
+    "text_en": "Lena makes a warm breakfast for Marc and Anna every day."
+  },
+  {
+    "sense_id": "s_en_1",
+    "difficulty": "advanced",
+    "text_en": "Paul buys a big ball for the dog to play with."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "They are at home."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "They play with Bello."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "They go to school."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "They drink milk."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "They read the book."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc and Anna run because they want to play."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena and Paul work and they have a car."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire and Anna talk when they are at school."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "advanced",
+    "text_en": "When the children come home, they eat bread in the kitchen."
+  },
+  {
+    "sense_id": "s_d\u00e9i_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss tells the students that they must read the book."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "simple",
+    "text_en": "We are at school."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "simple",
+    "text_en": "We play with Bello."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "simple",
+    "text_en": "We see the house."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "simple",
+    "text_en": "We like to run."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "simple",
+    "text_en": "We drink cold water."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "intermediate",
+    "text_en": "We go to the park and we play."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul says we have to go to school."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "intermediate",
+    "text_en": "We have a dog and his name is Bello."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "advanced",
+    "text_en": "Lena says we must drink warm milk in the evening."
+  },
+  {
+    "sense_id": "s_mir_1",
+    "difficulty": "advanced",
+    "text_en": "When we are at school, we listen to Mr. Weiss."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "simple",
+    "text_en": "Marc plays but Anna reads."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "simple",
+    "text_en": "Paul runs but I sit."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "simple",
+    "text_en": "Bello sits but Marc stands."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "simple",
+    "text_en": "I run but you walk."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "simple",
+    "text_en": "Claire sleeps but Bello plays."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna likes bread but Marc likes to eat apples."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire has a cat but we have a dog."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss talks but the students do not listen."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "advanced",
+    "text_en": "Paul wants to drive his car but he has no time today."
+  },
+  {
+    "sense_id": "s_m\u00e4_1",
+    "difficulty": "advanced",
+    "text_en": "Lena makes warm milk for Anna but Marc drinks cold water."
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "simple",
+    "text_en": "What is that?"
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "simple",
+    "text_en": "What does Anna have?"
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "simple",
+    "text_en": "What is your name?"
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "simple",
+    "text_en": "What does Marc say?"
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "simple",
+    "text_en": "What do you read?"
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "intermediate",
+    "text_en": "What does Lena make in the kitchen?"
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna asks what Claire has in her bag."
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "intermediate",
+    "text_en": "What does Paul do with the car?"
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss asks what the students want to read today."
+  },
+  {
+    "sense_id": "s_wat_1",
+    "difficulty": "advanced",
+    "text_en": "Marc does not know what Bello wants to eat in the evening."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "simple",
+    "text_en": "It is a dog."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "simple",
+    "text_en": "I like to read it."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "simple",
+    "text_en": "Marc wants it."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "simple",
+    "text_en": "It is very big."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "simple",
+    "text_en": "Anna gives it to me."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "intermediate",
+    "text_en": "Bello sees the ball and he plays with it."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "intermediate",
+    "text_en": "The milk is warm and Anna drinks it."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena makes bread and she puts it on the table."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "advanced",
+    "text_en": "When Paul buys a new book, he gives it to Anna."
+  },
+  {
+    "sense_id": "s_et_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss has a bag but it is in the house."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "simple",
+    "text_en": "You are my friend."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "simple",
+    "text_en": "I see you."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "simple",
+    "text_en": "Marc gives you water."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "simple",
+    "text_en": "You have a dog."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "simple",
+    "text_en": "Do you go to school?"
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna asks you to play in the garden with Bello."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena says that you have to eat your bread."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss wants you to read the book."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "advanced",
+    "text_en": "Paul tells you that the car is in the street."
+  },
+  {
+    "sense_id": "s_dir_1",
+    "difficulty": "advanced",
+    "text_en": "Claire asks if you want to walk to school with her."
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "simple",
+    "text_en": "Marc or Anna?"
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "simple",
+    "text_en": "Is it a dog or a cat?"
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "simple",
+    "text_en": "Do you want water or milk?"
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "simple",
+    "text_en": "I read or I play."
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "simple",
+    "text_en": "Paul runs or he walks."
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna reads a book or she plays with Bello."
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc asks if he can have bread or an apple."
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire plays in the house or in the garden."
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "advanced",
+    "text_en": "Lena does not know if she wants to cook or read a book today."
+  },
+  {
+    "sense_id": "s_oder_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss asks the students if they want to read or write."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "simple",
+    "text_en": "The boy runs."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "simple",
+    "text_en": "I see the house."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "simple",
+    "text_en": "The dog plays."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "simple",
+    "text_en": "Paul has the bag."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "simple",
+    "text_en": "The water is cold."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "intermediate",
+    "text_en": "The car is in the street and Paul washes it."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna reads the book while the dog sleeps."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc plays in the garden with the ball."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss tells the students to open the book and read."
+  },
+  {
+    "sense_id": "s_den_1",
+    "difficulty": "advanced",
+    "text_en": "Lena puts the warm bread and the milk on the table."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "simple",
+    "text_en": "The house is too big."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "simple",
+    "text_en": "Marc is too fast."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "simple",
+    "text_en": "The water is too cold."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "simple",
+    "text_en": "It is too warm."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "simple",
+    "text_en": "The bag is too big."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna says that the book is too big to read."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul cannot drive the car because he is too tired."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "intermediate",
+    "text_en": "Bello does not play because he is too tired."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "advanced",
+    "text_en": "Lena thinks that it is too late to go to the park today."
+  },
+  {
+    "sense_id": "s_ze_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss tells Marc that he talks too much in school."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "simple",
+    "text_en": "I can run."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "simple",
+    "text_en": "Marc can play."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "simple",
+    "text_en": "Can you see the house?"
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "simple",
+    "text_en": "Anna can read."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "simple",
+    "text_en": "Bello can sit."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul can drive the car very fast."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire can come to the house and play."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena asks if Anna can help in the kitchen."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss says that every student can read the book."
+  },
+  {
+    "sense_id": "s_k\u00ebnnen_1",
+    "difficulty": "advanced",
+    "text_en": "Marc asks if he can take the dog to the park."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "simple",
+    "text_en": "I want the other book."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "simple",
+    "text_en": "Anna sees the other girl."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "simple",
+    "text_en": "Marc has the other ball."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "simple",
+    "text_en": "We go to the other house."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "simple",
+    "text_en": "The other dog plays."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire plays with the other children at school."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul drives the other car to work today."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena gives the other apple to Marc."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss tells the other students to be quiet and listen."
+  },
+  {
+    "sense_id": "s_aner_1",
+    "difficulty": "advanced",
+    "text_en": "Anna likes this book but she wants to read the other one tomorrow."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "simple",
+    "text_en": "I make a house."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "simple",
+    "text_en": "Lena makes bread."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "simple",
+    "text_en": "Marc makes a chair."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "simple",
+    "text_en": "We make time to play."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "simple",
+    "text_en": "You make milk warm."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena makes a warm breakfast for the children."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul helps Marc to make a small house for Bello."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna asks how to make bread."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss asks the students to make a circle in the room."
+  },
+  {
+    "sense_id": "s_maachen_1",
+    "difficulty": "advanced",
+    "text_en": "Lena shows Anna how to make a big dinner in the kitchen."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "simple",
+    "text_en": "It is their dog."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "simple",
+    "text_en": "I see their house."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "simple",
+    "text_en": "Marc takes their ball."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "simple",
+    "text_en": "Anna likes their garden."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "simple",
+    "text_en": "It is their book."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "intermediate",
+    "text_en": "The students open their books and listen to Mr. Weiss."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc and Anna play with their friend Claire in the park."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena and Paul wash their car in the morning."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "advanced",
+    "text_en": "When the children come home, they put their bags on the table."
+  },
+  {
+    "sense_id": "s_hir_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss helps the students to write their names on the paper."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "simple",
+    "text_en": "I have time."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "simple",
+    "text_en": "Marc has no time."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "simple",
+    "text_en": "What time is it?"
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "simple",
+    "text_en": "It is time to go."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "simple",
+    "text_en": "We have time to play."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul does not have time to wash the car today."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna asks what time Claire comes to the house."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena has a lot of time in the evening."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss tells the students that it is time to read the book."
+  },
+  {
+    "sense_id": "s_z\u00e4it_1",
+    "difficulty": "advanced",
+    "text_en": "Every morning Marc needs a lot of time to eat his breakfast."
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "simple",
+    "text_en": "When do you go?"
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "simple",
+    "text_en": "When is it time?"
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "simple",
+    "text_en": "When does Marc play?"
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "simple",
+    "text_en": "When does Lena cook?"
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "simple",
+    "text_en": "When do we eat?"
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "intermediate",
+    "text_en": "Bello plays in the garden when the sun shines."
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna reads a book when she is in the house."
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "intermediate",
+    "text_en": "When Paul comes home, he washes the car."
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss asks the students to be quiet when he talks."
+  },
+  {
+    "sense_id": "s_wann_1",
+    "difficulty": "advanced",
+    "text_en": "Marc likes to play with Bello when they are in the park."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "simple",
+    "text_en": "I will go to school."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "simple",
+    "text_en": "Marc will run."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "simple",
+    "text_en": "Anna will read the book."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "simple",
+    "text_en": "Paul will drive the car."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "simple",
+    "text_en": "We will eat bread."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena says that she will make bread in the morning."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire will come to the house to play with Anna."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss will give a book to every student."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "advanced",
+    "text_en": "Paul will take the dog to the park when he comes home from work."
+  },
+  {
+    "sense_id": "s_w\u00e4ert_1",
+    "difficulty": "advanced",
+    "text_en": "Anna hopes that she will see her friend Claire at school today."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "simple",
+    "text_en": "What does Marc say?"
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "simple",
+    "text_en": "I say yes."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "simple",
+    "text_en": "Anna does not say it."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "simple",
+    "text_en": "They say no."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "simple",
+    "text_en": "We say hello."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss says that we must read the book."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena says she will make bread in the morning."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul says that the car is very fast."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "advanced",
+    "text_en": "When Anna comes home from school, she says hello to the dog."
+  },
+  {
+    "sense_id": "s_soen_1",
+    "difficulty": "advanced",
+    "text_en": "Marc does not know what to say when he sees Claire today."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "simple",
+    "text_en": "All children play."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "simple",
+    "text_en": "Every boy runs."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "simple",
+    "text_en": "All dogs play."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "simple",
+    "text_en": "I see every house."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "simple",
+    "text_en": "They drink all the milk."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena makes warm bread for all the children in the house."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss wants every student to read a book today."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul works all day and comes home in the evening."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "advanced",
+    "text_en": "Anna reads every day because she wants to learn many new things."
+  },
+  {
+    "sense_id": "s_all_1",
+    "difficulty": "advanced",
+    "text_en": "Marc takes all his toys to the garden to play with Bello."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "simple",
+    "text_en": "I want this book."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "simple",
+    "text_en": "This is my dog."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "simple",
+    "text_en": "Marc likes this ball."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "simple",
+    "text_en": "This house is very big."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "simple",
+    "text_en": "Anna sees this cat."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena says that this is a good day to walk."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss asks the class to read this book today."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul washes this car because it is very dirty."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "advanced",
+    "text_en": "Claire tells Anna that she wants to play in this garden today."
+  },
+  {
+    "sense_id": "s_d\u00ebst_1",
+    "difficulty": "advanced",
+    "text_en": "When Marc sees this big apple, he wants to eat it immediately."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "simple",
+    "text_en": "The water is warm."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "simple",
+    "text_en": "I like warm milk."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "simple",
+    "text_en": "The day is warm."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "simple",
+    "text_en": "Lena makes warm bread."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "simple",
+    "text_en": "It is very warm."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna drinks warm milk before she goes to bed."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "intermediate",
+    "text_en": "Bello sleeps in the sun because it is warm."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul likes to walk in the park on a warm day."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "advanced",
+    "text_en": "When the morning is warm, Marc and Anna play in the garden."
+  },
+  {
+    "sense_id": "s_waarm_1",
+    "difficulty": "advanced",
+    "text_en": "Lena makes a warm dinner for the family when they come home."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "simple",
+    "text_en": "I know this word."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "simple",
+    "text_en": "What is that word?"
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "simple",
+    "text_en": "Marc reads a word."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "simple",
+    "text_en": "It is a big word."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "simple",
+    "text_en": "Anna writes the word."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss asks the students to read the word on the door."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire does not know the word so she asks Anna."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc writes a new word in his book at school."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "advanced",
+    "text_en": "Lena tells Marc that he must say a kind word to his sister."
+  },
+  {
+    "sense_id": "s_wuert_1",
+    "difficulty": "advanced",
+    "text_en": "When the students learn a new word, they must write it down."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "simple",
+    "text_en": "I have a few books."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "simple",
+    "text_en": "Marc has a few apples."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "simple",
+    "text_en": "We wait a few days."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "simple",
+    "text_en": "Anna sees a few girls."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "simple",
+    "text_en": "A few boys play."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss gives the students a few books to read."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul needs a few days to wash the big car."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena puts a few apples on the table for the children."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "advanced",
+    "text_en": "After a few hours in the school, Anna wants to go home."
+  },
+  {
+    "sense_id": "s_puer_1",
+    "difficulty": "advanced",
+    "text_en": "Marc plays in the park with a few friends from his school."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "simple",
+    "text_en": "I have one dog."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "simple",
+    "text_en": "Marc sees one house."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "simple",
+    "text_en": "Anna wants one apple."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "simple",
+    "text_en": "We read one book."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "simple",
+    "text_en": "There is one cat."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul has one car and he drives it to work."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena gives one apple to Marc and one to Anna."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss asks one student to write on the door."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "advanced",
+    "text_en": "When Marc goes to the park, he takes only one ball with him."
+  },
+  {
+    "sense_id": "s_eent_1",
+    "difficulty": "advanced",
+    "text_en": "Claire reads one book in the morning and plays in the evening."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "simple",
+    "text_en": "It is his dog."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "simple",
+    "text_en": "I see his house."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "simple",
+    "text_en": "Marc takes his ball."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "simple",
+    "text_en": "Anna likes his garden."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "simple",
+    "text_en": "Paul washes his car."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "intermediate",
+    "text_en": "Marc plays in the garden with his friend and his dog."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss opens his book and talks to the students."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul drives his car to work every day in the morning."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "advanced",
+    "text_en": "When Marc comes home from school, he eats his bread in the kitchen."
+  },
+  {
+    "sense_id": "s_s\u00e4in_1",
+    "difficulty": "advanced",
+    "text_en": "Lena tells Paul that his bag is on the chair in the house."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "simple",
+    "text_en": "I have no time."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "simple",
+    "text_en": "Marc has no ball."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "simple",
+    "text_en": "Anna sees no dog."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "simple",
+    "text_en": "There is no milk."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "simple",
+    "text_en": "We have no water."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena says there is no bread in the house today."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul has no time to play with Marc in the garden."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss sees that no student wants to read the book."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "advanced",
+    "text_en": "Anna is sad because she has no friends to play with at school."
+  },
+  {
+    "sense_id": "s_keen_1",
+    "difficulty": "advanced",
+    "text_en": "When Paul comes home, there is no water for him to drink."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "simple",
+    "text_en": "I have many books."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "simple",
+    "text_en": "Marc eats much bread."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "simple",
+    "text_en": "We see many houses."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "simple",
+    "text_en": "She talks very much."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "simple",
+    "text_en": "There are many dogs."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena buys many apples for the children to eat."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss has many books on his table at school."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul spends much time with his car in the morning."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "advanced",
+    "text_en": "Because Marc has many toys, he likes to play in his room."
+  },
+  {
+    "sense_id": "s_vill_1",
+    "difficulty": "advanced",
+    "text_en": "Anna does not have much time to read before she goes to school."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "simple",
+    "text_en": "I go to school."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "simple",
+    "text_en": "Marc and Anna go."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "simple",
+    "text_en": "Do you go home?"
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "simple",
+    "text_en": "Bello does not go."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "simple",
+    "text_en": "We go to play."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "intermediate",
+    "text_en": "Anna reads a book before she goes to school."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul goes to work in his car every morning."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena asks if Marc wants to go to the park."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "advanced",
+    "text_en": "Mr. Weiss tells the students that they can go home when they finish."
+  },
+  {
+    "sense_id": "s_goen_1",
+    "difficulty": "advanced",
+    "text_en": "Because it is very warm, Claire and Anna go to the park to play."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "simple",
+    "text_en": "I come home now."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "simple",
+    "text_en": "Marc, come to me."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "simple",
+    "text_en": "Do you come?"
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "simple",
+    "text_en": "The dog comes."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "simple",
+    "text_en": "We come to school."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire comes to the house to play with Anna."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss comes into the room and the students listen."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul comes home from work and washes his car."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "advanced",
+    "text_en": "When Marc comes home from school, he eats bread with warm milk."
+  },
+  {
+    "sense_id": "s_kommen_1",
+    "difficulty": "advanced",
+    "text_en": "Lena asks Claire if she wants to come to the garden tomorrow."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "simple",
+    "text_en": "I want it now."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "simple",
+    "text_en": "Marc plays now."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "simple",
+    "text_en": "We go home now."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "simple",
+    "text_en": "Anna reads now."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "simple",
+    "text_en": "It is time now."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena says that Marc has to eat his bread now."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul washes the car now because it is very dirty."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss wants the students to read the book now."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "advanced",
+    "text_en": "Because it is evening now, Bello sleeps in the house."
+  },
+  {
+    "sense_id": "s_elo_1",
+    "difficulty": "advanced",
+    "text_en": "Claire and Anna go to the park now to play with the ball."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "I want more water."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "Marc wants more apples."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "Anna reads more books."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "We need more time."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "simple",
+    "text_en": "Do you have more?"
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena gives Marc more bread because he is very hungry."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul needs more time to wash the big car today."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss wants the students to read more books."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "advanced",
+    "text_en": "After Anna finishes her milk, she asks Lena if she can have more."
+  },
+  {
+    "sense_id": "s_m\u00e9i_1",
+    "difficulty": "advanced",
+    "text_en": "Marc likes to play with Bello more than he likes to read."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "simple",
+    "text_en": "I also go."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "simple",
+    "text_en": "Marc also plays."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "simple",
+    "text_en": "Anna also wants milk."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "simple",
+    "text_en": "We also see it."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "simple",
+    "text_en": "The dog also runs."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire has a cat and she also has a dog."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena makes bread and she also makes warm milk."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss talks and he also writes on the door."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "advanced",
+    "text_en": "When Paul washes the car, he also washes the dog in the garden."
+  },
+  {
+    "sense_id": "s_och_1",
+    "difficulty": "advanced",
+    "text_en": "Anna reads a book and she also helps Marc with his book."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "simple",
+    "text_en": "Marc plays again."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "simple",
+    "text_en": "We go again."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "simple",
+    "text_en": "Do it again."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "simple",
+    "text_en": "Anna reads it again."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "simple",
+    "text_en": "The dog runs again."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire comes to the house to play with Anna again."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss tells the students to read the book again."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul washes his car again because it is very dirty."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "advanced",
+    "text_en": "When Marc loses his ball, he goes to the park again to find it."
+  },
+  {
+    "sense_id": "s_nees_1",
+    "difficulty": "advanced",
+    "text_en": "Lena tells Anna that she must clean her room again."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "simple",
+    "text_en": "It is very big."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "simple",
+    "text_en": "Marc runs very fast."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "simple",
+    "text_en": "The water is very cold."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "simple",
+    "text_en": "Anna is very happy."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "simple",
+    "text_en": "This book is very good."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul washes the car because it is very dirty today."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena makes a very big breakfast for the children."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss is a very good teacher at the school."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "advanced",
+    "text_en": "Bello sleeps all day because he is very tired from the park."
+  },
+  {
+    "sense_id": "s_ganz_1",
+    "difficulty": "advanced",
+    "text_en": "When the day is very warm, Marc and Anna play in the garden."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "simple",
+    "text_en": "I do not go."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "simple",
+    "text_en": "Marc does not play."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "simple",
+    "text_en": "It is not big."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "simple",
+    "text_en": "Anna is not happy."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "simple",
+    "text_en": "We do not read."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "intermediate",
+    "text_en": "Claire does not have a dog because she has a cat."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul does not drive his car to work today."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss says that the students do not listen to him."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "advanced",
+    "text_en": "Lena does not make warm milk because Marc wants cold water."
+  },
+  {
+    "sense_id": "s_net_1",
+    "difficulty": "advanced",
+    "text_en": "When it is cold outside, Bello does not want to go to the park."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "simple",
+    "text_en": "Yes, I want it."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "simple",
+    "text_en": "Marc says yes."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "simple",
+    "text_en": "Yes, we go now."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "simple",
+    "text_en": "Anna, yes or no?"
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "simple",
+    "text_en": "Yes, it is big."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena asks if Marc is hungry and he says yes."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul asks Anna if she wants to go and she says yes."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss asks the students and they say yes."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "advanced",
+    "text_en": "When Claire asks to play, Anna says yes and they go to the garden."
+  },
+  {
+    "sense_id": "s_jo_1",
+    "difficulty": "advanced",
+    "text_en": "Marc says yes when Lena asks if he wants an apple for school."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "simple",
+    "text_en": "He is a person."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "simple",
+    "text_en": "I see one person."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "simple",
+    "text_en": "Anna is a good person."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "simple",
+    "text_en": "That person runs."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "simple",
+    "text_en": "Every person eats."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "intermediate",
+    "text_en": "Mr. Weiss is a good person and a good teacher."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "intermediate",
+    "text_en": "Paul is the only person in the house right now."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "intermediate",
+    "text_en": "Lena gives water to every person in the house."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "advanced",
+    "text_en": "Marc thinks that his father is a very good person."
+  },
+  {
+    "sense_id": "s_m\u00ebnsch_1",
+    "difficulty": "advanced",
+    "text_en": "When Anna goes to school, she sees a new person in her class."
+  }
+]

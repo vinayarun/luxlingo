@@ -1,0 +1,412 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0FDD1F239E8EBB31F22BA36C /* LessonSummaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D914ED424FE7538FA56DCA9A /* LessonSummaryScreen.swift */; };
+		1412D9F3A44CEAE0C7C724BE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6E73558DB1F5DF62F821D4 /* Theme.swift */; };
+		44125979146DFBB539E8447D /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423C5AD7075EE2277E4FBA8C /* HomeScreen.swift */; };
+		53AC863F1F5505D45BBE1347 /* LuxLingoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EC0456E1D6B4730EE45A23 /* LuxLingoApp.swift */; };
+		540CEFE1983B3F6DC6299676 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C904CD6A27AF2A910D1212A1 /* Entities.swift */; };
+		5C3C3EA75422E7711EB8BC46 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D0C8F3E53C165ADC98F550 /* UserPreferences.swift */; };
+		627DE1C695A7876AD0CDE7C8 /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54E0AD116459A0CE0D54795 /* ExerciseViewModel.swift */; };
+		6578122262139EDDA932EB80 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7E3C673FA09B20B882BA44 /* Models.swift */; };
+		68A2230370280A9555AA69C5 /* ContentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B5B1D37FAC4DA48C017DD /* ContentRepository.swift */; };
+		7A16A415780D3CC6DE37A43A /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C3EAD94527E45EF7D763B0 /* DatabaseManager.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* NRuleHunterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2C3D4E5F6A7B8C9D0E1F2 /* NRuleHunterView.swift */; };
+		A2B3C4D5E6F7A8B9C0D1E2F3 /* WordLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4D5E6F7A8B9C0D1E2F3A4 /* WordLookupService.swift */; };
+		A5B6C7D8E9F0A1B2C3D4E5F6 /* TTSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A4B5C6D7E8F9A0B1C2D3E4 /* TTSService.swift */; };
+		A751D61117D39589D4DE208C /* initial_seed.json in Resources */ = {isa = PBXBuildFile; fileRef = 76100192E97668595BFE702C /* initial_seed.json */; };
+		B2C3D4E5F6A7B8C9D0E1F2A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3D4E5F6A7B8C9D0E1F2A3B4 /* Assets.xcassets */; };
+		C1D2E3F4A5B6C7D8E9F0A1B2 /* ZipfsSpeedRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F9A0B1C2 /* ZipfsSpeedRunView.swift */; };
+		C4D5E6F7A8B9C0D1E2F3A4B5 /* TappableLuSentenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E6F7A8B9C0D1E2F3A4B5C6 /* TappableLuSentenceView.swift */; };
+		C6A5AA1937C362EFE96D3E28 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EED8A2ED0BAE0359DC140A /* ContentView.swift */; };
+		C9D0E1F2A3B4C5D6E7F8A9B0 /* SpeakerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C8D9E0F1A2B3C4D5E6F7A8 /* SpeakerButton.swift */; };
+		D2E4F6A8B0C3E5F719283A4B /* ZipfsLawInfoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D3E5F7A9B2C4D6E8F0192A /* ZipfsLawInfoScreen.swift */; };
+		E3F4A5B6C7D8E9F0A1B2C3D4 /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A5B6C7D8E9F0A1B2C3D4E5 /* StatsScreen.swift */; };
+		E6F7A8B9C0D1E2F3A4B5C6D7 /* HowToUseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */; };
+		G8H9I0J1K2L3M4N5O6P7Q8R9 /* AudioFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */; };
+		I0J1K2L3M4N5O6P7Q8R9S0T1 /* correct.wav in Resources */ = {isa = PBXBuildFile; fileRef = J1K2L3M4N5O6P7Q8R9S0T1U2 /* correct.wav */; };
+		K2L3M4N5O6P7Q8R9S0T1U2V3 /* wrong.wav in Resources */ = {isa = PBXBuildFile; fileRef = L3M4N5O6P7Q8R9S0T1U2V3W4 /* wrong.wav */; };
+		EA9C29DA125DE1BB69B752D5 /* SeedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7F70C8460890A45B046529 /* SeedModels.swift */; };
+		EACE51933D9EDAF6A6274F44 /* ExerciseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547EC3E0397B2B492CD1816 /* ExerciseScreen.swift */; };
+		F025327DDA6A75CD035DBACA /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE12FBB63904D737EC2F4246 /* MainViewModel.swift */; };
+		F612E5517F5E87BAF1AD6F8E /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A436031FB2B79C1F6B456736 /* Enums.swift */; };
+		FBAADE884AD7D2C7345FCE3A /* ExerciseComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990145E5F35DDAD402AD8B17 /* ExerciseComponents.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		105B5B1D37FAC4DA48C017DD /* ContentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRepository.swift; sourceTree = "<group>"; };
+		17EC0456E1D6B4730EE45A23 /* LuxLingoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuxLingoApp.swift; sourceTree = "<group>"; };
+		1B7F70C8460890A45B046529 /* SeedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedModels.swift; sourceTree = "<group>"; };
+		2E7E3C673FA09B20B882BA44 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		423C5AD7075EE2277E4FBA8C /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		44D0C8F3E53C165ADC98F550 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
+		76100192E97668595BFE702C /* initial_seed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = initial_seed.json; sourceTree = "<group>"; };
+		7BCCADA3021C07D12E775CB5 /* LuxLingo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LuxLingo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8547EC3E0397B2B492CD1816 /* ExerciseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseScreen.swift; sourceTree = "<group>"; };
+		990145E5F35DDAD402AD8B17 /* ExerciseComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseComponents.swift; sourceTree = "<group>"; };
+		A436031FB2B79C1F6B456736 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		AF6E73558DB1F5DF62F821D4 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		B1A2C3D4E5F6A7B8C9D0E1F2 /* NRuleHunterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NRuleHunterView.swift; sourceTree = "<group>"; };
+		B3C4D5E6F7A8B9C0D1E2F3A4 /* WordLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLookupService.swift; sourceTree = "<group>"; };
+		B5EED8A2ED0BAE0359DC140A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B7C8D9E0F1A2B3C4D5E6F7A8 /* SpeakerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerButton.swift; sourceTree = "<group>"; };
+		BE12FBB63904D737EC2F4246 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		C1D3E5F7A9B2C4D6E8F0192A /* ZipfsLawInfoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipfsLawInfoScreen.swift; sourceTree = "<group>"; };
+		C3D4E5F6A7B8C9D0E1F2A3B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C54E0AD116459A0CE0D54795 /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
+		C904CD6A27AF2A910D1212A1 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		D1E2F3A4B5C6D7E8F9A0B1C2 /* ZipfsSpeedRunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipfsSpeedRunView.swift; sourceTree = "<group>"; };
+		D5E6F7A8B9C0D1E2F3A4B5C6 /* TappableLuSentenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableLuSentenceView.swift; sourceTree = "<group>"; };
+		D914ED424FE7538FA56DCA9A /* LessonSummaryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonSummaryScreen.swift; sourceTree = "<group>"; };
+		F3A4B5C6D7E8F9A0B1C2D3E4 /* TTSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTSService.swift; sourceTree = "<group>"; };
+		F4A5B6C7D8E9F0A1B2C3D4E5 /* StatsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsScreen.swift; sourceTree = "<group>"; };
+		F5C3EAD94527E45EF7D763B0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToUseScreen.swift; sourceTree = "<group>"; };
+		H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioFeedbackService.swift"; sourceTree = "<group>"; };
+		J1K2L3M4N5O6P7Q8R9S0T1U2 /* correct.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "correct.wav"; sourceTree = "<group>"; };
+		L3M4N5O6P7Q8R9S0T1U2V3W4 /* wrong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "wrong.wav"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		29B2D46AA747A59804D46E1F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3B21063D145CD5E15F68CCF1 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				105B5B1D37FAC4DA48C017DD /* ContentRepository.swift */,
+				44D0C8F3E53C165ADC98F550 /* UserPreferences.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		420CEB417186B52ECF642348 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C54E0AD116459A0CE0D54795 /* ExerciseViewModel.swift */,
+				BE12FBB63904D737EC2F4246 /* MainViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		45B877375D6D6297BAAF2860 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				76100192E97668595BFE702C /* initial_seed.json */,
+				C3D4E5F6A7B8C9D0E1F2A3B4 /* Assets.xcassets */,
+				J1K2L3M4N5O6P7Q8R9S0T1U2 /* correct.wav */,
+				L3M4N5O6P7Q8R9S0T1U2V3W4 /* wrong.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5928955287B8089ED2177128 /* LuxLingo */ = {
+			isa = PBXGroup;
+			children = (
+				3B21063D145CD5E15F68CCF1 /* Data */,
+				6A0301784494C4A8FE4B9280 /* Database */,
+				9CF43B31E8845D861542A38E /* Models */,
+				45B877375D6D6297BAAF2860 /* Resources */,
+				420CEB417186B52ECF642348 /* ViewModels */,
+				E1F2A3B4C5D6E7F8A9B0C1D2 /* Services */,
+				C454586A1F4E28C340BDC1AD /* Views */,
+				B5EED8A2ED0BAE0359DC140A /* ContentView.swift */,
+				17EC0456E1D6B4730EE45A23 /* LuxLingoApp.swift */,
+			);
+			path = LuxLingo;
+			sourceTree = "<group>";
+		};
+		6A0301784494C4A8FE4B9280 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				F5C3EAD94527E45EF7D763B0 /* DatabaseManager.swift */,
+				C904CD6A27AF2A910D1212A1 /* Entities.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		6A4A5194513E89696377E642 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				990145E5F35DDAD402AD8B17 /* ExerciseComponents.swift */,
+				B7C8D9E0F1A2B3C4D5E6F7A8 /* SpeakerButton.swift */,
+				D5E6F7A8B9C0D1E2F3A4B5C6 /* TappableLuSentenceView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		7882D14E196057770B59E53D = {
+			isa = PBXGroup;
+			children = (
+				5928955287B8089ED2177128 /* LuxLingo */,
+				BF7A2D27A78D590BDEF15AF2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9CF43B31E8845D861542A38E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A436031FB2B79C1F6B456736 /* Enums.swift */,
+				2E7E3C673FA09B20B882BA44 /* Models.swift */,
+				1B7F70C8460890A45B046529 /* SeedModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BF7A2D27A78D590BDEF15AF2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7BCCADA3021C07D12E775CB5 /* LuxLingo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C454586A1F4E28C340BDC1AD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6A4A5194513E89696377E642 /* Components */,
+				8547EC3E0397B2B492CD1816 /* ExerciseScreen.swift */,
+				423C5AD7075EE2277E4FBA8C /* HomeScreen.swift */,
+				D914ED424FE7538FA56DCA9A /* LessonSummaryScreen.swift */,
+				AF6E73558DB1F5DF62F821D4 /* Theme.swift */,
+				C1D3E5F7A9B2C4D6E8F0192A /* ZipfsLawInfoScreen.swift */,
+				F4A5B6C7D8E9F0A1B2C3D4E5 /* StatsScreen.swift */,
+				B1A2C3D4E5F6A7B8C9D0E1F2 /* NRuleHunterView.swift */,
+				F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */,
+				D1E2F3A4B5C6D7E8F9A0B1C2 /* ZipfsSpeedRunView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E1F2A3B4C5D6E7F8A9B0C1D2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F3A4B5C6D7E8F9A0B1C2D3E4 /* TTSService.swift */,
+				B3C4D5E6F7A8B9C0D1E2F3A4 /* WordLookupService.swift */,
+				H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42AEFBAE01D2DFD981F7DA7D /* LuxLingo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFD04581184175117C78D9AC /* Build configuration list for PBXNativeTarget "LuxLingo" */;
+			buildPhases = (
+				E7209FB05162B7572F88D05E /* Sources */,
+				29B2D46AA747A59804D46E1F /* Frameworks */,
+				66F8606E9F0A136E2228EBCB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LuxLingo;
+			productName = LuxLingo;
+			productReference = 7BCCADA3021C07D12E775CB5 /* LuxLingo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 022E0F2E8ECAC35F5510DD6F /* Build configuration list for PBXProject "LuxLingo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7882D14E196057770B59E53D;
+			productRefGroup = BF7A2D27A78D590BDEF15AF2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42AEFBAE01D2DFD981F7DA7D /* LuxLingo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		66F8606E9F0A136E2228EBCB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A751D61117D39589D4DE208C /* initial_seed.json in Resources */,
+				B2C3D4E5F6A7B8C9D0E1F2A3 /* Assets.xcassets in Resources */,
+				I0J1K2L3M4N5O6P7Q8R9S0T1 /* correct.wav in Resources */,
+				K2L3M4N5O6P7Q8R9S0T1U2V3 /* wrong.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E7209FB05162B7572F88D05E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6A5AA1937C362EFE96D3E28 /* ContentView.swift in Sources */,
+				68A2230370280A9555AA69C5 /* ContentRepository.swift in Sources */,
+				5C3C3EA75422E7711EB8BC46 /* UserPreferences.swift in Sources */,
+				7A16A415780D3CC6DE37A43A /* DatabaseManager.swift in Sources */,
+				540CEFE1983B3F6DC6299676 /* Entities.swift in Sources */,
+				53AC863F1F5505D45BBE1347 /* LuxLingoApp.swift in Sources */,
+				F612E5517F5E87BAF1AD6F8E /* Enums.swift in Sources */,
+				6578122262139EDDA932EB80 /* Models.swift in Sources */,
+				EA9C29DA125DE1BB69B752D5 /* SeedModels.swift in Sources */,
+				627DE1C695A7876AD0CDE7C8 /* ExerciseViewModel.swift in Sources */,
+				F025327DDA6A75CD035DBACA /* MainViewModel.swift in Sources */,
+				FBAADE884AD7D2C7345FCE3A /* ExerciseComponents.swift in Sources */,
+				EACE51933D9EDAF6A6274F44 /* ExerciseScreen.swift in Sources */,
+				44125979146DFBB539E8447D /* HomeScreen.swift in Sources */,
+				0FDD1F239E8EBB31F22BA36C /* LessonSummaryScreen.swift in Sources */,
+				1412D9F3A44CEAE0C7C724BE /* Theme.swift in Sources */,
+				D2E4F6A8B0C3E5F719283A4B /* ZipfsLawInfoScreen.swift in Sources */,
+				E3F4A5B6C7D8E9F0A1B2C3D4 /* StatsScreen.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* NRuleHunterView.swift in Sources */,
+				C1D2E3F4A5B6C7D8E9F0A1B2 /* ZipfsSpeedRunView.swift in Sources */,
+				A5B6C7D8E9F0A1B2C3D4E5F6 /* TTSService.swift in Sources */,
+				C9D0E1F2A3B4C5D6E7F8A9B0 /* SpeakerButton.swift in Sources */,
+				A2B3C4D5E6F7A8B9C0D1E2F3 /* WordLookupService.swift in Sources */,
+				C4D5E6F7A8B9C0D1E2F3A4B5 /* TappableLuSentenceView.swift in Sources */,
+				E6F7A8B9C0D1E2F3A4B5C6D7 /* HowToUseScreen.swift in Sources */,
+				G8H9I0J1K2L3M4N5O6P7Q8R9 /* AudioFeedbackService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		386F21FB6CCFBF3FBFDA1CC3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FR45PRCYQG;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.luxlingo.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		555260E2B9879D6B41B034DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		99EA497894306B9F39FE5709 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FR45PRCYQG;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.luxlingo.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AAEA14000790462964F89243 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		022E0F2E8ECAC35F5510DD6F /* Build configuration list for PBXProject "LuxLingo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAEA14000790462964F89243 /* Debug */,
+				555260E2B9879D6B41B034DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFD04581184175117C78D9AC /* Build configuration list for PBXNativeTarget "LuxLingo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				386F21FB6CCFBF3FBFDA1CC3 /* Debug */,
+				99EA497894306B9F39FE5709 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}

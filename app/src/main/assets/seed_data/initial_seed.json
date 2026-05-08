@@ -1,0 +1,1374 @@
+{
+  "vocabulary": [
+    {
+      "surface_id": "w_ech",
+      "lemma_id": "l_ech",
+      "word_lu": "Ech",
+      "audio_ref": "audio/ech.mp3"
+    },
+    {
+      "surface_id": "w_du",
+      "lemma_id": "l_du",
+      "word_lu": "Du",
+      "audio_ref": "audio/du.mp3"
+    },
+    {
+      "surface_id": "w_ass",
+      "lemma_id": "l_sinn",
+      "word_lu": "ass",
+      "audio_ref": "audio/ass.mp3"
+    },
+    {
+      "surface_id": "w_sinn",
+      "lemma_id": "l_sinn",
+      "word_lu": "sinn",
+      "audio_ref": "audio/sinn.mp3"
+    },
+    {
+      "surface_id": "w_kaffi",
+      "lemma_id": "l_kaffi",
+      "word_lu": "Kaffi",
+      "audio_ref": "audio/kaffi.mp3"
+    },
+    {
+      "surface_id": "w_waarm",
+      "lemma_id": "l_waarm",
+      "word_lu": "waarm",
+      "audio_ref": "audio/waarm.mp3"
+    },
+    {
+      "surface_id": "w_gëtt",
+      "lemma_id": "l_ginn",
+      "word_lu": "gëtt",
+      "audio_ref": "audio/ginn.mp3"
+    },
+    {
+      "surface_id": "w_net",
+      "lemma_id": "l_net",
+      "word_lu": "net",
+      "audio_ref": "audio/net.mp3"
+    },
+    {
+      "surface_id": "w_brout",
+      "lemma_id": "l_brout",
+      "word_lu": "Brout",
+      "audio_ref": "audio/brout.mp3"
+    },
+    {
+      "surface_id": "w_iessen",
+      "lemma_id": "l_iessen",
+      "word_lu": "iessen",
+      "audio_ref": "audio/iessen.mp3"
+    },
+    {
+      "surface_id": "w_drénken",
+      "lemma_id": "l_drénken",
+      "word_lu": "drénken",
+      "audio_ref": "audio/drenken.mp3"
+    },
+    {
+      "surface_id": "w_waasser",
+      "lemma_id": "l_waasser",
+      "word_lu": "Waasser",
+      "audio_ref": "audio/waasser.mp3"
+    },
+    {
+      "surface_id": "w_merci",
+      "lemma_id": "l_merci",
+      "word_lu": "Merci",
+      "audio_ref": "audio/merci.mp3"
+    },
+    {
+      "surface_id": "w_mëllech",
+      "lemma_id": "l_mellech",
+      "word_lu": "Mëllech",
+      "audio_ref": "audio/mellech.mp3"
+    },
+    {
+      "surface_id": "w_moien",
+      "lemma_id": "l_moien",
+      "word_lu": "Moien",
+      "audio_ref": "audio/moien.mp3"
+    },
+    {
+      "surface_id": "w_addi",
+      "lemma_id": "l_addi",
+      "word_lu": "Äddi",
+      "audio_ref": "audio/addi.mp3"
+    },
+    {
+      "surface_id": "w_wannechgelift",
+      "lemma_id": "l_wannechgelift",
+      "word_lu": "Wannechgelift",
+      "audio_ref": "audio/wannechgelift.mp3"
+    },
+    {
+      "surface_id": "w_main",
+      "lemma_id": "l_main",
+      "word_lu": "Mäi",
+      "audio_ref": "audio/main.mp3"
+    },
+    {
+      "surface_id": "w_numm",
+      "lemma_id": "l_numm",
+      "word_lu": "Numm",
+      "audio_ref": "audio/numm.mp3"
+    },
+    {
+      "surface_id": "w_wat",
+      "lemma_id": "l_wat",
+      "word_lu": "Wat",
+      "audio_ref": "audio/wat.mp3"
+    },
+    {
+      "surface_id": "w_wei",
+      "lemma_id": "l_wei",
+      "word_lu": "Wéi",
+      "audio_ref": "audio/wei.mp3"
+    },
+    {
+      "surface_id": "w_an",
+      "lemma_id": "l_an",
+      "word_lu": "an",
+      "audio_ref": "audio/an.mp3"
+    },
+    {
+      "surface_id": "w_oder",
+      "lemma_id": "l_oder",
+      "word_lu": "oder",
+      "audio_ref": "audio/oder.mp3"
+    },
+    {
+      "surface_id": "w_dai",
+      "lemma_id": "l_dai",
+      "word_lu": "däi",
+      "audio_ref": "audio/dai.mp3"
+    },
+    {
+      "surface_id": "w_dir_formal",
+      "lemma_id": "l_dir",
+      "word_lu": "Dir",
+      "audio_ref": "audio/dir.mp3"
+    },
+    {
+      "surface_id": "w_iech",
+      "lemma_id": "l_iech",
+      "word_lu": "Iech",
+      "audio_ref": "audio/iech.mp3"
+    },
+    {
+      "surface_id": "w_verstoen",
+      "lemma_id": "l_verstoen",
+      "word_lu": "verstoen",
+      "audio_ref": "audio/verstoen.mp3"
+    },
+    {
+      "surface_id": "w_verstinn",
+      "lemma_id": "l_verstoen",
+      "word_lu": "verstinn",
+      "audio_ref": "audio/verstoen.mp3"
+    },
+    {
+      "surface_id": "w_midd",
+      "lemma_id": "l_midd",
+      "word_lu": "midd",
+      "audio_ref": "audio/midd.mp3"
+    },
+    {
+      "surface_id": "w_heeschen",
+      "lemma_id": "l_heeschen",
+      "word_lu": "heeschen",
+      "audio_ref": "audio/heeschen.mp3"
+    },
+    {
+      "surface_id": "w_heescht",
+      "lemma_id": "l_heeschen",
+      "word_lu": "heescht",
+      "audio_ref": "audio/heeschen.mp3"
+    },
+    {
+      "surface_id": "w_lues",
+      "lemma_id": "l_lues",
+      "word_lu": "lues",
+      "audio_ref": "audio/lues.mp3"
+    },
+    {
+      "surface_id": "w_dat",
+      "lemma_id": "l_dat",
+      "word_lu": "dat",
+      "audio_ref": "audio/dat.mp3"
+    },
+    {
+      "surface_id": "w_mir",
+      "lemma_id": "l_ech",
+      "word_lu": "mir",
+      "audio_ref": "audio/mir.mp3"
+    },
+    {
+      "surface_id": "w_gutt",
+      "lemma_id": "l_gutt",
+      "word_lu": "gutt",
+      "audio_ref": "audio/gutt.mp3"
+    },
+    {
+      "surface_id": "w_geet",
+      "lemma_id": "l_goen",
+      "word_lu": "geet",
+      "audio_ref": "audio/geet.mp3"
+    },
+    {
+      "surface_id": "w_et",
+      "lemma_id": "l_et",
+      "word_lu": "et",
+      "audio_ref": "audio/et.mp3"
+    },
+    {
+      "surface_id": "w_mat",
+      "lemma_id": "l_mat",
+      "word_lu": "mat",
+      "audio_ref": "audio/mat.mp3"
+    },
+    {
+      "surface_id": "w_ouni",
+      "lemma_id": "l_ouni",
+      "word_lu": "ouni",
+      "audio_ref": "audio/ouni.mp3"
+    },
+    {
+      "surface_id": "w_ganz",
+      "lemma_id": "l_ganz",
+      "word_lu": "ganz",
+      "audio_ref": "audio/ganz.mp3"
+    },
+    {
+      "surface_id": "w_wann",
+      "lemma_id": "l_wann",
+      "word_lu": "wann",
+      "audio_ref": "audio/wann.mp3"
+    }
+  ],
+  "senses": [
+    {
+      "sense_id": "s_ech_1",
+      "surface_id": "w_ech",
+      "primary_en": "I",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_du_1",
+      "surface_id": "w_du",
+      "primary_en": "you",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_sinn_is_1",
+      "surface_id": "w_ass",
+      "primary_en": "is",
+      "pos": "verb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_sinn_are_1",
+      "surface_id": "w_sinn",
+      "primary_en": "are",
+      "pos": "verb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_kaffi_1",
+      "surface_id": "w_kaffi",
+      "primary_en": "coffee",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true,
+      "tags": {
+        "domain": "food"
+      }
+    },
+    {
+      "sense_id": "s_waarm_1",
+      "surface_id": "w_waarm",
+      "primary_en": "warm",
+      "pos": "adjective",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_ginn_become_1",
+      "surface_id": "w_gëtt",
+      "primary_en": "becomes",
+      "pos": "verb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_net_1",
+      "surface_id": "w_net",
+      "primary_en": "not",
+      "pos": "adverb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_brout_1",
+      "surface_id": "w_brout",
+      "primary_en": "bread",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true
+    },
+    {
+      "sense_id": "s_iessen_1",
+      "surface_id": "w_iessen",
+      "primary_en": "eat",
+      "pos": "verb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_drenken_1",
+      "surface_id": "w_drénken",
+      "primary_en": "drink",
+      "pos": "verb",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_waasser_1",
+      "surface_id": "w_waasser",
+      "primary_en": "water",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true
+    },
+    {
+      "sense_id": "s_merci_1",
+      "surface_id": "w_merci",
+      "primary_en": "thank you",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_mellech_1",
+      "surface_id": "w_mëllech",
+      "primary_en": "milk",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": true
+    },
+    {
+      "sense_id": "s_moien_1",
+      "surface_id": "w_moien",
+      "primary_en": "Hello",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_addi_1",
+      "surface_id": "w_addi",
+      "primary_en": "Goodbye",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wannechgelift_1",
+      "surface_id": "w_wannechgelift",
+      "primary_en": "Please",
+      "pos": "particle",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_main_1",
+      "surface_id": "w_main",
+      "primary_en": "My",
+      "pos": "determiner",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_numm_1",
+      "surface_id": "w_numm",
+      "primary_en": "Name",
+      "pos": "noun",
+      "is_golden_key": false,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wat_1",
+      "surface_id": "w_wat",
+      "primary_en": "What",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wei_1",
+      "surface_id": "w_wei",
+      "primary_en": "How",
+      "pos": "adverb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_an_1",
+      "surface_id": "w_an",
+      "primary_en": "and",
+      "pos": "conjunction",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_oder_1",
+      "surface_id": "w_oder",
+      "primary_en": "or",
+      "pos": "conjunction",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_dai_1",
+      "surface_id": "w_dai",
+      "primary_en": "your",
+      "pos": "determiner",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_dat_1",
+      "surface_id": "w_dat",
+      "primary_en": "that",
+      "pos": "pronoun",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_dir_formal",
+      "surface_id": "w_dir_formal",
+      "primary_en": "You (formal)",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_iech",
+      "surface_id": "w_iech",
+      "primary_en": "You (formal/object)",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_verstoen_1",
+      "surface_id": "w_verstoen",
+      "primary_en": "understand",
+      "pos": "verb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_midd_1",
+      "surface_id": "w_midd",
+      "primary_en": "tired",
+      "pos": "adjective",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_heeschen_1",
+      "surface_id": "w_heeschen",
+      "primary_en": "to be called",
+      "pos": "verb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_lues_1",
+      "surface_id": "w_lues",
+      "primary_en": "slowly",
+      "pos": "adverb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_mir_dat",
+      "surface_id": "w_mir",
+      "primary_en": "me/to me",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_gutt_1",
+      "surface_id": "w_gutt",
+      "primary_en": "good/well",
+      "pos": "adjective",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_goen_geet_1",
+      "surface_id": "w_geet",
+      "primary_en": "goes",
+      "pos": "verb",
+      "is_golden_key": false
+    },
+    {
+      "sense_id": "s_et_1",
+      "surface_id": "w_et",
+      "primary_en": "it",
+      "pos": "pronoun",
+      "is_golden_key": true
+    },
+    {
+      "sense_id": "s_mat_1",
+      "surface_id": "w_mat",
+      "primary_en": "with",
+      "pos": "preposition",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_ouni_1",
+      "surface_id": "w_ouni",
+      "primary_en": "without",
+      "pos": "preposition",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_ganz_1",
+      "surface_id": "w_ganz",
+      "primary_en": "very",
+      "pos": "adverb",
+      "is_golden_key": true,
+      "is_picturable": false
+    },
+    {
+      "sense_id": "s_wann_1",
+      "surface_id": "w_wann",
+      "primary_en": "if",
+      "pos": "conjunction",
+      "is_golden_key": true,
+      "is_picturable": false
+    }
+  ],
+  "sentences": [
+    {
+      "sentence_id": "sent_001",
+      "text_en": "I am here.",
+      "text_lu": "Ech sinn do.",
+      "sense_ids": [
+        "s_ech_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_002",
+      "text_en": "I am happy.",
+      "text_lu": "Ech si frou.",
+      "sense_ids": [
+        "s_ech_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_003",
+      "text_en": "You are my friend.",
+      "text_lu": "Du bass mäi Frënd.",
+      "sense_ids": [
+        "s_du_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_004",
+      "text_en": "Do you see me?",
+      "text_lu": "Gesinn ech?",
+      "sense_ids": [
+        "s_du_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_005",
+      "text_en": "The cat is black.",
+      "text_lu": "De Kater ass schwaarz.",
+      "sense_ids": [
+        "s_sinn_is_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_006",
+      "text_en": "The coffee is hot.",
+      "text_lu": "De Kaf ass waarm.",
+      "sense_ids": [
+        "s_sinn_is_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_007",
+      "text_en": "We are happy.",
+      "text_lu": "Mir si frou.",
+      "sense_ids": [
+        "s_sinn_are_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_008",
+      "text_en": "The children are playing.",
+      "text_lu": "D'Kanner spillen.",
+      "sense_ids": [
+        "s_sinn_are_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_009",
+      "text_en": "I like coffee.",
+      "text_lu": "Ech drénke gär Kaffi.",
+      "sense_ids": [
+        "s_kaffi_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_010",
+      "text_en": "The coffee is hot.",
+      "text_lu": "De Kaf ass waarm.",
+      "sense_ids": [
+        "s_kaffi_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_011",
+      "text_en": "The soup is warm.",
+      "text_lu": "D'Supp ass waarm.",
+      "sense_ids": [
+        "s_waarm_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_012",
+      "text_en": "It is warm in the house.",
+      "text_lu": "Et ass waarm am Haus.",
+      "sense_ids": [
+        "s_waarm_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_013",
+      "text_en": "It becomes cold.",
+      "text_lu": "Et gëtt kal.",
+      "sense_ids": [
+        "s_ginn_become_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_014",
+      "text_en": "He becomes a doctor.",
+      "text_lu": "Hie gëtt Dokter.",
+      "sense_ids": [
+        "s_ginn_become_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_015",
+      "text_en": "It is not cold.",
+      "text_lu": "Et ass net kal.",
+      "sense_ids": [
+        "s_net_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_016",
+      "text_en": "I am not tired.",
+      "text_lu": "Ech sinn net midd.",
+      "sense_ids": [
+        "s_net_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_017",
+      "text_en": "I buy bread.",
+      "text_lu": "Ech kaafen e Brout.",
+      "sense_ids": [
+        "s_brout_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_018",
+      "text_en": "The bread is fresh.",
+      "text_lu": "De Brout ass frësch.",
+      "sense_ids": [
+        "s_brout_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_019",
+      "text_en": "I eat lunch now.",
+      "text_lu": "Ech iessen elo Mëtteessen.",
+      "sense_ids": [
+        "s_iessen_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_020",
+      "text_en": "What do you like to eat?",
+      "text_lu": "Wat iess du gär?",
+      "sense_ids": [
+        "s_iessen_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_021",
+      "text_en": "I drink water.",
+      "text_lu": "Ech drénken Waasser.",
+      "sense_ids": [
+        "s_drenken_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_022",
+      "text_en": "What are you drinking?",
+      "text_lu": "Wat drénks du?",
+      "sense_ids": [
+        "s_drenken_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_023",
+      "text_en": "I drink a lot of water.",
+      "text_lu": "Ech drénken ganz vill Waasser.",
+      "sense_ids": [
+        "s_waasser_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_024",
+      "text_en": "The water is on the table.",
+      "text_lu": "D'Waasser steet um Dësch.",
+      "sense_ids": [
+        "s_waasser_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_025",
+      "text_en": "Thank you for the help.",
+      "text_lu": "Merci fir d'Hëllef.",
+      "sense_ids": [
+        "s_merci_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_026",
+      "text_en": "Thank you very much.",
+      "text_lu": "Merci villmol.",
+      "sense_ids": [
+        "s_merci_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_027",
+      "text_en": "The milk is cold.",
+      "text_lu": "D'Mëllech ass kal.",
+      "sense_ids": [
+        "s_mellech_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_028",
+      "text_en": "Do you want some milk?",
+      "text_lu": "Wëllt Dir e bëssen Mëllech?",
+      "sense_ids": [
+        "s_mellech_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_029",
+      "text_en": "Hello, how are you?",
+      "text_lu": "Moien, wéi geet et dir?",
+      "sense_ids": [
+        "s_moien_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_030",
+      "text_en": "Hello, nice to meet you.",
+      "text_lu": "Moien, frou Iech ze kennen.",
+      "sense_ids": [
+        "s_moien_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_031",
+      "text_en": "Goodbye, see you tomorrow.",
+      "text_lu": "Äddi, bis muer.",
+      "sense_ids": [
+        "s_addi_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_032",
+      "text_en": "Goodbye, have a nice day.",
+      "text_lu": "Äddi, huet e schéinen Dag.",
+      "sense_ids": [
+        "s_addi_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_033",
+      "text_en": "Yes, please.",
+      "text_lu": "Jo, gär.",
+      "sense_ids": [
+        "s_wannechgelift_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_034",
+      "text_en": "Coffee, please.",
+      "text_lu": "Kaffi, wannechgelift.",
+      "sense_ids": [
+        "s_wannechgelift_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_035",
+      "text_en": "My name is John.",
+      "text_lu": "Mäi Numm ass John.",
+      "sense_ids": [
+        "s_main_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_036",
+      "text_en": "My coffee is cold.",
+      "text_lu": "Mäi Kaffi ass kal.",
+      "sense_ids": [
+        "s_main_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_037",
+      "text_en": "My name is Lutz.",
+      "text_lu": "Mäi Numm ass Lutz.",
+      "sense_ids": [
+        "s_numm_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_038",
+      "text_en": "What is your name?",
+      "text_lu": "Wéi heescht Dir?",
+      "sense_ids": [
+        "s_numm_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_039",
+      "text_en": "What is that?",
+      "text_lu": "Wat ass dat?",
+      "sense_ids": [
+        "s_wat_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_040",
+      "text_en": "What do you drink?",
+      "text_lu": "Wat drénks du?",
+      "sense_ids": [
+        "s_wat_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_041",
+      "text_en": "How are you?",
+      "text_lu": "Wéi geet et dir?",
+      "sense_ids": [
+        "s_wei_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_042",
+      "text_en": "How does it work?",
+      "text_lu": "Wéi funktionéiert et?",
+      "sense_ids": [
+        "s_wei_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_043",
+      "text_en": "Bread and coffee.",
+      "text_lu": "Brout a Kaffi.",
+      "sense_ids": [
+        "s_an_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_044",
+      "text_en": "You and I.",
+      "text_lu": "Dir an ech.",
+      "sense_ids": [
+        "s_an_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_045",
+      "text_en": "Coffee or water?",
+      "text_lu": "Kaffi oder Waasser?",
+      "sense_ids": [
+        "s_oder_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_046",
+      "text_en": "Tea or coffee?",
+      "text_lu": "Téi oder Kaffi?",
+      "sense_ids": [
+        "s_oder_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_047",
+      "text_en": "Is that your name?",
+      "text_lu": "Ass dat Ären Numm?",
+      "sense_ids": [
+        "s_dai_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_048",
+      "text_en": "Where is your bread?",
+      "text_lu": "Wou ass Ären Brout?",
+      "sense_ids": [
+        "s_dai_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_049",
+      "text_en": "That is good.",
+      "text_lu": "Dat ass gutt.",
+      "sense_ids": [
+        "s_dat_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_050",
+      "text_en": "I see that.",
+      "text_lu": "Ech gesinn dat.",
+      "sense_ids": [
+        "s_dat_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_051",
+      "text_en": "Are you (formal) happy?",
+      "text_lu": "Sidd Dir (formell) frou?",
+      "sense_ids": [
+        "s_dir_formal"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_052",
+      "text_en": "You (formal) are here.",
+      "text_lu": "Dir sidd hei.",
+      "sense_ids": [
+        "s_dir_formal"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_053",
+      "text_en": "I see you (formal).",
+      "text_lu": "Ech gesinn Iech (formell).",
+      "sense_ids": [
+        "s_iech"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_054",
+      "text_en": "I understand you (formal).",
+      "text_lu": "Ech verstinn Iech (formell).",
+      "sense_ids": [
+        "s_iech"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_055",
+      "text_en": "I understand you.",
+      "text_lu": "Ech verstinn Iech.",
+      "sense_ids": [
+        "s_verstoen_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_056",
+      "text_en": "Do you understand?",
+      "text_lu": "Verstees du?",
+      "sense_ids": [
+        "s_verstoen_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_057",
+      "text_en": "I am very tired.",
+      "text_lu": "Ech sinn ganz müd.",
+      "sense_ids": [
+        "s_midd_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_058",
+      "text_en": "You look tired.",
+      "text_lu": "Dir ausgesinn müd.",
+      "sense_ids": [
+        "s_midd_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_059",
+      "text_en": "I am called Lutz.",
+      "text_lu": "Ech heescht Lutz.",
+      "sense_ids": [
+        "s_heeschen_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_060",
+      "text_en": "What are you called?",
+      "text_lu": "Wéi heescht Dir?",
+      "sense_ids": [
+        "s_heeschen_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_061",
+      "text_en": "Please speak slowly.",
+      "text_lu": "Bitte schwätzt lues.",
+      "sense_ids": [
+        "s_lues_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_062",
+      "text_en": "He walks slowly.",
+      "text_lu": "Hie geet lues.",
+      "sense_ids": [
+        "s_lues_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_063",
+      "text_en": "Give it to me.",
+      "text_lu": "Ginn et mir.",
+      "sense_ids": [
+        "s_mir_dat"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_064",
+      "text_en": "He sees me.",
+      "text_lu": "Hie gesinn mech.",
+      "sense_ids": [
+        "s_mir_dat"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_065",
+      "text_en": "This is very good.",
+      "text_lu": "Dëst ass ganz gutt.",
+      "sense_ids": [
+        "s_gutt_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_066",
+      "text_en": "I am doing well.",
+      "text_lu": "Et geet mir gutt.",
+      "sense_ids": [
+        "s_gutt_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_067",
+      "text_en": "How is it going?",
+      "text_lu": "Wéi geet et?",
+      "sense_ids": [
+        "s_goen_geet_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_068",
+      "text_en": "It goes well.",
+      "text_lu": "Et geet gutt.",
+      "sense_ids": [
+        "s_goen_geet_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_069",
+      "text_en": "It is warm.",
+      "text_lu": "Et ass waarm.",
+      "sense_ids": [
+        "s_et_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_070",
+      "text_en": "I see it.",
+      "text_lu": "Ech gesinn et.",
+      "sense_ids": [
+        "s_et_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_071",
+      "text_en": "Coffee with milk.",
+      "text_lu": "Kaffee mat Mëllech.",
+      "sense_ids": [
+        "s_mat_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_072",
+      "text_en": "I am with you.",
+      "text_lu": "Ech sinn bei dir.",
+      "sense_ids": [
+        "s_mat_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_073",
+      "text_en": "Coffee without sugar.",
+      "text_lu": "Kaffee ouni Sucre.",
+      "sense_ids": [
+        "s_ouni_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_074",
+      "text_en": "I am without water.",
+      "text_lu": "Ech sinn ouni Waasser.",
+      "sense_ids": [
+        "s_ouni_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_075",
+      "text_en": "It is very warm.",
+      "text_lu": "Et ass ganz waarm.",
+      "sense_ids": [
+        "s_ganz_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_076",
+      "text_en": "I am very tired.",
+      "text_lu": "Ech sinn ganz müd.",
+      "sense_ids": [
+        "s_ganz_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_077",
+      "text_en": "If you want.",
+      "text_lu": "Wann Dir wëllt.",
+      "sense_ids": [
+        "s_wann_1"
+      ],
+      "is_handcrafted": false
+    },
+    {
+      "sentence_id": "sent_078",
+      "text_en": "If it is hot.",
+      "text_lu": "Wa et waarm ass.",
+      "sense_ids": [
+        "s_wann_1"
+      ],
+      "is_handcrafted": false
+    }
+  ],
+  "curriculum": [
+    {
+      "lesson_id": "L_01",
+      "title_en": "Social Basics",
+      "core_senses": [
+        "s_moien_1",
+        "s_addi_1",
+        "s_merci_1",
+        "s_wannechgelift_1"
+      ],
+      "secondary_senses": [
+        "s_wat_1",
+        "s_an_1",
+        "s_oder_1"
+      ],
+      "theme_tag": "Social"
+    },
+    {
+      "lesson_id": "L_02",
+      "title_en": "Identity",
+      "core_senses": [
+        "s_ech_1",
+        "s_du_1",
+        "s_dir_formal",
+        "s_heeschen_1",
+        "s_numm_1"
+      ],
+      "secondary_senses": [
+        "s_main_1",
+        "s_dai_1",
+        "s_sinn_is_1"
+      ],
+      "prereqs": [
+        "L_01"
+      ],
+      "theme_tag": "Basics"
+    },
+    {
+      "lesson_id": "L_03",
+      "title_en": "Feelings",
+      "core_senses": [
+        "s_mir_dat",
+        "s_goen_geet_1",
+        "s_et_1",
+        "s_gutt_1",
+        "s_midd_1"
+      ],
+      "secondary_senses": [
+        "s_verstoen_1",
+        "s_lues_1",
+        "s_dat_1",
+        "s_wei_1"
+      ],
+      "prereqs": [
+        "L_02"
+      ],
+      "theme_tag": "Basics"
+    },
+    {
+      "lesson_id": "L_04",
+      "title_en": "Café",
+      "core_senses": [
+        "s_kaffi_1",
+        "s_brout_1",
+        "s_net_1"
+      ],
+      "secondary_senses": [
+        "s_waarm_1",
+        "s_an_1",
+        "s_oder_1"
+      ],
+      "prereqs": [
+        "L_03"
+      ],
+      "theme_tag": "Food"
+    },
+    {
+      "lesson_id": "L_05",
+      "title_en": "Drinks",
+      "core_senses": [
+        "s_waasser_1",
+        "s_mellech_1",
+        "s_drenken_1"
+      ],
+      "secondary_senses": [
+        "s_ech_1",
+        "s_du_1",
+        "s_an_1"
+      ],
+      "prereqs": [
+        "L_04"
+      ],
+      "theme_tag": "Food"
+    },
+    {
+      "lesson_id": "L_06",
+      "title_en": "Actions",
+      "core_senses": [
+        "s_iessen_1",
+        "s_ginn_become_1",
+        "s_waarm_1"
+      ],
+      "secondary_senses": [
+        "s_net_1",
+        "s_brout_1",
+        "s_wat_1"
+      ],
+      "prereqs": [
+        "L_05"
+      ],
+      "theme_tag": "Actions"
+    }
+  ]
+}

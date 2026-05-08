@@ -1,0 +1,53 @@
+import requests
+import time
+
+def translate_batch(sentences):
+    url = "https://luxasr.uni.lu/staging/luxmt/translate"
+    results = []
+
+    print(f"--- Starting Batch Translation ({len(sentences)} items) ---")
+
+    for i, text in enumerate(sentences):
+        payload = {
+            "text": text,
+            "source_lang": "en",
+            "target_lang": "lb"
+        }
+
+        try:
+            # Added a timeout to prevent the script from hanging
+            response = requests.post(url, json=payload, timeout=10)
+            
+            if response.status_code == 200:
+                result_data = response.json()
+                # Extracting the translated text from the API response
+                translated = result_data.get('translated_text', 'Translation Missing')
+                results.append({"en": text, "lb": translated})
+                print(f"[{i+1}/{len(sentences)}] Success: {text[:20]}...")
+            else:
+                print(f"[{i+1}/{len(sentences)}] Failed: {text[:20]}... (Status: {response.status_code})")
+        
+        except Exception as e:
+            print(f"[{i+1}/{len(sentences)}] Error: {e}")
+
+        # Tiny sleep to be polite to the Uni.lu servers
+        time.sleep(0.5)
+
+    return results
+
+if __name__ == "__main__":
+    # Example sentences for your pedagogical layers
+    my_sentences = [
+        "I am learning a new language.",
+        "The apple is red.",
+        "Where is the train station?",
+        "I would like to order a coffee."
+    ]
+
+    translations = translate_batch(my_sentences)
+
+    print("\n--- Final Results ---")
+    for item in translations:
+        print(f"EN: {item['en']}")
+        print(f"LB: {item['lb']}")
+        print("-" * 20)

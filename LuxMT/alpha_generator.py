@@ -1,0 +1,171 @@
+import json
+import requests
+import time
+import os
+import difflib
+
+# Configuration
+LEMMA_LIST_PATH = "/Users/nv/Projects/luxlingo/LuxMT/top_500_lemmas.txt"
+STATE_PATH = "/Users/nv/Projects/luxlingo/LuxMT/state.json"
+ALPHA_SEED_PATH = "/Users/nv/Projects/luxlingo/app/src/main/assets/seed_data/alpha_seed.json"
+LOD_BASE_URL = "https://lod.lu/api"
+LUXMT_URL = "https://luxasr.uni.lu/staging/luxmt/translate"
+DELAY = 0.5 # Respectful delay for LOD.lu
+
+def get_lod_article_id(lemma):
+    url = f"{LOD_BASE_URL}/en/search?query={lemma}&lang=lb"
+    try:
+        resp = requests.get(url, timeout=10)
+        if resp.status_code == 200:
+            results = resp.json().get('results', [])
+            if results:
+                return results[0].get('article_id')
+    except Exception:
+        pass
+    return None
+
+def get_lod_entry(article_id):
+    url = f"{LOD_BASE_URL}/en/entry/{article_id}"
+    try:
+        resp = requests.get(url, timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception:
+        pass
+    return None
+
+def translate_batch(sentences_en):
+    results = []
+    for text_en in sentences_en:
+        payload = {"text": text_en, "source_lang": "en", "target_lang": "lb"}
+        try:
+            resp = requests.post(LUXMT_URL, json=payload, timeout=10)
+            if resp.status_code == 200:
+                results.append(resp.json().get('translated_text'))
+            else:
+                results.append(None)
+        except Exception:
+            results.append(None)
+    return results
+
+def load_state():
+    if os.path.exists(STATE_PATH):
+        with open(STATE_PATH, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {
+        "current_index": 0,
+        "vocabulary": [],
+        "senses": [],
+        "sentences": [],
+        "curriculum": []
+    }
+
+def save_state(state):
+    with open(STATE_PATH, 'w', encoding='utf-8') as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+
+def generate_sentences(word_en, pos):
+    # This should be replaced by actual Gemini logic or templates
+    # For MVP, we provide a basic template system or an empty list to be filled by AI turn
+    return [
+        f"I like {word_en}.",
+        f"The {word_en} is here.",
+        f"Where is the {word_en}?"
+    ]
+
+def run_pipeline():
+    # Load Lemm list
+    if not os.path.exists(LEMMA_LIST_PATH):
+        print("Error: Lemma list not found.")
+        return
+    
+    with open(LEMMA_LIST_PATH, 'r', encoding='utf-8') as f:
+        lemmas = [line.strip() for line in f if line.strip()]
+    
+    state = load_state()
+    start_index = state["current_index"]
+    
+    print(f"Starting/Resuming enrichment from index {start_index}...")
+
+    for i in range(start_index, len(lemmas)):
+        lemma = lemmas[i]
+        print(f"[{i+1}/{len(lemmas)}] Processing '{lemma}'...")
+        
+        art_id = get_lod_article_id(lemma)
+        if not art_id:
+            print(f"  Warning: Article ID not found for '{lemma}'. Skipping.")
+            state["current_index"] = i + 1
+            continue
+            
+        entry_data = get_lod_entry(art_id)
+        if not entry_data:
+            print(f"  Warning: Entry data not found for '{lemma}'. Skipping.")
+            state["current_index"] = i + 1
+            continue
+            
+        entry = entry_data.get('entry', {})
+        
+        # 1. Map Vocabulary
+        surface_id = f"w_{lemma.lower()}"
+        audio_url = entry.get('audioFiles', {}).get('aac', "")
+        
+        state["vocabulary"].append({
+            "surface_id": surface_id,
+            "lemma_id": f"l_{lemma.lower()}",
+            "word_lu": entry.get('lemma', lemma),
+            "audio_url": audio_url,
+            "gender": entry.get('partOfSpeechLabel', "").replace("SUBST+", ""), # Simple extraction
+            "plural": "" # Placeholder for complex extraction
+        })
+        
+        # 2. Map Senses
+        # Extract English translations
+        en_translations = []
+        micro = entry_data.get('microStructures', [])
+        if micro:
+            meanings = micro[0].get('grammaticalUnits', [{}])[0].get('meanings', [])
+            if meanings:
+                target_en = meanings[0].get('targetLanguages', {}).get('en', {}).get('parts', [])
+                en_translations = [p.get('content') for p in target_en if p.get('type') == 'translation']
+        
+        primary_en = en_translations[0] if en_translations else lemma
+        sense_id = f"s_{lemma.lower()}_1"
+        
+        state["senses"].append({
+            "sense_id": sense_id,
+            "surface_id": surface_id,
+            "primary_en": primary_en,
+            "pos": entry.get('partOfSpeechLabel', "unknown"),
+            "is_golden_key": i < 100, # Top 100 marked as golden keys
+            "is_picturable": False
+        })
+        
+        # 3. Handle Sentences (Need to be generated by Gemini offline or via prompt-based enrichment)
+        # For now, we capture that we NEED to generate these.
+        
+        state["current_index"] = i + 1
+        
+        # Save state every 5 words
+        if (i + 1) % 5 == 0:
+            save_state(state)
+            print(f"  Progress saved at index {i+1}.")
+            
+        time.sleep(DELAY)
+        
+    # Final Save
+    save_state(state)
+    
+    # Write to final alpha_seed.json
+    final_output = {
+        "vocabulary": state["vocabulary"],
+        "senses": state["senses"],
+        "sentences": state["sentences"],
+        "curriculum": state["curriculum"]
+    }
+    with open(ALPHA_SEED_PATH, 'w', encoding='utf-8') as f:
+        json.dump(final_output, f, ensure_ascii=False, indent=2)
+    
+    print(f"Done! {len(lemmas)} words processed. Exported to {ALPHA_SEED_PATH}.")
+
+if __name__ == "__main__":
+    run_pipeline()
