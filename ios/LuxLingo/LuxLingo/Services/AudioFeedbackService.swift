@@ -33,9 +33,10 @@ final class AudioFeedbackService {
 
     func playCorrect() {
         correctPlayer?.currentTime = 0
+        correctPlayer?.volume = 1.0
         correctPlayer?.play()
         successGenerator.notificationOccurred(.success)
-        successGenerator.prepare() // re-warm for next time
+        successGenerator.prepare()
     }
 
     func playWrong() {
@@ -43,5 +44,24 @@ final class AudioFeedbackService {
         wrongPlayer?.play()
         errorGenerator.notificationOccurred(.error)
         errorGenerator.prepare()
+    }
+
+    /// Softer confirmation for reading exercises — no "correct answer" connotation.
+    func playReading() {
+        correctPlayer?.currentTime = 0
+        correctPlayer?.volume = 0.3
+        correctPlayer?.play()
+        correctPlayer?.volume = 1.0  // restore for next playCorrect call
+        let impact = UIImpactFeedbackGenerator(style: .light)
+        impact.impactOccurred()
+    }
+
+    /// Celebratory chime when all matching pairs are completed.
+    func playMatchingComplete() {
+        correctPlayer?.currentTime = 0
+        correctPlayer?.volume = 1.0
+        correctPlayer?.play()
+        successGenerator.notificationOccurred(.success)
+        successGenerator.prepare()
     }
 }

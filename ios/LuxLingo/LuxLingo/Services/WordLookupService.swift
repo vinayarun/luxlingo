@@ -22,15 +22,28 @@ final class WordLookupService {
         if let cached = cache[key] { return cached }
         if notFound.contains(key) { return nil }
 
-        let result = await performLookup(word: key)
-        if let result { cache[key] = result } else { notFound.insert(key) }
+        var result = await performLookup(word: key)
+        // If the contraction map resolved to a different lemma, tag the result word as the original
+        if result == nil { notFound.insert(key) }
+        else { cache[key] = result }
         return result
     }
 
-    private func performLookup(word: String) async -> WordLookupResult? {
-        guard let searchResults = await fetchSearchResults(for: word), !searchResults.isEmpty else { return nil }
+    // Short words that are contracted/reduced forms of longer lemmas and need a direct remapping.
+    // "a" before consonants is the standard pre-consonant form of the conjunction "an" (and/in).
+    private static let contractionMap: [String: String] = [
+        "a": "an",   // conjunction: "Lena a Paul" = "Lena and Paul"
+        "am": "an",  // preposition contraction: "am" = "an dem" (in the, masc/neut)
+        "ass": "sinn", // 3rd person sg of sinn (to be): "Hien ass" = "He is"
+    ]
 
-        let wordLower = word.lowercased()
+    private func performLookup(word: String) async -> WordLookupResult? {
+        // For known contractions, look up the base lemma directly
+        let lookupWord = Self.contractionMap[word] ?? word
+
+        guard let searchResults = await fetchSearchResults(for: lookupWord), !searchResults.isEmpty else { return nil }
+
+        let wordLower = lookupWord.lowercased()
         let valid = searchResults.filter { ($0["erroneous"] as? Bool) != true }
 
         // All direct lemma hits (no cap) — covers full polysemy, e.g. Buch = book/account book/shoulder meat

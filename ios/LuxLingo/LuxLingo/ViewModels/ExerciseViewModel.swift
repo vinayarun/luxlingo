@@ -27,6 +27,7 @@ struct ExerciseUiState {
     var failureCount: Int = 0
     var consecutiveSenseCount: Int = 0
     var lastSenseId: String = ""
+    var lastExerciseType: ExerciseTypeNew = .reading
     var exampleSentenceLu: String = ""
     var exampleSentenceEn: String = ""
     var phase: String = "Introduction"
@@ -50,6 +51,12 @@ struct ExerciseUiState {
     var nRuleSelection: String = ""
     var nRuleWordIndex: Int = 0
     var showNRuleHint: Bool = false
+
+    // Conjugation Match / Paradigm Picker fields
+    var conjugationOptions: [String] = []
+    var paradigmPromptPronoun: String = ""
+    var paradigmCorrectForm: String = ""
+    var paradigmPickerOptions: [String] = []
     
     // Speed Run fields
     var timeRemaining: Float = 1.0
@@ -185,7 +192,7 @@ final class ExerciseViewModel {
         case ..<1:   type = .flashcard
         case ..<6:   type = .reading
         case ..<10:  type = .multipleChoice
-        case ..<15:  type = (Int.random(in: 0...1) == 0) ? .matching : .jumbledEn
+        case ..<15:  type = (Int.random(in: 0...1) == 0 && uiState.lastExerciseType != .matching) ? .matching : .jumbledEn
         case ..<20:  type = .jumbledLu
         default:     type = .cloze
         }
@@ -201,6 +208,23 @@ final class ExerciseViewModel {
         if mastery >= 12 && mastery <= 25 {
             // 20% chance for speed run in range
             if Float.random(in: 0...1) < 0.2 { type = .zipfSpeedRun }
+        }
+
+        // Conjugation Match: when the sentence uses a conjugated form that differs from the lemma
+        // and the sense has paradigm data — teaches irregular/suppletive verb recognition
+        if mastery >= 8 && mastery <= 22, senseData?.paradigm != nil {
+            let sentWords = sentence.textLu.split(separator: " ").map { String($0) }
+            let cIdx = min(max(sentence.clozeIndex, 0), sentWords.count - 1)
+            let sentForm = cIdx < sentWords.count
+                ? sentWords[cIdx].lowercased().trimmingCharacters(in: .punctuationCharacters) : ""
+            if !sentForm.isEmpty && sentForm != targetWord.lowercased() {
+                if Float.random(in: 0...1) < 0.25 { type = .conjugationMatch }
+            }
+        }
+
+        // Paradigm Picker: given the infinitive, choose the right form for a specific pronoun
+        if mastery >= 12 && mastery <= 25, senseData?.paradigm != nil {
+            if Float.random(in: 0...1) < 0.2 { type = .paradigmPicker }
         }
 
         // 4b. Phase Detection (Update)
@@ -231,14 +255,16 @@ final class ExerciseViewModel {
             tokens = baseTokens
         case .jumbledEn:
             var baseTokens = cleanAndShuffleTokens(sentence.textEn)
-            if baseTokens.count < 5 {
-                let distractors = repository.getRandomDistractorsEn(target: translation, count: 2)
-                    .filter { word in
-                        // Heuristic: Avoid common Luxembourgish words in EN distractor pool
-                        !["an", "ech", "du", "hien", "si", "et", "mir", "dir", "fir", "mat"].contains(word.lowercased())
-                    }
-                baseTokens = (baseTokens + distractors).shuffled()
-            }
+            let sentenceWordsEn = Set(baseTokens.map { $0.lowercased() })
+            let distractorsEn = repository.getRandomDistractorsEn(target: translation, count: 3)
+                .filter { word in
+                    let w = word.lowercased()
+                    // Exclude words already in the sentence and common LB words leaked into EN pool
+                    return !sentenceWordsEn.contains(w)
+                        && !["an", "ech", "du", "hien", "si", "et", "mir", "dir", "fir", "mat"].contains(w)
+                }
+                .prefix(2)
+            baseTokens = (baseTokens + distractorsEn).shuffled()
             tokens = baseTokens
         default:
             tokens = []
@@ -274,7 +300,13 @@ final class ExerciseViewModel {
         case .matching:
             prompt = "Match the pairs"
             subtitle = "Tap corresponding words"
-        default:         
+        case .conjugationMatch:
+            prompt = sentence.textLu
+            subtitle = "Which verb is this a form of?"
+        case .paradigmPicker:
+            prompt = targetWord
+            subtitle = "Complete the conjugation"
+        default:
             prompt = sentence.textEn
             subtitle = ""
         }
@@ -314,6 +346,40 @@ final class ExerciseViewModel {
             mcqOptions = (distractors + [answerOption]).shuffled()
         }
 
+        // Conjugation Match options: correct lemma + 3 distractor lemmas
+        var conjugationOptions: [String] = []
+        if type == .conjugationMatch {
+            let distractors = repository.getRandomDistractorsLu(target: targetWord, count: 3)
+            conjugationOptions = (distractors + [targetWord]).shuffled()
+        }
+
+        // Paradigm Picker: pick a random pronoun row, blank the verb form, build 4 options
+        var paradigmPromptPronoun = ""
+        var paradigmCorrectForm = ""
+        var paradigmPickerOptions: [String] = []
+        if type == .paradigmPicker,
+           let paradigmJson = senseData?.paradigm,
+           let data = paradigmJson.data(using: .utf8),
+           let parsed = try? JSONDecoder().decode(SeedParadigm.self, from: data),
+           parsed.present.count >= 3 {
+            let rows = parsed.present
+            let pickedIdx = Int.random(in: 0..<rows.count)
+            let row = rows[pickedIdx]
+            let parts = row.split(separator: " ", maxSplits: 1)
+            paradigmPromptPronoun = String(parts.first ?? Substring(row))
+            paradigmCorrectForm   = parts.count > 1 ? String(parts[1]) : row
+            // Options: all unique verb forms from the paradigm
+            let allForms = rows.compactMap { r -> String? in
+                let p = r.split(separator: " ", maxSplits: 1)
+                return p.count > 1 ? String(p[1]) : nil
+            }
+            let unique = Array(Set(allForms))
+            let distractors = unique.filter { $0 != paradigmCorrectForm }.shuffled().prefix(3)
+            paradigmPickerOptions = (Array(distractors) + [paradigmCorrectForm]).shuffled()
+            // Fall back to MC if not enough distinct forms
+            if paradigmPickerOptions.count < 2 { type = .multipleChoice }
+        }
+
         // Extract paradigm from sense (stored as JSON string)
         let decoder = JSONDecoder()
         if let paradigmJson = senseData?.paradigm,
@@ -336,10 +402,15 @@ final class ExerciseViewModel {
         uiState.targetWord = targetWord
         uiState.targetTranslation = translation
         uiState.sentenceParts = splitSentence(sentence.textLu, index: sentence.clozeIndex)
+        uiState.lastExerciseType = uiState.currentExerciseType
         uiState.currentExerciseType = type
         uiState.sentenceWithBlank = sentenceWithBlank
         uiState.multipleChoiceOptions = mcqOptions
         uiState.shuffledTokens = tokens
+        uiState.conjugationOptions = conjugationOptions
+        uiState.paradigmPromptPronoun = paradigmPromptPronoun
+        uiState.paradigmCorrectForm = paradigmCorrectForm
+        uiState.paradigmPickerOptions = paradigmPickerOptions
         uiState.currentSentenceIndex = nextIndex
         uiState.progress = progressVal
         uiState.currentMastery = currentM
@@ -545,6 +616,10 @@ final class ExerciseViewModel {
             let words = sentence.textLu.split(separator: " ").map { String($0) }
             let safeIndex = min(max(sentence.clozeIndex, 0), words.count - 1)
             comparisonTargetRaw = safeIndex < words.count ? words[safeIndex] : ""
+        case .conjugationMatch:
+            comparisonTargetRaw = uiState.displayedTargetWord
+        case .paradigmPicker:
+            comparisonTargetRaw = uiState.paradigmCorrectForm
         case .nRuleHunter:
             let sentencesWords = sentence.textLu.split(separator: " ").map { String($0) }
             let word = sentencesWords[uiState.nRuleWordIndex]
@@ -573,6 +648,18 @@ final class ExerciseViewModel {
         case .multipleChoice:
             if userInput == comparisonTarget {
                 feedback = .correct; result = .multipleChoice
+            } else {
+                feedback = .wrong; result = .error
+            }
+        case .conjugationMatch:
+            if userInput == comparisonTarget {
+                feedback = .correct; result = .conjugationMatch
+            } else {
+                feedback = .wrong; result = .error
+            }
+        case .paradigmPicker:
+            if userInput == comparisonTarget {
+                feedback = .correct; result = .paradigmPicker
             } else {
                 feedback = .wrong; result = .error
             }
@@ -614,10 +701,12 @@ final class ExerciseViewModel {
             resultType = .error
         } else {
             switch type {
-            case .multipleChoice: resultType = .multipleChoice
-            case .jumbledLu: resultType = .jumbledLu
-            case .jumbledEn: resultType = .jumbledEn
-            default: resultType = result
+            case .multipleChoice:      resultType = .multipleChoice
+            case .jumbledLu:           resultType = .jumbledLu
+            case .jumbledEn:           resultType = .jumbledEn
+            case .conjugationMatch:    resultType = .conjugationMatch
+            case .paradigmPicker:      resultType = .paradigmPicker
+            default:                   resultType = result
             }
         }
 
@@ -641,6 +730,12 @@ final class ExerciseViewModel {
             case .nRuleHunter:
                 mChange = 6
                 xpGained = 12
+            case .conjugationMatch:
+                mChange = 5
+                xpGained = 12
+            case .paradigmPicker:
+                mChange = 6
+                xpGained = 13
             case .zipfSpeedRun:
                 mChange = 5
                 xpGained = 8
@@ -695,6 +790,8 @@ final class ExerciseViewModel {
             case .cloze: return 10
             case .nRuleHunter: return 6
             case .zipfSpeedRun: return 5
+            case .conjugationMatch: return 5
+            case .paradigmPicker: return 6
             case .error: return -2
             }
         }

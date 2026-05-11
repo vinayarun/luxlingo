@@ -9,9 +9,9 @@ struct NRuleHunterView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            // Sentence Card
-            HStack(spacing: 4) {
-                let words = sentence.split(separator: " ").map(String.init)
+            // Sentence Card — uses flow layout so long sentences wrap naturally
+            let words = sentence.split(separator: " ").map(String.init)
+            CenteredWordFlow(spacing: 4, lineSpacing: 8) {
                 ForEach(0..<words.count, id: \.self) { i in
                     if i == targetWordIndex {
                         HStack(alignment: .firstTextBaseline, spacing: 0) {

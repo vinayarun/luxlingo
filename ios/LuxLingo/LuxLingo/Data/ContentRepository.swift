@@ -8,121 +8,123 @@ final class ContentRepository: ObservableObject {
 
     init(db: DatabaseManager) {
         self.db = db
-        seedDatabaseIfEmpty()
+        // Seeding is now async — caller must invoke seedIfNeeded() after init.
     }
 
     // MARK: - Seed Database
 
-    private func seedDatabaseIfEmpty() {
-        print("[LuxLingo] Checking if DB seeding is required (Deep Update)...")
-
+    /// Async seed: uses direct inserts (no per-record fetch) and yields between
+    /// batches so the main-thread watchdog is never triggered.
+    func seedIfNeeded() async {
         guard let url = Bundle.main.url(forResource: "initial_seed", withExtension: "json"),
               let data = try? Data(contentsOf: url) else {
             print("[LuxLingo] Seed file not found in bundle")
             return
         }
 
-        do {
-            let decoder = JSONDecoder()
-            let seedData = try decoder.decode(InitialSeedData.self, from: data)
-            
-            // ALPHA v3.2: Version-based forced re-seed
-            let lastSeededVersion = UserDefaults.standard.double(forKey: "last_seeded_version")
-            let currentLessons = db.getAllCurriculum().count
-            
-            let forceWipe = (seedData.version > lastSeededVersion) || (currentLessons == 0)
-            
-            if forceWipe {
-                print("[LuxLingo] Seed Update Required (Version \(seedData.version) vs \(lastSeededVersion)). Wiping database.")
-                
-                // Full Wipe
-                try? db.modelContext.delete(model: CurriculumEntity.self)
-                try? db.modelContext.delete(model: LessonStatusEntity.self)
-                try? db.modelContext.delete(model: SensesEntity.self)
-                try? db.modelContext.delete(model: VocabularyEntity.self)
-                try? db.modelContext.delete(model: SentencesEntity.self)
-                try? db.modelContext.delete(model: UserProgressEntity.self)
-                
-                db.save()
-            } else {
-                print("[LuxLingo] Database is up to date (Version \(lastSeededVersion)). Skipping seed.")
-                return
-            }
-            
-            print("[LuxLingo] Deep Seed: Processing \(seedData.vocabulary.count) words, \(seedData.senses.count) senses, \(seedData.sentences.count) sentences.")
-
-            // 1. Seed Vocabulary (Upsert)
-            for v in seedData.vocabulary {
-                db.insertVocabulary(VocabularyEntity(
-                    surfaceId: v.surfaceId,
-                    lemmaId: v.lemmaId,
-                    wordText: v.wordLu,
-                    audioRef: v.audioRef,
-                    lodAudioUrl: v.lodAudioUrl
-                ))
-            }
-
-            // 2. Seed Senses (Upsert)
-            let encoder = JSONEncoder()
-            for s in seedData.senses {
-                let paradigmJson: String? = s.paradigm.flatMap { p in
-                    (try? encoder.encode(p)).flatMap { String(data: $0, encoding: .utf8) }
-                }
-                db.insertSense(SensesEntity(
-                    senseId: s.senseId,
-                    surfaceId: s.surfaceId,
-                    translations: s.primaryEn,
-                    tags: s.pos,
-                    isGoldenKey: s.isGoldenKey ?? false,
-                    isPicturable: s.isPicturable ?? false,
-                    paradigm: paradigmJson
-                ))
-            }
-
-            // 3. Seed Sentences (Upsert)
-            for sent in seedData.sentences {
-                db.insertSentence(SentencesEntity(
-                    sentenceId: sent.sentenceId,
-                    textLu: sent.textLu,
-                    textEn: sent.textEn,
-                    senseIds: sent.senseIds.joined(separator: ","),
-                    clozeIndex: sent.clozeIndex,
-                    lexCoverage: 0.0,
-                    synDensity: 0.0,
-                    isHandcrafted: true,
-                    difficulty: sent.difficulty,
-                    nRuleWordIndex: sent.nRuleWordIndex,
-                    nRuleForm: sent.nRuleForm,
-                    exactForm: sent.exactForm ?? true
-                ))
-            }
-
-            // 4. Seed Curriculum with Order Index
-            for (index, curr) in seedData.curriculum.enumerated() {
-                db.insertCurriculum(CurriculumEntity(
-                    lessonId: curr.lessonId,
-                    titleEn: curr.titleEn,
-                    coreSenses: curr.coreSenses.joined(separator: ","),
-                    secondarySenses: curr.secondarySenses?.joined(separator: ","),
-                    orderIndex: index
-                ))
-
-                db.insertLessonStatus(LessonStatusEntity(
-                    lessonId: curr.lessonId,
-                    titleEn: curr.titleEn,
-                    isCompleted: false,
-                    mastery: 0,
-                    completionPercentage: 0.0,
-                    orderIndex: index
-                ))
-            }
-
-            db.save()
-            UserDefaults.standard.set(seedData.version, forKey: "last_seeded_version")
-            print("[LuxLingo] Deep Seed Successful: All data synced with seed file (Version \(seedData.version)).")
-        } catch {
-            print("[LuxLingo] Seed Error: \(error.localizedDescription)")
+        guard let seedData = try? JSONDecoder().decode(InitialSeedData.self, from: data) else {
+            print("[LuxLingo] Failed to decode seed file")
+            return
         }
+
+        let lastSeededVersion = UserDefaults.standard.double(forKey: "last_seeded_version")
+        let currentLessons = db.getAllCurriculum().count
+        guard seedData.version > lastSeededVersion || currentLessons == 0 else {
+            print("[LuxLingo] DB up to date (v\(lastSeededVersion)). Skipping seed.")
+            return
+        }
+
+        print("[LuxLingo] Seed required v\(lastSeededVersion)→v\(seedData.version). Wiping DB...")
+
+        try? db.modelContext.delete(model: CurriculumEntity.self)
+        try? db.modelContext.delete(model: LessonStatusEntity.self)
+        try? db.modelContext.delete(model: SensesEntity.self)
+        try? db.modelContext.delete(model: VocabularyEntity.self)
+        try? db.modelContext.delete(model: SentencesEntity.self)
+        try? db.modelContext.delete(model: UserProgressEntity.self)
+        db.save()
+        await Task.yield()
+
+        print("[LuxLingo] Seeding \(seedData.vocabulary.count) words, \(seedData.senses.count) senses, \(seedData.sentences.count) sentences...")
+
+        // 1. Vocabulary — direct insert, no fetch (DB is empty after wipe)
+        for v in seedData.vocabulary {
+            db.modelContext.insert(VocabularyEntity(
+                surfaceId: v.surfaceId,
+                lemmaId: v.lemmaId,
+                wordText: v.wordLu,
+                audioRef: v.audioRef,
+                lodAudioUrl: v.lodAudioUrl
+            ))
+        }
+        db.save()
+        await Task.yield()
+
+        // 2. Senses
+        let encoder = JSONEncoder()
+        for s in seedData.senses {
+            let paradigmJson = s.paradigm.flatMap { p in
+                (try? encoder.encode(p)).flatMap { String(data: $0, encoding: .utf8) }
+            }
+            db.modelContext.insert(SensesEntity(
+                senseId: s.senseId,
+                surfaceId: s.surfaceId,
+                translations: s.primaryEn,
+                tags: s.pos,
+                isGoldenKey: s.isGoldenKey ?? false,
+                isPicturable: s.isPicturable ?? false,
+                paradigm: paradigmJson
+            ))
+        }
+        db.save()
+        await Task.yield()
+
+        // 3. Sentences — batch saves every 500 rows to cap memory pressure
+        for (i, sent) in seedData.sentences.enumerated() {
+            db.modelContext.insert(SentencesEntity(
+                sentenceId: sent.sentenceId,
+                textLu: sent.textLu,
+                textEn: sent.textEn,
+                senseIds: sent.senseIds.joined(separator: ","),
+                clozeIndex: sent.clozeIndex,
+                lexCoverage: 0.0,
+                synDensity: 0.0,
+                isHandcrafted: true,
+                difficulty: sent.difficulty,
+                nRuleWordIndex: sent.nRuleWordIndex,
+                nRuleForm: sent.nRuleForm,
+                exactForm: sent.exactForm ?? true
+            ))
+            if i % 500 == 499 {
+                db.save()
+                await Task.yield()
+            }
+        }
+        db.save()
+        await Task.yield()
+
+        // 4. Curriculum
+        for (index, curr) in seedData.curriculum.enumerated() {
+            db.modelContext.insert(CurriculumEntity(
+                lessonId: curr.lessonId,
+                titleEn: curr.titleEn,
+                coreSenses: curr.coreSenses.joined(separator: ","),
+                secondarySenses: curr.secondarySenses?.joined(separator: ","),
+                orderIndex: index
+            ))
+            db.modelContext.insert(LessonStatusEntity(
+                lessonId: curr.lessonId,
+                titleEn: curr.titleEn,
+                isCompleted: false,
+                mastery: 0,
+                completionPercentage: 0.0,
+                orderIndex: index
+            ))
+        }
+        db.save()
+
+        UserDefaults.standard.set(seedData.version, forKey: "last_seeded_version")
+        print("[LuxLingo] Seed complete v\(seedData.version).")
     }
 
     // MARK: - Units / Curriculum
@@ -331,16 +333,18 @@ final class ContentRepository: ObservableObject {
 
             let validSentences = finalPool.filter { !effectiveExclusions.contains($0.sentenceId) }
 
-            // For early lessons, only use sentences where the target word appears in its exact base form.
-            // If all exact sentences are in the recency buffer, ignore recency rather than falling
-            // back to conjugated/n-rule sentences — better to repeat than to confuse.
+            // For early lessons, prefer sentences where the target word appears in its exact base form
+            // (not conjugated or n-rule modified). But if fewer than 3 exact-form sentences exist
+            // in the pool, fall back to all valid sentences — better variety than repeating 2 sentences
+            // For early lessons prefer the base/exact form of the word. Never fall back to
+            // conjugated sentences — better to repeat than to confuse beginners.
             let candidates: [SentencesEntity]
             if lessonNum <= 4 {
                 let exactFromValid = validSentences.filter { $0.exactForm }
                 if !exactFromValid.isEmpty {
                     candidates = exactFromValid
                 } else {
-                    // All exact sentences recently used — ignore recency, pick any exact sentence
+                    // All exact sentences are in the recency buffer — ignore recency.
                     let allExact = finalPool.filter { $0.exactForm }
                     candidates = allExact.isEmpty ? validSentences : allExact
                 }
@@ -396,9 +400,9 @@ final class ContentRepository: ObservableObject {
 
     // MARK: - Matching Pairs
 
-    func getMatchingPairs(lessonId: String) -> [MatchingItemModel] {
-        let coreSenses = getLessonCoreSenses(lessonId: lessonId)
-        return coreSenses.compactMap { sense in
+    func getMatchingPairs(lessonId: String, count: Int = 4) -> [MatchingItemModel] {
+        let coreSenses = getLessonCoreSenses(lessonId: lessonId).shuffled()
+        return coreSenses.compactMap { sense -> MatchingItemModel? in
             guard let vocab = db.getVocabularyById(sense.surfaceId) else { return nil }
             return MatchingItemModel(
                 id: sense.senseId,
@@ -406,6 +410,8 @@ final class ContentRepository: ObservableObject {
                 translatedText: sense.translations
             )
         }
+        .prefix(count)
+        .shuffled()
     }
 
     // MARK: - Mastery Helpers

@@ -151,18 +151,7 @@ private struct ExerciseTypeRow: View {
     let description: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .foregroundColor(color)
-                .font(.title3)
-                .frame(width: 28)
-                .padding(.top, 1)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(name).font(.subheadline).fontWeight(.semibold)
-                Text(description).font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
-            }
-        }
-        .padding(.vertical, 10)
+        InfoRow(icon: icon, color: color, name: name, description: description)
     }
 }
 
@@ -173,16 +162,31 @@ struct FeatureRow: View {
     let description: String
 
     var body: some View {
+        InfoRow(icon: icon, color: color, name: name, description: description)
+    }
+}
+
+private struct InfoRow: View {
+    let icon: String
+    let color: Color
+    let name: String
+    let description: String
+
+    var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .foregroundColor(color)
-                .font(.title3)
-                .frame(width: 28)
-                .padding(.top, 1)
+            ZStack {
+                RoundedRectangle(cornerRadius: 7)
+                    .fill(color.opacity(0.13))
+                    .frame(width: 32, height: 32)
+                Image(systemName: icon)
+                    .foregroundColor(color)
+                    .font(.system(size: 15, weight: .medium))
+            }
             VStack(alignment: .leading, spacing: 2) {
                 Text(name).font(.subheadline).fontWeight(.semibold)
                 Text(description).font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
             }
+            Spacer(minLength: 0)
         }
         .padding(.vertical, 10)
     }

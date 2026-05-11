@@ -1,5 +1,201 @@
 import SwiftUI
 
+// MARK: - Shared MCQ button helper
+
+private struct MCQOptionButton: View {
+    let option: String
+    let isSelected: Bool
+    let isCorrect: Bool
+    let showFeedback: Bool
+    let revealColors: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack {
+                Text(option).font(.headline)
+                Spacer()
+                if revealColors && isCorrect {
+                    Image(systemName: "checkmark.circle.fill").foregroundColor(.white)
+                } else if revealColors && isSelected && !isCorrect {
+                    Image(systemName: "xmark.circle.fill").foregroundColor(.white)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(
+                revealColors
+                    ? (isCorrect ? Color.luxGreen : (isSelected ? Color.luxRed : Color(.systemGray6)))
+                    : (isSelected ? Color.luxGreen.opacity(0.15) : Color(.systemGray6))
+            )
+            .foregroundColor(revealColors && (isCorrect || isSelected) ? .white : .primary)
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isSelected && !showFeedback ? Color.luxGreen : Color.clear, lineWidth: 2)
+            )
+        }
+        .buttonStyle(.plain)
+        .disabled(showFeedback)
+        .animation(.easeInOut(duration: 0.15), value: isSelected)
+    }
+}
+
+// MARK: - Conjugation Match Exercise
+
+struct ConjugationMatchExercise: View {
+    let sentence: String
+    let highlightedForm: String
+    let options: [String]
+    let selectedOption: String?
+    let correctOption: String?
+    let isFeedbackVisible: Bool
+    let isWrongAnswer: Bool
+    let failureCount: Int
+    let onSelect: (String) -> Void
+
+    var body: some View {
+        VStack(spacing: 16) {
+            // Sentence with the conjugated form highlighted
+            VStack(spacing: 6) {
+                Text("Find the verb")
+                    .font(.caption).fontWeight(.semibold)
+                    .foregroundColor(.secondary)
+                HighlightedSentenceText(sentence: sentence, highlight: highlightedForm)
+                    .multilineTextAlignment(.center)
+                    .padding(16)
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+            }
+
+            Text("Which verb does '\(highlightedForm)' come from?")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+
+            ForEach(options, id: \.self) { option in
+                let isSelected = selectedOption == option
+                let isCorrect  = correctOption == option
+                let revealColors = isFeedbackVisible && (failureCount >= 2 || !isWrongAnswer)
+                MCQOptionButton(
+                    option: option,
+                    isSelected: isSelected,
+                    isCorrect: isCorrect,
+                    showFeedback: isFeedbackVisible,
+                    revealColors: revealColors,
+                    onTap: { if !isFeedbackVisible { onSelect(option) } }
+                )
+            }
+        }
+    }
+}
+
+// MARK: - Sentence with one word highlighted in accent colour
+
+private struct HighlightedSentenceText: View {
+    let sentence: String
+    let highlight: String
+
+    var body: some View {
+        let words = sentence.split(separator: " ").map(String.init)
+        var result = AttributedString()
+        for (i, word) in words.enumerated() {
+            let clean = word.trimmingCharacters(in: .punctuationCharacters)
+            var part = AttributedString(word)
+            if clean.lowercased() == highlight.lowercased() {
+                part.foregroundColor = UIColor(named: "AccentColor").map { Color($0) } ?? .accentColor
+                part.font = .systemFont(ofSize: 17, weight: .bold)
+            }
+            result += part
+            if i < words.count - 1 { result += AttributedString(" ") }
+        }
+        return Text(result).font(.title3)
+    }
+}
+
+// MARK: - Paradigm Picker Exercise
+
+struct ParadigmPickerExercise: View {
+    let lemma: String
+    let translation: String
+    let pronoun: String
+    let options: [String]
+    let paradigmRows: [String]
+    let selectedOption: String?
+    let correctOption: String
+    let isFeedbackVisible: Bool
+    let isWrongAnswer: Bool
+    let failureCount: Int
+    let onSelect: (String) -> Void
+
+    var body: some View {
+        VStack(spacing: 16) {
+            // Verb identity card
+            VStack(spacing: 4) {
+                Text(lemma)
+                    .font(.largeTitle).fontWeight(.bold)
+                Text(translation)
+                    .font(.subheadline).foregroundColor(.secondary)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity)
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+
+            // Conjugation table (all rows, blank the target pronoun row)
+            if !paradigmRows.isEmpty {
+                VStack(spacing: 0) {
+                    ForEach(Array(paradigmRows.enumerated()), id: \.offset) { idx, row in
+                        let parts = row.split(separator: " ", maxSplits: 1)
+                        let rowPronoun = String(parts.first ?? Substring(row))
+                        let isTarget   = rowPronoun == pronoun
+                        HStack {
+                            Text(rowPronoun)
+                                .font(.subheadline).foregroundColor(.secondary)
+                                .frame(width: 90, alignment: .leading)
+                            if isTarget {
+                                Text("___")
+                                    .font(.subheadline).fontWeight(.bold)
+                                    .foregroundColor(.accentColor)
+                            } else {
+                                let form = parts.count > 1 ? String(parts[1]) : ""
+                                Text(form)
+                                    .font(.subheadline).fontWeight(.semibold)
+                            }
+                            Spacer()
+                        }
+                        .padding(.horizontal, 12).padding(.vertical, 6)
+                        .background(isTarget ? Color.accentColor.opacity(0.08) : Color.clear)
+                        if idx < paradigmRows.count - 1 { Divider().padding(.leading, 12) }
+                    }
+                }
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+            }
+
+            Text("Pick the correct form for '\(pronoun)'")
+                .font(.subheadline).foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+
+            // Option buttons
+            ForEach(options, id: \.self) { option in
+                let isSelected = selectedOption == option
+                let isCorrect  = correctOption == option
+                let revealColors = isFeedbackVisible && (failureCount >= 2 || !isWrongAnswer)
+                MCQOptionButton(
+                    option: option,
+                    isSelected: isSelected,
+                    isCorrect: isCorrect,
+                    showFeedback: isFeedbackVisible,
+                    revealColors: revealColors,
+                    onTap: { if !isFeedbackVisible { onSelect(option) } }
+                )
+            }
+        }
+    }
+}
+
 /// Strips parenthetical reflexive pronouns (e.g. "(mech)") and returns the verb form.
 /// "ech hunn (mech)" → "hunn",  "hien/si/et huet (sech)" → "huet"
 private func verbFormOnly(_ row: String) -> String {
@@ -23,21 +219,21 @@ struct FlashcardExercise: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 16) {
-                // Word + speaker button
-                HStack(alignment: .center, spacing: 10) {
-                    Text(targetWord)
-                        .font(.system(size: targetWord.count > 10 ? 34 : 46, weight: .bold))
-                        .foregroundColor(.luxGreen)
-                        .shadow(color: .luxGreen.opacity(0.15), radius: 6, y: 3)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
-
-                    SpeakerButton(text: targetWord, audioUrl: lodAudioUrl)
-                        .font(.title2)
-                        .frame(width: 32, height: 32)
-                        .background(Color.luxGreen.opacity(0.08))
-                        .clipShape(Circle())
-                }
+                // Word centred on full width; speaker floats at the trailing edge
+                Text(targetWord)
+                    .font(.system(size: targetWord.count > 10 ? 34 : 46, weight: .bold))
+                    .foregroundColor(.luxGreen)
+                    .shadow(color: .luxGreen.opacity(0.15), radius: 6, y: 3)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .overlay(alignment: .trailing) {
+                        SpeakerButton(text: targetWord, audioUrl: lodAudioUrl)
+                            .font(.title2)
+                            .frame(width: 32, height: 32)
+                            .background(Color.luxGreen.opacity(0.08))
+                            .clipShape(Circle())
+                    }
 
                 Text(translation)
                     .font(.title3)
@@ -558,40 +754,76 @@ struct FlowLayout: Layout {
     }
 }
 
-// MARK: - Lesson Progress Bar
+// MARK: - Lesson Progress Dots
 struct LessonProgressBar: View {
     let progress: Float
+    private static let totalDots = 10
 
-    // Gradient spans the full track width; the fill clips to show only the earned portion.
-    // Blue → Amber → Green mirrors the three lesson phases so colour shifts naturally as you advance.
-    private static let fillGradient = LinearGradient(
-        stops: [
-            .init(color: Color(red: 0.28, green: 0.52, blue: 1.00), location: 0.00),
-            .init(color: .luxAmber,                                  location: 0.45),
-            .init(color: .luxGreen,                                  location: 1.00),
-        ],
-        startPoint: .leading,
-        endPoint: .trailing
-    )
+    private var filledCount: Int {
+        min(Self.totalDots, Int(progress * Float(Self.totalDots)))
+    }
 
-    private var glowColor: Color {
-        if progress < 0.3 { return Color(red: 0.28, green: 0.52, blue: 1.00) }
-        if progress < 0.7 { return .luxAmber }
+    // Fractional fill of the dot currently being worked on (0.0–1.0)
+    private var activeFraction: Double {
+        let raw = Double(progress) * Double(Self.totalDots)
+        return raw - Double(Int(raw))
+    }
+
+    private var phaseColor: Color {
+        if progress < 0.30 { return Color(red: 0.28, green: 0.52, blue: 1.0) }
+        if progress < 0.70 { return .luxAmber }
         return .luxGreen
     }
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .leading) {
-                Capsule().fill(Color(.systemGray5))
-
-                Capsule()
-                    .fill(Self.fillGradient)
-                    .frame(width: max(16, geo.size.width * CGFloat(min(1, max(0, progress)))))
-                    .shadow(color: glowColor.opacity(0.45), radius: 5, y: 2)
+        HStack(spacing: 6) {
+            ForEach(0..<Self.totalDots, id: \.self) { i in
+                DotView(
+                    state: dotState(for: i),
+                    color: phaseColor
+                )
             }
         }
-        .frame(height: 8)
-        .animation(.spring(response: 0.5, dampingFraction: 0.75), value: progress)
+        .animation(.spring(response: 0.4, dampingFraction: 0.65), value: progress)
+    }
+
+    private enum DotState { case filled, active(Double), empty }
+
+    private func dotState(for i: Int) -> DotState {
+        if i < filledCount { return .filled }
+        if i == filledCount && filledCount < Self.totalDots { return .active(activeFraction) }
+        return .empty
+    }
+
+    private struct DotView: View {
+        let state: DotState
+        let color: Color
+
+        var body: some View {
+            ZStack {
+                Circle().fill(Color(.systemGray5))
+                Circle()
+                    .fill(color)
+                    .scaleEffect(scale)
+                    .opacity(opacity)
+            }
+            .frame(width: 9, height: 9)
+        }
+
+        private var scale: Double {
+            switch state {
+            case .filled:          return 1.0
+            case .active(let f):   return 0.35 + 0.65 * f
+            case .empty:           return 0.0
+            }
+        }
+
+        private var opacity: Double {
+            switch state {
+            case .filled:        return 1.0
+            case .active(let f): return 0.3 + 0.7 * f
+            case .empty:         return 0.0
+            }
+        }
     }
 }

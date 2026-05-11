@@ -8,6 +8,20 @@ struct HomeScreen: View {
     let onLessonSelected: (String, String) -> Void
     
     @State private var showingInfo = false
+    @State private var menuSelectedTab = 0
+
+    private var overallCoverage: Int {
+        units.flatMap { $0.lessons }
+            .filter { $0.isCompleted }
+            .map { $0.coveragePercent }
+            .max() ?? 0
+    }
+
+    private func formatXP(_ value: Int) -> String {
+        if value >= 1_000_000 { return "\(value / 1_000_000)M" }
+        if value >= 1_000    { return String(format: "%.1fk", Double(value) / 1_000) }
+        return "\(value)"
+    }
 
     var body: some View {
         ScrollView {
@@ -21,24 +35,29 @@ struct HomeScreen: View {
         .navigationTitle("LuxLingo")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { showingInfo = true }) {
+                Button(action: { menuSelectedTab = 0; showingInfo = true }) {
                     Image(systemName: "line.3.horizontal")
                         .font(.title3)
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                HStack(spacing: 12) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "flame.fill")
-                            .foregroundColor(.orange)
-                        Text("\(streak)")
-                    }
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                    HStack(spacing: 4) {
-                        Image(systemName: "star.fill")
-                            .foregroundColor(.luxGreen)
-                        Text("\(xp)")
+                Button(action: { menuSelectedTab = 2; showingInfo = true }) {
+                    HStack(spacing: 10) {
+                        HStack(spacing: 3) {
+                            Image(systemName: "flame.fill").foregroundColor(.orange)
+                            Text("\(streak)")
+                        }
+                        HStack(spacing: 3) {
+                            Image(systemName: "star.fill").foregroundColor(.luxAmber)
+                            Text(formatXP(xp))
+                        }
+                        if overallCoverage > 0 {
+                            HStack(spacing: 3) {
+                                Image(systemName: "chart.line.uptrend.xyaxis")
+                                    .foregroundColor(.luxGreen)
+                                Text("\(overallCoverage)%")
+                            }
+                        }
                     }
                     .font(.subheadline)
                     .fontWeight(.bold)
@@ -46,7 +65,7 @@ struct HomeScreen: View {
             }
         }
         .sheet(isPresented: $showingInfo) {
-            MenuSheet(units: units, xp: xp, streak: streak)
+            MenuSheet(units: units, xp: xp, streak: streak, selectedTab: $menuSelectedTab)
         }
     }
 }
@@ -82,14 +101,9 @@ struct LessonProgressRing: View {
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.luxGreen)
             } else {
-                VStack(spacing: 0) {
-                    Text("\(lesson.practicedWords)")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.primary)
-                    Text("/\(lesson.totalWords)")
-                        .font(.system(size: 9, weight: .regular))
-                        .foregroundColor(.secondary)
-                }
+                Text("\(lesson.practicedWords)/\(lesson.totalWords)")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.primary)
             }
         }
         .frame(width: 44, height: 44)
@@ -101,47 +115,114 @@ struct UnitCard: View {
     let unit: CourseUnit
     let onLessonSelected: (String, String) -> Void
 
+    // Scene images assigned to units in order; cycles for units beyond the list.
+    // UIImage(named:) returns nil silently for any scenes not yet in the asset catalog.
+    private static let sceneNames: [String] = [
+        "scene_classroom",          // Unit 1
+        "scene_cycling_path",       // Unit 2
+        "scene_village_entry",      // Unit 3
+        "scene_village_park",       // Unit 4
+        "scene_village_river",      // Unit 5
+        "scene_library",            // Unit 6
+        "scene_kitchen_evening",    // Unit 7
+        "scene_cafe_bakery",        // Unit 8
+        "scene_garden_fence",       // Unit 9
+        "scene_school_morning",     // Unit 10
+        "scene_village_market",     // Unit 11
+        "scene_doctors_office",     // Unit 12
+        "scene_sports_hall",        // Unit 13
+        "scene_train_station",      // Unit 14
+        "scene_river_winter",       // Unit 15
+        "scene_church_square",      // Unit 16
+        "scene_school_playground",  // Unit 17
+        "scene_bus_stop",           // Unit 18
+        "scene_village_street",     // Unit 19
+        "scene_river_swimming",     // Unit 20
+        "scene_winter_street",      // Unit 21
+    ]
+
+    private var unitIndex: Int {
+        Int(unit.id.replacingOccurrences(of: "module_", with: "")) ?? 1
+    }
+
+    private var sceneImage: UIImage? {
+        guard !Self.sceneNames.isEmpty else { return nil }
+        let name = Self.sceneNames[(unitIndex - 1) % Self.sceneNames.count]
+        return UIImage(named: name)
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(unit.title)
-                .font(.title2)
-                .fontWeight(.bold)
+        VStack(alignment: .leading, spacing: 0) {
 
-            ForEach(Array(unit.lessons.enumerated()), id: \.element.id) { index, lesson in
-                Button {
-                    onLessonSelected(unit.id, lesson.id)
-                } label: {
-                    HStack(spacing: 16) {
-                        LessonProgressRing(lesson: lesson)
+            // Scene banner — only shown when the asset exists
+            if let img = sceneImage {
+                ZStack(alignment: .bottomLeading) {
+                    Image(uiImage: img)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 130)
+                        .clipped()
 
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(lesson.title)
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.8)
-                            Text(lesson.objective)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                        }
+                    LinearGradient(
+                        colors: [.clear, .black.opacity(0.55)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
 
-                        Spacer()
-
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 8)
-                }
-
-                if index < unit.lessons.count - 1 {
-                    Divider()
-                        .padding(.leading, 56)
+                    Text(unit.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 12)
                 }
             }
+
+            // Lesson list
+            VStack(alignment: .leading, spacing: 8) {
+                if sceneImage == nil {
+                    Text(unit.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                }
+
+                ForEach(Array(unit.lessons.enumerated()), id: \.element.id) { index, lesson in
+                    Button {
+                        onLessonSelected(unit.id, lesson.id)
+                    } label: {
+                        HStack(spacing: 16) {
+                            LessonProgressRing(lesson: lesson)
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(lesson.title)
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.8)
+                                Text(lesson.objective)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(1)
+                                    .truncationMode(.tail)
+                            }
+
+                            Spacer()
+
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.vertical, 8)
+                    }
+
+                    if index < unit.lessons.count - 1 {
+                        Divider()
+                            .padding(.leading, 56)
+                    }
+                }
+            }
+            .padding(16)
         }
-        .padding(16)
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
@@ -154,14 +235,16 @@ struct MenuSheet: View {
     let units: [CourseUnit]
     let xp: Int
     let streak: Int
+    @Binding var selectedTab: Int
 
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedTab = 0
 
-    private let tabs: [(label: String, icon: String)] = [
-        ("How to Use",   "hand.tap.fill"),
-        ("How It Works", "info.circle.fill"),
-        ("My Progress",  "chart.bar.fill"),
+    private struct TabItem { let label: String; let icon: String }
+    private let tabs: [TabItem] = [
+        TabItem(label: "How to Use",     icon: "hand.tap.fill"),
+        TabItem(label: "Our Method",     icon: "atom"),
+        TabItem(label: "My Progress",    icon: "chart.bar.fill"),
+        TabItem(label: "Grammar Tips", icon: "book.pages"),
     ]
 
     var body: some View {
@@ -204,13 +287,17 @@ struct MenuSheet: View {
 
                 Divider()
 
-                // ── Swipeable content ──────────────────────────────────────
-                TabView(selection: $selectedTab) {
-                    HowToUseScreen().tag(0)
-                    ZipfsLawInfoScreen().tag(1)
-                    StatsScreen(units: units, xp: xp, streak: streak).tag(2)
+                // ── Tab content ────────────────────────────────────────────
+                Group {
+                    switch selectedTab {
+                    case 1: ZipfsLawInfoScreen()
+                    case 2: StatsScreen(units: units, xp: xp, streak: streak)
+                    case 3: LanguageGuideScreen()
+                    default: HowToUseScreen()
+                    }
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .animation(.easeInOut(duration: 0.18), value: selectedTab)
             }
             .navigationTitle(tabs[selectedTab].label)
             .navigationBarTitleDisplayMode(.inline)

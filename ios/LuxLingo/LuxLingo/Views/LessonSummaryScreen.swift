@@ -7,6 +7,19 @@ struct LessonSummaryScreen: View {
     let onBackToMenu: () -> Void
 
     var body: some View {
+        ZStack {
+            if let img = UIImage(named: "scene_school_playground") {
+                Image(uiImage: img)
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .opacity(0.12)
+            }
+            summaryContent
+        }
+    }
+
+    private var summaryContent: some View {
         VStack(spacing: 24) {
             Spacer()
 

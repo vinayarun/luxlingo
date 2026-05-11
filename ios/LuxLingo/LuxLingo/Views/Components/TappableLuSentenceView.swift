@@ -160,7 +160,7 @@ struct WordLookupCard: View {
                             .font(.caption).foregroundColor(.secondary)
                     }
                 } else if let translations = result?.translations, !translations.isEmpty {
-                    ScrollView(.vertical, showsIndicators: translations.count > 4) {
+                    ScrollView(.vertical, showsIndicators: true) {
                         VStack(alignment: .leading, spacing: 4) {
                             ForEach(Array(translations.enumerated()), id: \.offset) { i, t in
                                 HStack(alignment: .top, spacing: 6) {
@@ -169,11 +169,13 @@ struct WordLookupCard: View {
                                         .frame(minWidth: 16, alignment: .trailing)
                                     Text(t)
                                         .font(.subheadline).foregroundColor(.secondary)
+                                    Spacer(minLength: 0)
                                 }
                             }
                         }
+                        .padding(.trailing, 6)
                     }
-                    .frame(maxHeight: 96)
+                    .frame(maxWidth: .infinity, maxHeight: translations.count <= 3 ? nil : 100)
                 } else {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Not found in dictionary")

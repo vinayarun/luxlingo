@@ -5,6 +5,8 @@ struct ExerciseScreen: View {
     @Bindable var viewModel: ExerciseViewModel
     let onBack: () -> Void
     @State private var showReadingConjugation = false
+    @State private var showGrammarGuide = false
+    @State private var grammarGuideSection = GrammarGuideSection.conjugation
 
     // MARK: Character detection
     private static let characterMap: [(name: String, asset: String)] = [
@@ -21,21 +23,35 @@ struct ExerciseScreen: View {
 
     private var characterAvatarAssets: [String] {
         guard let text = viewModel.uiState.currentSentence?.textEn, !text.isEmpty else { return [] }
-        let found = Self.characterMap.compactMap { name, asset -> String? in
-            text.range(of: "\\b\(name)\\b", options: .regularExpression) != nil ? asset : nil
+        let found = Self.characterMap.compactMap { name, asset -> (String, Int)? in
+            guard let range = text.range(of: "\\b\(name)\\b", options: .regularExpression) else { return nil }
+            return (asset, text.distance(from: text.startIndex, to: range.lowerBound))
         }
-        return Array(found.prefix(Self.maxCharacterAvatars))
+        return found.sorted { $0.1 < $1.1 }.prefix(Self.maxCharacterAvatars).map { $0.0 }
     }
 
+    @State private var showCelebration = false
+
     var body: some View {
-        if viewModel.uiState.isLessonFinished {
-            LessonSummaryScreen(
-                masteredSenses: viewModel.uiState.masteredSenses,
-                sessionXP: viewModel.uiState.sessionXP,
-                onBackToMenu: onBack
-            )
-        } else {
-            exerciseContent
+        Group {
+            if showCelebration {
+                CelebrationView {
+                    showCelebration = false
+                }
+            } else if viewModel.uiState.isLessonFinished {
+                LessonSummaryScreen(
+                    masteredSenses: viewModel.uiState.masteredSenses,
+                    sessionXP: viewModel.uiState.sessionXP,
+                    onBackToMenu: onBack
+                )
+            } else {
+                exerciseContent
+            }
+        }
+        .onChange(of: viewModel.uiState.isLessonFinished) {
+            if viewModel.uiState.isLessonFinished && !showCelebration {
+                showCelebration = true
+            }
         }
     }
 
@@ -116,6 +132,29 @@ struct ExerciseScreen: View {
                             .animation(.luxSpring, value: avatars.joined())
                         }
 
+                        // Paradigm-mismatch hint — shown for all exercise types when the sentence
+                        // uses a conjugated form of the lemma (e.g. "ass" when teaching "sinn")
+                        let sentForm  = viewModel.uiState.targetWord
+                        let lemmaForm = viewModel.uiState.displayedTargetWord
+                        let exerciseTypeForHint = viewModel.uiState.currentExerciseType
+                        if viewModel.uiState.paradigm != nil,
+                           !sentForm.isEmpty, !lemmaForm.isEmpty,
+                           sentForm.lowercased() != lemmaForm.lowercased(),
+                           exerciseTypeForHint != .matching,
+                           exerciseTypeForHint != .zipfSpeedRun,
+                           exerciseTypeForHint != .reading,   // reading already shows the conjugation chip
+                           exerciseTypeForHint != .flashcard {
+                            HStack(spacing: 5) {
+                                Image(systemName: "info.circle")
+                                    .font(.caption2)
+                                Text("'\(sentForm)' is a conjugated form of '\(lemmaForm)'")
+                                    .font(.caption)
+                            }
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 16)
+                            .padding(.top, 2)
+                        }
+
                         // Dynamic Exercise Content
                         exerciseBody
                             .transition(.asymmetric(
@@ -152,6 +191,7 @@ struct ExerciseScreen: View {
                             if viewModel.uiState.currentExerciseType == .reading {
                                 viewModel.onReadingContinue()
                             } else if viewModel.uiState.currentExerciseType == .flashcard {
+                                AudioFeedbackService.shared.playCorrect()
                                 viewModel.onFlashcardContinue()
                             } else {
                                 viewModel.checkAnswer()
@@ -177,7 +217,11 @@ struct ExerciseScreen: View {
             guard viewModel.uiState.isFeedbackVisible else { return }
             switch viewModel.uiState.feedback {
             case .correct, .typo, .nRule:
-                AudioFeedbackService.shared.playCorrect()
+                if viewModel.uiState.currentExerciseType == .reading {
+                    AudioFeedbackService.shared.playReading()
+                } else {
+                    AudioFeedbackService.shared.playCorrect()
+                }
             case .wrong:
                 AudioFeedbackService.shared.playWrong()
             default:
@@ -201,7 +245,7 @@ struct ExerciseScreen: View {
         
         switch viewModel.uiState.currentExerciseType {
         case .nRuleHunter:
-            return viewModel.uiState.feedback == .none && viewModel.isInteractionReady
+            return true  // always active — submitting blank (no n) is a valid answer
         case .jumbledLu, .jumbledEn:
             // Only enable check for jumbled if at least one token is selected
             return !viewModel.uiState.userInput.isEmpty && viewModel.uiState.feedback == .none
@@ -261,15 +305,18 @@ struct ExerciseScreen: View {
 
                     if viewModel.uiState.paradigm != nil || viewModel.uiState.nRuleFormInSentence != nil {
                         HStack(spacing: 8) {
-                            if let p = viewModel.uiState.paradigm {
+                            if viewModel.uiState.paradigm != nil {
                                 Button { showReadingConjugation = true } label: {
                                     HStack(spacing: 4) {
                                         Image(systemName: "arrow.triangle.branch").font(.caption2)
-                                        let lemmaLower = viewModel.uiState.displayedTargetWord.lowercased()
-                                        let conjugatedForm = p.first(where: {
-                                            ($0.components(separatedBy: " ").filter { !$0.hasPrefix("(") }.last ?? "").lowercased() != lemmaLower
-                                        }).flatMap { $0.components(separatedBy: " ").filter { !$0.hasPrefix("(") }.last } ?? ""
-                                        Text(conjugatedForm.isEmpty ? "Conjugations" : "\(viewModel.uiState.displayedTargetWord) → \(conjugatedForm)")
+                                        // Show the actual form used in this sentence, not just the
+                                        // first non-lemma paradigm row (e.g. "sinn → ass" not "sinn → bass")
+                                        let sentForm = viewModel.uiState.targetWord
+                                        let lemma    = viewModel.uiState.displayedTargetWord
+                                        let chipLabel = sentForm.lowercased() != lemma.lowercased()
+                                            ? "\(lemma) → \(sentForm)"
+                                            : "Conjugations"
+                                        Text(chipLabel)
                                             .font(.caption).fontWeight(.semibold)
                                         Image(systemName: "chevron.right").font(.caption2)
                                     }
@@ -280,15 +327,38 @@ struct ExerciseScreen: View {
                                 }.buttonStyle(.plain)
                             }
                             if let nForm = viewModel.uiState.nRuleFormInSentence {
+                                Button {
+                                    grammarGuideSection = .nRule
+                                    showGrammarGuide = true
+                                } label: {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "n.circle").font(.caption2)
+                                        Text("\(viewModel.uiState.displayedTargetWord) → \(nForm)")
+                                            .font(.caption).fontWeight(.semibold)
+                                        Text("n-rule").font(.caption2).foregroundColor(.secondary)
+                                        Image(systemName: "chevron.right").font(.caption2)
+                                    }
+                                    .foregroundColor(.luxPurple)
+                                    .padding(.horizontal, 10).padding(.vertical, 5)
+                                    .background(Color.luxPurple.opacity(0.10))
+                                    .cornerRadius(8)
+                                }.buttonStyle(.plain)
+                            }
+                            // Contraction hint: shown when sentence uses a shortened form of the lemma
+                            // that isn't a conjugation or n-rule (e.g. "a" = "an" before consonants)
+                            let sentenceForm = viewModel.uiState.targetWord.lowercased()
+                            let lemmaForm   = viewModel.uiState.displayedTargetWord.lowercased()
+                            if sentenceForm != lemmaForm,
+                               viewModel.uiState.paradigm == nil,
+                               viewModel.uiState.nRuleFormInSentence == nil {
                                 HStack(spacing: 4) {
-                                    Image(systemName: "n.circle").font(.caption2)
-                                    Text("\(viewModel.uiState.displayedTargetWord) → \(nForm)")
+                                    Image(systemName: "info.circle").font(.caption2)
+                                    Text("'\(viewModel.uiState.targetWord)' is how '\(viewModel.uiState.displayedTargetWord)' appears before consonants")
                                         .font(.caption).fontWeight(.semibold)
-                                    Text("n-rule").font(.caption2).foregroundColor(.secondary)
                                 }
-                                .foregroundColor(.luxPurple)
+                                .foregroundColor(.accentColor)
                                 .padding(.horizontal, 10).padding(.vertical, 5)
-                                .background(Color.luxPurple.opacity(0.10))
+                                .background(Color.accentColor.opacity(0.10))
                                 .cornerRadius(8)
                             }
                         }
@@ -306,6 +376,19 @@ struct ExerciseScreen: View {
                         )
                         .presentationDetents([.medium])
                         .presentationDragIndicator(.visible)
+                    }
+                }
+                .sheet(isPresented: $showGrammarGuide) {
+                    NavigationView {
+                        LanguageGuideScreen(scrollTo: grammarGuideSection)
+                            .navigationTitle("Grammar Tips")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarTrailing) {
+                                    Button("Back to Lesson") { showGrammarGuide = false }
+                                        .fontWeight(.semibold)
+                                }
+                            }
                     }
                 }
 
@@ -394,6 +477,40 @@ struct ExerciseScreen: View {
                 }
             }
 
+        case .conjugationMatch:
+            ConjugationMatchExercise(
+                sentence: viewModel.uiState.currentSentence?.textLu ?? "",
+                highlightedForm: viewModel.uiState.targetWord,
+                options: viewModel.uiState.conjugationOptions,
+                selectedOption: viewModel.uiState.selectedOption,
+                correctOption: viewModel.uiState.correctOption,
+                isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                isWrongAnswer: isWrongAnswer,
+                failureCount: viewModel.uiState.failureCount,
+                onSelect: { option in
+                    viewModel.onInputChanged(option)
+                    viewModel.uiState.selectedOption = option
+                }
+            )
+
+        case .paradigmPicker:
+            ParadigmPickerExercise(
+                lemma: viewModel.uiState.displayedTargetWord,
+                translation: viewModel.uiState.targetTranslation,
+                pronoun: viewModel.uiState.paradigmPromptPronoun,
+                options: viewModel.uiState.paradigmPickerOptions,
+                paradigmRows: viewModel.uiState.paradigm ?? [],
+                selectedOption: viewModel.uiState.selectedOption,
+                correctOption: viewModel.uiState.paradigmCorrectForm,
+                isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                isWrongAnswer: isWrongAnswer,
+                failureCount: viewModel.uiState.failureCount,
+                onSelect: { option in
+                    viewModel.onInputChanged(option)
+                    viewModel.uiState.selectedOption = option
+                }
+            )
+
         case .matching:
             VStack(spacing: 16) {
                 VStack(spacing: 4) {
@@ -405,6 +522,7 @@ struct ExerciseScreen: View {
                 MatchingExerciseView(
                     pairs: viewModel.uiState.matchingPairs,
                     onComplete: {
+                        AudioFeedbackService.shared.playMatchingComplete()
                         viewModel.onInputChanged("DONE")
                         viewModel.checkAnswer()
                     },
@@ -477,6 +595,10 @@ struct ExerciseScreen: View {
             return sentence.textLu
         case .jumbledEn:
             return sentence.textEn
+        case .conjugationMatch:
+            return viewModel.uiState.displayedTargetWord
+        case .paradigmPicker:
+            return viewModel.uiState.paradigmCorrectForm
         default:
             let words = sentence.textLu.split(separator: " ").map(String.init)
             let safeIdx = min(max(sentence.clozeIndex, 0), words.count - 1)
@@ -670,5 +792,103 @@ private struct CharacterAvatarView: View {
             .clipShape(Circle())
             .overlay(Circle().stroke(Color(.systemGray5), lineWidth: 1))
             .shadow(color: .black.opacity(0.10), radius: 4, y: 2)
+    }
+}
+
+// MARK: - Celebration (confetti burst before lesson summary)
+
+private struct ConfettiParticle {
+    let startX: CGFloat      // 0–1 fraction of screen width
+    let delay: Double        // seconds before this particle starts
+    let speed: Double        // pixels/sec base speed
+    let rotSpeed: Double     // radians/sec
+    let startRot: Double     // initial rotation (radians)
+    let swayFreq: Double     // horizontal sway frequency
+    let swayPhase: Double    // horizontal sway phase offset
+    let w: CGFloat           // width
+    let h: CGFloat           // height
+    let color: Color
+}
+
+struct CelebrationView: View {
+    let onComplete: () -> Void
+
+    @State private var particles: [ConfettiParticle] = []
+    @State private var startDate: Date = .now
+    @State private var iconScale: CGFloat = 0.01
+    @State private var textOpacity: Double = 0
+
+    private let palette: [Color] = [
+        .luxGreen, .luxAmber,
+        Color(red: 0.28, green: 0.52, blue: 1.0),
+        .orange, .pink, .purple,
+        Color(red: 1.0, green: 0.2, blue: 0.3), .cyan,
+    ]
+
+    var body: some View {
+        ZStack {
+            Color(.systemBackground).opacity(0.93).ignoresSafeArea()
+
+            // Confetti
+            GeometryReader { geo in
+                TimelineView(.animation(minimumInterval: 1.0 / 60.0)) { tl in
+                    let elapsed = tl.date.timeIntervalSince(startDate)
+                    Canvas { ctx, size in
+                        for p in particles {
+                            let t = max(0, elapsed - p.delay)
+                            let x = p.startX * size.width
+                                  + CGFloat(sin(t * p.swayFreq + p.swayPhase) * 20)
+                            let y = -50 + CGFloat(t * p.speed + 0.5 * 200 * t * t)
+                            guard y < size.height + 60 else { continue }
+                            let rot = p.startRot + t * p.rotSpeed
+                            // Fade out in the bottom 30% of the screen
+                            let fade = max(0, min(1, 1 - (y - size.height * 0.7) / (size.height * 0.3)))
+                            var rect = Path(CGRect(x: -p.w / 2, y: -p.h / 2, width: p.w, height: p.h))
+                            ctx.fill(
+                                rect.applying(
+                                    CGAffineTransform(rotationAngle: rot)
+                                        .concatenating(CGAffineTransform(translationX: x, y: y))
+                                ),
+                                with: .color(p.color.opacity(fade))
+                            )
+                        }
+                    }
+                }
+                .ignoresSafeArea()
+            }
+
+            // Central "well done" message
+            VStack(spacing: 14) {
+                Text("🎉")
+                    .font(.system(size: 86))
+                    .scaleEffect(iconScale)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.52), value: iconScale)
+
+                Text("Lesson Complete!")
+                    .font(.title2).fontWeight(.bold)
+                    .opacity(textOpacity)
+                    .animation(.easeIn(duration: 0.25).delay(0.15), value: textOpacity)
+            }
+        }
+        .onAppear {
+            startDate = .now
+            particles = (0..<75).map { _ in
+                ConfettiParticle(
+                    startX:    CGFloat.random(in: 0.02...0.98),
+                    delay:     Double.random(in: 0...0.45),
+                    speed:     Double.random(in: 130...300),
+                    rotSpeed:  Double.random(in: -5...5),
+                    startRot:  Double.random(in: 0...(2 * .pi)),
+                    swayFreq:  Double.random(in: 1.0...3.5),
+                    swayPhase: Double.random(in: 0...(2 * .pi)),
+                    w:         CGFloat.random(in: 6...14),
+                    h:         CGFloat.random(in: 9...20),
+                    color:     palette.randomElement()!
+                )
+            }
+            iconScale   = 1
+            textOpacity = 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { onComplete() }
+        }
     }
 }

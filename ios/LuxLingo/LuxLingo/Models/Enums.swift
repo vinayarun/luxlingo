@@ -11,6 +11,8 @@ enum ExerciseTypeNew: String, Codable {
     case flashcard = "FLASHCARD"
     case nRuleHunter = "N_RULE_HUNTER"
     case zipfSpeedRun = "ZIPF_SPEED_RUN"
+    case conjugationMatch = "CONJUGATION_MATCH"
+    case paradigmPicker = "PARADIGM_PICKER"
 }
 
 // MARK: - Exercise Type (Legacy - JSON-based lessons)
@@ -44,5 +46,7 @@ enum ExerciseResult {
     case matching
     case nRuleHunter
     case zipfSpeedRun
+    case conjugationMatch
+    case paradigmPicker
     case error
 }
