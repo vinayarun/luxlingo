@@ -1,11 +1,26 @@
 import SwiftUI
 
+// MARK: - Bonus Lesson Info (passed from ContentView/MainViewModel)
+struct BonusLessonInfo: Identifiable {
+    let id: String          // lessonId
+    let titleEn: String
+    let situationTag: String
+    let sceneImage: String
+    let unitIndex: Int
+    let isUnlocked: Bool
+}
+
 // MARK: - Home Screen (port of HomeScreen composable)
 struct HomeScreen: View {
-    let units: [CourseUnit]
-    let xp: Int
-    let streak: Int
-    let onLessonSelected: (String, String) -> Void
+    let units:             [CourseUnit]
+    let xp:                Int
+    let streak:            Int
+    let onLessonSelected:  (String, String) -> Void
+    var reviewWordCount:   Int = 0
+    var onReviewTapped:    (() -> Void)? = nil
+    var getVocabForUnit:   ((CourseUnit) -> [VocabWord])? = nil
+    var getAllVocab:        (() -> [VocabWord])? = nil
+    var bonusLessons:      [BonusLessonInfo] = []
     
     @State private var showingInfo = false
     @State private var menuSelectedTab = 0
@@ -26,8 +41,18 @@ struct HomeScreen: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(units) { unit in
-                    UnitCard(unit: unit, onLessonSelected: onLessonSelected)
+                // Review card — shown when ≥ 5 words are in progress
+                if reviewWordCount >= 5 {
+                    ReviewCard(wordCount: reviewWordCount, onTap: { onReviewTapped?() })
+                }
+
+                ForEach(Array(units.enumerated()), id: \.element.id) { unitIdx, unit in
+                    UnitCard(
+                        unit: unit,
+                        vocabWords: getVocabForUnit?(unit) ?? [],
+                        bonusLesson: bonusLessons.first { $0.unitIndex == unitIdx },
+                        onLessonSelected: onLessonSelected
+                    )
                 }
             }
             .padding(16)
@@ -65,7 +90,9 @@ struct HomeScreen: View {
             }
         }
         .sheet(isPresented: $showingInfo) {
-            MenuSheet(units: units, xp: xp, streak: streak, selectedTab: $menuSelectedTab)
+            MenuSheet(units: units, xp: xp, streak: streak,
+                      allVocab: getAllVocab?() ?? [],
+                      selectedTab: $menuSelectedTab)
         }
     }
 }
@@ -110,10 +137,89 @@ struct LessonProgressRing: View {
     }
 }
 
+// MARK: - Bonus Lesson Card
+
+struct BonusLessonCard: View {
+    let bonus: BonusLessonInfo
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: { if bonus.isUnlocked { onTap() } }) {
+            HStack(spacing: 12) {
+                ZStack {
+                    if let img = UIImage(named: bonus.sceneImage) {
+                        Image(uiImage: img)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 80, height: 56)
+                            .clipped()
+                            .cornerRadius(8)
+                    } else {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.luxAmber.opacity(0.15))
+                            .frame(width: 80, height: 56)
+                    }
+                    if !bonus.isUnlocked {
+                        Color.black.opacity(0.45)
+                            .cornerRadius(8)
+                        Image(systemName: "lock.fill")
+                            .foregroundColor(.white)
+                            .font(.title3)
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "star.fill")
+                            .font(.caption2)
+                            .foregroundColor(.luxAmber)
+                        Text("Bonus")
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.luxAmber)
+                    }
+                    Text("Bonus: \(bonus.titleEn)")
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                        .foregroundColor(bonus.isUnlocked ? .primary : .secondary)
+                    if !bonus.isUnlocked {
+                        Text("Complete 4 lessons to unlock")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+
+                Spacer()
+
+                if bonus.isUnlocked {
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(bonus.isUnlocked ? Color.luxAmber.opacity(0.08) : Color(.systemGray6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.luxAmber.opacity(bonus.isUnlocked ? 0.3 : 0.1), lineWidth: 1)
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+        .disabled(!bonus.isUnlocked)
+    }
+}
+
 // MARK: - Unit Card
 struct UnitCard: View {
-    let unit: CourseUnit
+    let unit:             CourseUnit
+    var vocabWords:       [VocabWord] = []
+    var bonusLesson:      BonusLessonInfo? = nil
     let onLessonSelected: (String, String) -> Void
+
+    @State private var showVocab = false
 
     // Scene images assigned to units in order; cycles for units beyond the list.
     // UIImage(named:) returns nil silently for any scenes not yet in the asset catalog.
@@ -154,7 +260,7 @@ struct UnitCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
 
-            // Scene banner — only shown when the asset exists
+            // Scene banner — only shown when the asset exists; tap to browse unit vocab
             if let img = sceneImage {
                 ZStack(alignment: .bottomLeading) {
                     Image(uiImage: img)
@@ -176,6 +282,29 @@ struct UnitCard: View {
                         .foregroundColor(.white)
                         .padding(.horizontal, 16)
                         .padding(.bottom, 12)
+
+                    // Vocab hint badge (top-right) — visible only when words are encountered
+                    if !vocabWords.isEmpty {
+                        HStack(spacing: 4) {
+                            Image(systemName: "text.book.closed.fill")
+                            Text("\(vocabWords.count)")
+                        }
+                        .font(.caption2).fontWeight(.semibold)
+                        .foregroundColor(.white.opacity(0.85))
+                        .padding(.horizontal, 8).padding(.vertical, 4)
+                        .background(Color.black.opacity(0.35))
+                        .cornerRadius(8)
+                        .padding(8)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    }
+                }
+                .onTapGesture { if !vocabWords.isEmpty { showVocab = true } }
+                .sheet(isPresented: $showVocab) {
+                    VocabularySheet(
+                        title:     unit.title,
+                        sceneName: Self.sceneNames[(unitIndex - 1) % Self.sceneNames.count],
+                        words:     vocabWords
+                    )
                 }
             }
 
@@ -196,10 +325,9 @@ struct UnitCard: View {
 
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(lesson.title)
-                                    .font(.headline)
+                                    .font(.callout).fontWeight(.semibold)
                                     .foregroundColor(.primary)
                                     .lineLimit(1)
-                                    .minimumScaleFactor(0.8)
                                 Text(lesson.objective)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
@@ -220,6 +348,15 @@ struct UnitCard: View {
                             .padding(.leading, 56)
                     }
                 }
+
+                // Bonus lesson card — shown at the bottom of each unit
+                if let bonus = bonusLesson {
+                    Divider()
+                        .padding(.leading, 0)
+                    BonusLessonCard(bonus: bonus) {
+                        onLessonSelected(unit.id, bonus.id)
+                    }
+                }
             }
             .padding(16)
         }
@@ -229,12 +366,52 @@ struct UnitCard: View {
     }
 }
 
+// MARK: - Review Card
+
+struct ReviewCard: View {
+    let wordCount: Int
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .fill(Color.luxAmber.opacity(0.15))
+                        .frame(width: 48, height: 48)
+                    Image(systemName: "arrow.clockwise.circle.fill")
+                        .font(.system(size: 26))
+                        .foregroundColor(.luxAmber)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Review")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    Text("\(wordCount) words in progress across your lessons")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding(14)
+            .background(Color(.systemBackground))
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 // MARK: - Menu Sheet (hamburger modal)
 
 struct MenuSheet: View {
-    let units: [CourseUnit]
-    let xp: Int
-    let streak: Int
+    let units:    [CourseUnit]
+    let xp:       Int
+    let streak:   Int
+    var allVocab: [VocabWord] = []
     @Binding var selectedTab: Int
 
     @Environment(\.dismiss) private var dismiss
@@ -288,18 +465,10 @@ struct MenuSheet: View {
                 Divider()
 
                 // ── Tab content ────────────────────────────────────────────
-                Group {
-                    switch selectedTab {
-                    case 1: ZipfsLawInfoScreen()
-                    case 2: StatsScreen(units: units, xp: xp, streak: streak)
-                    case 3: LanguageGuideScreen()
-                    default: HowToUseScreen()
-                    }
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .animation(.easeInOut(duration: 0.18), value: selectedTab)
+                tabContent
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .animation(.easeInOut(duration: 0.18), value: selectedTab)
             }
-            .navigationTitle(tabs[selectedTab].label)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -311,5 +480,59 @@ struct MenuSheet: View {
                 }
             }
         }
+    }
+
+    @ViewBuilder private var tabContent: some View {
+        switch selectedTab {
+        case 1: ZipfsLawInfoScreen()
+        case 2: StatsScreen(units: units, xp: xp, streak: streak, allVocab: allVocab)
+        case 3: LanguageGuideScreen()
+        default: HowToUseScreen()
+        }
+    }
+}
+
+// MARK: - Pronunciation Results Home Card
+
+struct PronunciationResultsHomeCard: View {
+    let results: [PronunciationResult]
+    let onDismiss: () -> Void
+
+    private var averageScore: Int {
+        guard !results.isEmpty else { return 0 }
+        return results.map(\.score).reduce(0, +) / results.count
+    }
+
+    private var scoreColor: Color {
+        switch averageScore {
+        case 80...: return .luxGreen
+        case 50..<80: return .luxAmber
+        default:     return .luxRed
+        }
+    }
+
+    var body: some View {
+        HStack(spacing: 14) {
+            ZStack {
+                Circle().fill(scoreColor.opacity(0.12)).frame(width: 52, height: 52)
+                Image(systemName: "mic.fill")
+                    .font(.title2).foregroundColor(scoreColor)
+            }
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Pronunciation results ready")
+                    .font(.callout.weight(.semibold))
+                Text("\(results.count) word\(results.count == 1 ? "" : "s") scored · avg \(averageScore)%")
+                    .font(.caption).foregroundColor(.secondary)
+            }
+            Spacer()
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.caption).foregroundColor(.secondary)
+            }
+        }
+        .padding(14)
+        .background(scoreColor.opacity(0.07))
+        .cornerRadius(14)
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(scoreColor.opacity(0.2), lineWidth: 1))
     }
 }

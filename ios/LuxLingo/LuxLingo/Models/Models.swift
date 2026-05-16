@@ -39,6 +39,19 @@ struct Exercise: Identifiable, Codable {
     }
 }
 
+// MARK: - Vocabulary Word (for vocabulary browser and review mode)
+
+struct VocabWord: Identifiable {
+    var id: String { senseId }
+    let senseId:    String
+    let wordLu:     String   // Luxembourgish word
+    let primaryEn:  String   // English meaning
+    let exampleLu:  String   // one example sentence LU
+    let exampleEn:  String   // one example sentence EN
+    let mastery:    Int      // 0-20
+    let lodAudioUrl: String?
+}
+
 // MARK: - Matching Item
 
 struct MatchingItemModel: Identifiable {

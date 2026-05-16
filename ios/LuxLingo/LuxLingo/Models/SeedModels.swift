@@ -8,6 +8,14 @@ struct InitialSeedData: Codable {
     let senses: [SeedSense]
     let sentences: [SeedSentence]
     let curriculum: [SeedLesson]
+    let articleExercises: [ArticleExerciseSeed]?
+    let bonusLessons: [BonusSeedLesson]?
+
+    enum CodingKeys: String, CodingKey {
+        case version, vocabulary, senses, sentences, curriculum
+        case articleExercises = "article_exercises"
+        case bonusLessons = "bonus_lessons"
+    }
 }
 
 struct SeedVocab: Codable {
@@ -87,5 +95,38 @@ struct SeedLesson: Codable {
         case titleEn = "title_en"
         case coreSenses = "core_senses"
         case secondarySenses = "secondary_senses"
+    }
+}
+
+struct ArticleExerciseSeed: Codable {
+    let id: String
+    let senseId: String
+    let textLu: String
+    let textEn: String
+    let articleIndex: Int
+    let correct: String
+    let options: [String]
+    let ruleHint: String
+    let difficulty: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, senseId = "sense_id", textLu = "text_lu", textEn = "text_en"
+        case articleIndex = "article_index", correct, options
+        case ruleHint = "rule_hint", difficulty
+    }
+}
+
+struct BonusSeedLesson: Codable {
+    let lessonId: String
+    let titleEn: String
+    let situationTag: String
+    let unitIndex: Int
+    let sceneImage: String
+    let coreSenses: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case lessonId = "lesson_id", titleEn = "title_en"
+        case situationTag = "situation_tag", unitIndex = "unit_index"
+        case sceneImage = "scene_image", coreSenses = "core_senses"
     }
 }

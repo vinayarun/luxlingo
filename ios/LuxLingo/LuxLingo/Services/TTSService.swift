@@ -31,8 +31,13 @@ final class TTSService {
         playerDelegate.onFinish = { [weak self] in
             self?.playState = .idle
             self?.activeText = ""
+            // Deactivate the session so background audio (podcasts, music) resumes at full volume.
+            // .notifyOthersOnDeactivation is the iOS signal that tells Spotify/Podcasts to un-duck.
+            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         }
-        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+        // .duckOthers: when this app's audio plays, background audio lowers to ~20% volume
+        // and automatically restores when we deactivate — the Google Maps navigation pattern.
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .duckOthers)
     }
 
     // MARK: - Public

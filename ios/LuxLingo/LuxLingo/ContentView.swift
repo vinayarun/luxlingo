@@ -4,6 +4,7 @@ import SwiftData
 // MARK: - Navigation Routes
 enum AppRoute: Hashable {
     case exercise(lessonId: String)
+    case review
 }
 
 // MARK: - Content View
@@ -27,12 +28,17 @@ struct ContentView: View {
             } else if let vm = mainViewModel {
                 NavigationStack(path: $navigationPath) {
                     HomeScreen(
-                        units: vm.units,
-                        xp:    userPreferences.xp,
+                        units:  vm.units,
+                        xp:     userPreferences.xp,
                         streak: userPreferences.streak,
                         onLessonSelected: { _, lessonId in
                             navigationPath.append(AppRoute.exercise(lessonId: lessonId))
-                        }
+                        },
+                        reviewWordCount: vm.reviewWordCount,
+                        onReviewTapped:  { navigationPath.append(AppRoute.review) },
+                        getVocabForUnit: { unit in vm.vocabWords(for: unit) },
+                        getAllVocab:      { vm.allVocabWords() },
+                        bonusLessons:    vm.bonusLessonInfos
                     )
                     .navigationDestination(for: AppRoute.self) { route in
                         switch route {
@@ -49,6 +55,18 @@ struct ContentView: View {
                                         userPreferences.addXp(sessionXP)
                                         userPreferences.updateStreak()
                                     }
+                                )
+                            }
+                        case .review:
+                            if let repo = repository {
+                                ExerciseScreenHost(
+                                    lessonId: "review_session",
+                                    repository: repo,
+                                    onBack: {
+                                        navigationPath.removeLast()
+                                        mainViewModel?.loadUnits()
+                                    },
+                                    isReviewSession: true
                                 )
                             }
                         }
@@ -187,9 +205,10 @@ struct ExerciseScreenHost: View {
     private let introSegment:    Int
     private let introPanForward: Bool
 
-    @State private var viewModel:          ExerciseViewModel?
-    @State private var didFireCompletion = false
-    @State private var showIntro         = true
+    @State private var viewModel:             ExerciseViewModel?
+    @State private var didFireCompletion    = false
+    @State private var showIntro            = true
+    @State private var showingReviewIntro   = true   // only relevant when isReviewSession
 
     private static let sceneNames: [String] = [
         "scene_classroom",    "scene_cycling_path",  "scene_village_entry", "scene_village_park",
@@ -200,19 +219,23 @@ struct ExerciseScreenHost: View {
         "scene_winter_street",
     ]
 
+    var isReviewSession: Bool = false
+
     init(
         lessonId: String,
         repository: ContentRepository,
         onBack: @escaping () -> Void,
-        onLessonComplete: ((Int) -> Void)? = nil
+        onLessonComplete: ((Int) -> Void)? = nil,
+        isReviewSession: Bool = false
     ) {
         self.lessonId         = lessonId
         self.repository       = repository
         self.onBack           = onBack
         self.onLessonComplete = onLessonComplete
+        self.isReviewSession  = isReviewSession
         _viewModel            = State(initialValue: nil)
         _didFireCompletion    = State(initialValue: false)
-        _showIntro            = State(initialValue: true)
+        _showIntro            = State(initialValue: !isReviewSession) // no intro animation for review
         introSegment          = Int.random(in: 0..<3)
         introPanForward       = Bool.random()
     }
@@ -224,9 +247,29 @@ struct ExerciseScreenHost: View {
 
     var body: some View {
         ZStack {
-            if let vm = viewModel {
+            if isReviewSession && showingReviewIntro {
+                // Review intro — show word list before exercises begin
+                if let vm = viewModel {
+                    ReviewIntroScreen(words: vm.reviewWordPreviews) {
+                        showingReviewIntro = false
+                    }
+                } else {
+                    // Still loading the review queue
+                    VStack(spacing: 16) {
+                        ProgressView()
+                        Text("Building your review…")
+                            .font(.subheadline).foregroundColor(.secondary)
+                    }
+                    .onAppear {
+                        if viewModel == nil {
+                            viewModel = ExerciseViewModel.forReview(repository: repository)
+                        }
+                    }
+                }
+            } else if let vm = viewModel {
                 ExerciseScreen(
-                    viewModel: vm,
+                    viewModel:    vm,
+                    introVisible: showIntro,
                     onBack: {
                         if vm.uiState.isLessonFinished && !didFireCompletion {
                             didFireCompletion = true
@@ -335,5 +378,88 @@ struct LessonIntroOverlay: View {
         }
         .ignoresSafeArea()
         .allowsHitTesting(false)
+    }
+}
+
+// MARK: - Review Intro Screen
+// Shown before review exercises start — gives the learner a moment to see
+// which words are in this session before diving into practice.
+
+struct ReviewIntroScreen: View {
+    let words:   [VocabWord]
+    let onStart: () -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+
+            // Header
+            VStack(spacing: 6) {
+                Image(systemName: "arrow.clockwise.circle.fill")
+                    .font(.system(size: 44))
+                    .foregroundColor(.luxAmber)
+                    .padding(.top, 24)
+                Text("Review Session")
+                    .font(.title2).fontWeight(.bold)
+                Text("\(words.count) words from your lessons")
+                    .font(.subheadline).foregroundColor(.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.bottom, 16)
+
+            Divider()
+
+            // Word list — LU word left, EN meaning right
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(words) { word in
+                        HStack(spacing: 12) {
+                            SpeakerButton(text: word.wordLu, audioUrl: word.lodAudioUrl)
+                                .font(.callout)
+                                .frame(width: 28, height: 28)
+                                .background(Color.accentColor.opacity(0.08))
+                                .clipShape(Circle())
+
+                            Text(word.wordLu)
+                                .font(.subheadline).fontWeight(.semibold)
+                                .frame(width: 110, alignment: .leading)
+
+                            Text(word.primaryEn)
+                                .font(.subheadline).foregroundColor(.secondary)
+                                .lineLimit(1)
+
+                            Spacer(minLength: 0)
+
+                            // Mastery dot
+                            Circle()
+                                .fill(word.mastery >= 20 ? Color.luxGreen : Color.accentColor)
+                                .opacity(0.7)
+                                .frame(width: 8, height: 8)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 11)
+
+                        if word.id != words.last?.id {
+                            Divider().padding(.leading, 64)
+                        }
+                    }
+                }
+            }
+
+            Divider()
+
+            // Start button
+            Button(action: onStart) {
+                Text("Start Practice")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.luxAmber)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+            }
+            .padding(16)
+        }
+        .navigationTitle("Review")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

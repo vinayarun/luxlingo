@@ -30,6 +30,7 @@
 		E3F4A5B6C7D8E9F0A1B2C3D4 /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A5B6C7D8E9F0A1B2C3D4E5 /* StatsScreen.swift */; };
 		E6F7A8B9C0D1E2F3A4B5C6D7 /* HowToUseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */; };
 		G8H9I0J1K2L3M4N5O6P7Q8R9 /* AudioFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */; };
+		P1R0N5U8C0I3A7T0I1O2N9S6 /* PronunciationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = P5R8O1N4U7C0I2A5T8I0O3N6 /* PronunciationService.swift */; };
 		I0J1K2L3M4N5O6P7Q8R9S0T1 /* correct.wav in Resources */ = {isa = PBXBuildFile; fileRef = J1K2L3M4N5O6P7Q8R9S0T1U2 /* correct.wav */; };
 		K2L3M4N5O6P7Q8R9S0T1U2V3 /* wrong.wav in Resources */ = {isa = PBXBuildFile; fileRef = L3M4N5O6P7Q8R9S0T1U2V3W4 /* wrong.wav */; };
 		EA9C29DA125DE1BB69B752D5 /* SeedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7F70C8460890A45B046529 /* SeedModels.swift */; };
@@ -69,6 +70,7 @@
 		F5C3EAD94527E45EF7D763B0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToUseScreen.swift; sourceTree = "<group>"; };
 		H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioFeedbackService.swift"; sourceTree = "<group>"; };
+		P5R8O1N4U7C0I2A5T8I0O3N6 /* PronunciationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PronunciationService.swift"; sourceTree = "<group>"; };
 		J1K2L3M4N5O6P7Q8R9S0T1U2 /* correct.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "correct.wav"; sourceTree = "<group>"; };
 		L3M4N5O6P7Q8R9S0T1U2V3W4 /* wrong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "wrong.wav"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,6 +199,7 @@
 				F3A4B5C6D7E8F9A0B1C2D3E4 /* TTSService.swift */,
 				B3C4D5E6F7A8B9C0D1E2F3A4 /* WordLookupService.swift */,
 				H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */,
+				P5R8O1N4U7C0I2A5T8I0O3N6 /* PronunciationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				C4D5E6F7A8B9C0D1E2F3A4B5 /* TappableLuSentenceView.swift in Sources */,
 				E6F7A8B9C0D1E2F3A4B5C6D7 /* HowToUseScreen.swift in Sources */,
 				G8H9I0J1K2L3M4N5O6P7Q8R9 /* AudioFeedbackService.swift in Sources */,
+				P1R0N5U8C0I3A7T0I1O2N9S6 /* PronunciationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +310,7 @@
 				DEVELOPMENT_TEAM = FR45PRCYQG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "LuxLingo records your voice so you can practise Luxembourgish pronunciation.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -350,6 +355,7 @@
 				DEVELOPMENT_TEAM = FR45PRCYQG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "LuxLingo records your voice so you can practise Luxembourgish pronunciation.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

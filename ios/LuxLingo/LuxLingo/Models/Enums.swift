@@ -13,6 +13,10 @@ enum ExerciseTypeNew: String, Codable {
     case zipfSpeedRun = "ZIPF_SPEED_RUN"
     case conjugationMatch = "CONJUGATION_MATCH"
     case paradigmPicker = "PARADIGM_PICKER"
+    case listeningComprehension = "LISTENING_COMPREHENSION"
+    case audioDictation = "AUDIO_DICTATION"
+    case articleChoice = "ARTICLE_CHOICE"
+    case pronunciationPractice = "PRONUNCIATION_PRACTICE"
 }
 
 // MARK: - Exercise Type (Legacy - JSON-based lessons)
@@ -48,5 +52,9 @@ enum ExerciseResult {
     case zipfSpeedRun
     case conjugationMatch
     case paradigmPicker
+    case listeningComprehension
+    case audioDictation
+    case articleChoice
+    case pronunciationPractice
     case error
 }

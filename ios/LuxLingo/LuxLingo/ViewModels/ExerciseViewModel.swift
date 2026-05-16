@@ -41,6 +41,10 @@ struct ExerciseUiState {
     var promptSubtitle: String = ""
     var isJumbledCorrectOrder: Bool = false
     
+    // Summary screen data
+    var lessonNumber:    Int  = 0          // parsed from lessonId, used by LessonSummaryScreen
+    var isReviewSession: Bool = false      // true when in review mode — shows ReviewSummaryScreen
+
     // Conjugation panel
     var paradigm: [String]? = nil          // present tense rows, e.g. ["ech kann", ...]
     var sentenceClozeIndex: Int = 0        // word index in example sentence to highlight
@@ -71,6 +75,20 @@ struct ExerciseUiState {
     var rapidFireQueue: [String] = []
     var rapidFireCorrect: Int = 0
     var rapidFireTotal: Int = 0
+
+    // Article Choice fields
+    var articleOptions: [String] = []
+    var correctArticle: String = ""
+    var articleRuleHint: String = ""
+    var articleSentence: String = ""
+    var articleSentenceEn: String = ""
+
+    // Pronunciation result waiting to be shown between exercises
+    var pendingPronunciationResult: PronunciationResult? = nil
+
+    // MCQ selected option alias (used by ArticleChoiceExercise)
+    var selectedMCQOption: String? { selectedOption }
+    var isWrongAnswer: Bool { feedback == .wrong }
 }
 
 // MARK: - Exercise ViewModel (port of ExerciseViewModel.kt — ~426 lines)
@@ -87,10 +105,55 @@ final class ExerciseViewModel {
     private let lessonId: String
     private let repository: ContentRepository
 
+    // MARK: - Review mode
+    private var isReviewMode = false
+    private var reviewItems: [(senseId: String, lessonId: String)] = []
+
+    /// Normal lesson init.
     init(lessonId: String, repository: ContentRepository) {
-        self.lessonId = lessonId
+        self.lessonId   = lessonId
         self.repository = repository
+        uiState.lessonNumber = Int(lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
         loadNextExercise()
+    }
+
+    /// Review-session init — sets mode flags BEFORE loadNextExercise() runs.
+    private init(reviewRepository: ContentRepository,
+                 items: [(senseId: String, lessonId: String)]) {
+        self.lessonId     = "review_session"
+        self.repository   = reviewRepository
+        self.isReviewMode = true
+        self.reviewItems  = items
+        uiState.lessonTitle    = "Review"
+        uiState.totalSentences = items.count
+        uiState.progress       = 0
+        uiState.isReviewSession = true
+        loadNextExercise()      // now isReviewMode == true when this runs
+    }
+
+    /// Public factory — use this instead of init for review sessions.
+    static func forReview(repository: ContentRepository) -> ExerciseViewModel {
+        let items = repository.buildReviewQueue(limit: 10)
+        return ExerciseViewModel(reviewRepository: repository, items: items)
+    }
+
+    /// The words queued for this review session — used by the intro preview screen.
+    var reviewWordPreviews: [VocabWord] {
+        guard isReviewMode else { return [] }
+        return reviewItems.compactMap { item in
+            guard let sense = repository.getSense(senseId: item.senseId),
+                  let vocab = repository.getVocabularyById(id: sense.surfaceId) else { return nil }
+            return VocabWord(
+                senseId:     item.senseId,
+                wordLu:      vocab.wordText,
+                primaryEn:   sense.translations,
+                exampleLu:   "",
+                exampleEn:   "",
+                mastery:     repository.getSenseMastery(senseId: item.senseId),
+                lodAudioUrl: vocab.lodAudioUrl
+            )
+        }
+        .sorted { $0.mastery < $1.mastery }  // weakest first in the intro word list
     }
 
     // MARK: - Load Next Exercise
@@ -98,6 +161,8 @@ final class ExerciseViewModel {
     func loadNextExercise() {
         stopCountdown()
         stopSpeedRunTimer()
+
+        if isReviewMode { loadNextReviewExercise(); return }
 
         // Rapid fire: serve from the pre-built queue
         if uiState.isRapidFire {
@@ -132,6 +197,11 @@ final class ExerciseViewModel {
         uiState.shuffledTokens = []
         uiState.matchingPairs = []
         uiState.promptSubtitle = ""
+        uiState.articleOptions = []
+        uiState.correctArticle = ""
+        uiState.articleRuleHint = ""
+        uiState.articleSentence = ""
+        uiState.articleSentenceEn = ""
 
         let coreSenses = repository.getLessonCoreSenses(lessonId: lessonId)
         if coreSenses.isEmpty {
@@ -210,6 +280,16 @@ final class ExerciseViewModel {
             if Float.random(in: 0...1) < 0.2 { type = .zipfSpeedRun }
         }
 
+        // Listening Comprehension: hear the word, choose its English meaning (no LU text shown)
+        if mastery >= 4 && mastery <= 15 {
+            if Float.random(in: 0...1) < 0.22 { type = .listeningComprehension }
+        }
+
+        // Audio Dictation: hear the word, type it in Luxembourgish (harder — no text clues)
+        if mastery >= 8 && mastery <= 22 {
+            if Float.random(in: 0...1) < 0.18 { type = .audioDictation }
+        }
+
         // Conjugation Match: when the sentence uses a conjugated form that differs from the lemma
         // and the sense has paradigm data — teaches irregular/suppletive verb recognition
         if mastery >= 8 && mastery <= 22, senseData?.paradigm != nil {
@@ -227,6 +307,28 @@ final class ExerciseViewModel {
             if Float.random(in: 0...1) < 0.2 { type = .paradigmPicker }
         }
 
+        // Article Choice: pick the correct Luxembourgish article for a noun sentence
+        // Only for SUBST (noun) senses with mastery > 3
+        let isNounSense = senseData?.tags.uppercased().hasPrefix("SUBST") ?? false
+        if isNounSense && mastery > 3 {
+            if Float.random(in: 0...1) < 0.15 {
+                if repository.getArticleExercise(for: senseId) != nil {
+                    type = .articleChoice
+                }
+            }
+        }
+
+        // Pronunciation Practice: once per lesson per word, mastery > 5, ~12% chance
+        // Skipped in review mode and rapid-fire. The exercise handles its own skip/submit flow.
+        if !isReviewMode && mastery > 5 && !isIntroPhase {
+            if Float.random(in: 0...1) < 0.12 {
+                let alreadyPractised = uiState.masteredSenses.contains(senseId + "_pron")
+                if !alreadyPractised {
+                    type = .pronunciationPractice
+                }
+            }
+        }
+
         // 4b. Phase Detection (Update)
         let phaseName: String
         if isIntroPhase {
@@ -234,7 +336,8 @@ final class ExerciseViewModel {
         } else {
             switch type {
             case .flashcard, .reading: phaseName = "Introduction"
-            case .multipleChoice, .matching: phaseName = "Reinforcement"
+            case .multipleChoice, .matching, .articleChoice: phaseName = "Reinforcement"
+            case .pronunciationPractice: phaseName = "Speaking"
             default: phaseName = "Challenge"
             }
         }
@@ -306,6 +409,15 @@ final class ExerciseViewModel {
         case .paradigmPicker:
             prompt = targetWord
             subtitle = "Complete the conjugation"
+        case .listeningComprehension:
+            prompt = ""
+            subtitle = "Listen and choose the meaning"
+        case .audioDictation:
+            prompt = ""
+            subtitle = "Listen and write the word"
+        case .articleChoice:
+            prompt = "Choose the correct article"
+            subtitle = ""
         default:
             prompt = sentence.textEn
             subtitle = ""
@@ -346,6 +458,12 @@ final class ExerciseViewModel {
             mcqOptions = (distractors + [answerOption]).shuffled()
         }
 
+        // Listening Comprehension options: correct EN translation + 2 distractor EN translations
+        if type == .listeningComprehension {
+            let distractors = repository.getRandomDistractorsEn(target: translation, count: 2)
+            mcqOptions = (distractors + [translation]).shuffled()
+        }
+
         // Conjugation Match options: correct lemma + 3 distractor lemmas
         var conjugationOptions: [String] = []
         if type == .conjugationMatch {
@@ -367,17 +485,48 @@ final class ExerciseViewModel {
             let row = rows[pickedIdx]
             let parts = row.split(separator: " ", maxSplits: 1)
             paradigmPromptPronoun = String(parts.first ?? Substring(row))
-            paradigmCorrectForm   = parts.count > 1 ? String(parts[1]) : row
-            // Options: all unique verb forms from the paradigm
+            // Strip reflexive pronouns like "(mech)", "(sech)" from the verb form
+            let rawForm = parts.count > 1 ? String(parts[1]) : row
+            paradigmCorrectForm = rawForm
+                .components(separatedBy: " ")
+                .filter { !$0.hasPrefix("(") }
+                .joined(separator: " ")
+                .trimmingCharacters(in: .whitespaces)
+            // Options: unique verb forms with reflexive pronouns stripped
             let allForms = rows.compactMap { r -> String? in
                 let p = r.split(separator: " ", maxSplits: 1)
-                return p.count > 1 ? String(p[1]) : nil
+                guard p.count > 1 else { return nil }
+                return String(p[1])
+                    .components(separatedBy: " ")
+                    .filter { !$0.hasPrefix("(") }
+                    .joined(separator: " ")
+                    .trimmingCharacters(in: .whitespaces)
             }
             let unique = Array(Set(allForms))
             let distractors = unique.filter { $0 != paradigmCorrectForm }.shuffled().prefix(3)
             paradigmPickerOptions = (Array(distractors) + [paradigmCorrectForm]).shuffled()
             // Fall back to MC if not enough distinct forms
             if paradigmPickerOptions.count < 2 { type = .multipleChoice }
+        }
+
+        // Article Choice: load exercise data
+        var articleOptions: [String] = []
+        var correctArticle: String = ""
+        var articleRuleHint: String = ""
+        var articleSentence: String = ""
+        var articleSentenceEn: String = ""
+        if type == .articleChoice {
+            if let artEx = repository.getArticleExercise(for: senseId),
+               let parsedOptions = try? JSONDecoder().decode([String].self, from: Data(artEx.options.utf8)) {
+                articleOptions = parsedOptions.shuffled()
+                correctArticle = artEx.correct
+                articleRuleHint = artEx.ruleHint
+                articleSentence = artEx.textLu
+                articleSentenceEn = artEx.textEn
+            } else {
+                // No article exercise found — fall back to multiple choice
+                type = .multipleChoice
+            }
         }
 
         // Extract paradigm from sense (stored as JSON string)
@@ -394,8 +543,10 @@ final class ExerciseViewModel {
         uiState.sentenceClozeIndex = sentence.clozeIndex
         uiState.targetLodAudioUrl = vocab?.lodAudioUrl
 
-        // N-rule: read directly from seed annotation — no runtime heuristics.
-        uiState.nRuleFormInSentence = sentence.nRuleForm
+        // N-rule chip: only show when the annotated form is the TARGET WORD with its trailing -n
+        // dropped (e.g. iergendeen→iergendee). Suppress when the annotation refers to an article
+        // or another word (e.g. n_rule_form='de' on a sentence with "De Paul…").
+        uiState.nRuleFormInSentence = nRuleFormForTarget(sentence.nRuleForm, target: targetWord)
 
         uiState.currentSentence = sentence
         uiState.promptText = prompt
@@ -411,6 +562,11 @@ final class ExerciseViewModel {
         uiState.paradigmPromptPronoun = paradigmPromptPronoun
         uiState.paradigmCorrectForm = paradigmCorrectForm
         uiState.paradigmPickerOptions = paradigmPickerOptions
+        uiState.articleOptions = articleOptions
+        uiState.correctArticle = correctArticle
+        uiState.articleRuleHint = articleRuleHint
+        uiState.articleSentence = articleSentence
+        uiState.articleSentenceEn = articleSentenceEn
         uiState.currentSentenceIndex = nextIndex
         uiState.progress = progressVal
         uiState.currentMastery = currentM
@@ -498,6 +654,13 @@ final class ExerciseViewModel {
         checkAnswer()
     }
 
+    func selectMCQOption(_ option: String) {
+        if uiState.isFeedbackVisible { return }
+        uiState.selectedOption = option
+        onInputChanged(option)
+        checkAnswer()
+    }
+
     func onNRuleToggle(to value: String) {
         uiState.nRuleSelection = value
         onInputChanged(value)
@@ -555,6 +718,18 @@ final class ExerciseViewModel {
         uiState.sessionXP += 5
         recordResult(.reading)
         loadNextExercise()
+    }
+
+    /// Called when the user submits a pronunciation recording.
+    /// Shows the green feedback banner immediately ("submitted ✓"), then Continue loads next exercise.
+    func onPronunciationSubmitted() {
+        uiState.feedback      = .correct
+        uiState.masteryChange = 0          // score applied when LuxASR result arrives
+        uiState.isFeedbackVisible = true
+        uiState.sessionXP    += 5
+        AudioFeedbackService.shared.playCorrect()
+        // Mark the sense so it won't be selected again this session
+        uiState.masteredSenses.append(uiState.lastSenseId + "_pron")
     }
     
     func onContinueAfterFeedback() {
@@ -620,6 +795,12 @@ final class ExerciseViewModel {
             comparisonTargetRaw = uiState.displayedTargetWord
         case .paradigmPicker:
             comparisonTargetRaw = uiState.paradigmCorrectForm
+        case .listeningComprehension:
+            comparisonTargetRaw = uiState.targetTranslation
+        case .audioDictation:
+            comparisonTargetRaw = uiState.displayedTargetWord
+        case .articleChoice:
+            comparisonTargetRaw = uiState.correctArticle
         case .nRuleHunter:
             let sentencesWords = sentence.textLu.split(separator: " ").map { String($0) }
             let word = sentencesWords[uiState.nRuleWordIndex]
@@ -660,6 +841,33 @@ final class ExerciseViewModel {
         case .paradigmPicker:
             if userInput == comparisonTarget {
                 feedback = .correct; result = .paradigmPicker
+            } else {
+                feedback = .wrong; result = .error
+            }
+        case .listeningComprehension:
+            if userInput == comparisonTarget {
+                feedback = .correct; result = .listeningComprehension
+            } else {
+                feedback = .wrong; result = .error
+            }
+        case .articleChoice:
+            if userInput == comparisonTarget {
+                feedback = .correct; result = .articleChoice
+            } else {
+                feedback = .wrong; result = .error
+            }
+        case .pronunciationPractice:
+            // Pronunciation exercises are submitted async — score arrives via PronunciationService.
+            // Mark as "practised" so it won't repeat for this sense this session.
+            uiState.masteredSenses.append(uiState.lastSenseId + "_pron")
+            feedback = .correct; result = .pronunciationPractice
+        case .audioDictation:
+            let dist = levenshtein(userInput, comparisonTarget)
+            if dist == 0 {
+                feedback = .correct; result = .audioDictation
+            } else if dist <= 2 {
+                // Accept minor spelling errors but flag them — Luxembourgish orthography is tricky
+                feedback = .typo; result = .audioDictation
             } else {
                 feedback = .wrong; result = .error
             }
@@ -704,8 +912,11 @@ final class ExerciseViewModel {
             case .multipleChoice:      resultType = .multipleChoice
             case .jumbledLu:           resultType = .jumbledLu
             case .jumbledEn:           resultType = .jumbledEn
-            case .conjugationMatch:    resultType = .conjugationMatch
-            case .paradigmPicker:      resultType = .paradigmPicker
+            case .conjugationMatch:         resultType = .conjugationMatch
+            case .paradigmPicker:           resultType = .paradigmPicker
+            case .listeningComprehension:   resultType = .listeningComprehension
+            case .audioDictation:           resultType = .audioDictation
+            case .articleChoice:            resultType = .articleChoice
             default:                   resultType = result
             }
         }
@@ -721,7 +932,7 @@ final class ExerciseViewModel {
             xpGained = 1
         } else {
             switch type {
-            case .multipleChoice: 
+            case .multipleChoice, .articleChoice:
                 mChange = 4
                 xpGained = 10
             case .jumbledLu, .jumbledEn: 
@@ -736,6 +947,12 @@ final class ExerciseViewModel {
             case .paradigmPicker:
                 mChange = 6
                 xpGained = 13
+            case .listeningComprehension:
+                mChange = 4
+                xpGained = 10
+            case .audioDictation:
+                mChange = 6
+                xpGained = 14
             case .zipfSpeedRun:
                 mChange = 5
                 xpGained = 8
@@ -764,18 +981,153 @@ final class ExerciseViewModel {
     // MARK: - Finish Lesson
 
     private func finishLesson() {
+        if isReviewMode {
+            // Review session complete — don't mark any lesson as complete
+            uiState.isLessonFinished = true
+            uiState.masteredSenses   = []
+            uiState.isLoading        = false
+            return
+        }
         repository.completeLesson(lessonId: lessonId)
         let coreSenses = repository.getLessonCoreSenses(lessonId: lessonId)
-        // Build human-readable labels: "hunn → have"
         let masteredLabels = coreSenses.map { sense -> String in
-            let vocab = repository.getVocabularyById(id: sense.surfaceId)
+            let vocab  = repository.getVocabularyById(id: sense.surfaceId)
             let luWord = vocab?.wordText ?? "?"
-            let enWord = sense.translations
-            return "\(luWord) → \(enWord)"
+            return "\(luWord) → \(sense.translations)"
         }
         uiState.isLessonFinished = true
-        uiState.masteredSenses = masteredLabels
-        uiState.isLoading = false
+        uiState.masteredSenses   = masteredLabels
+        uiState.isLoading        = false
+    }
+
+    // MARK: - Review session exercise loader
+
+    private func loadNextReviewExercise() {
+        uiState.failureCount       = 0
+        uiState.isFeedbackVisible  = false
+        uiState.userInput          = ""
+        uiState.selectedOption     = nil
+        uiState.correctOption      = nil
+        uiState.masteryChange      = 0
+        uiState.shuffledTokens     = []
+        uiState.matchingPairs      = []
+        uiState.paradigm           = nil
+        uiState.nRuleFormInSentence = nil
+        uiState.conjugationOptions = []
+        uiState.paradigmPickerOptions = []
+
+        guard let item = reviewItems.first else { finishLesson(); return }
+        reviewItems.removeFirst()
+
+        let done = uiState.totalSentences - reviewItems.count
+        uiState.progress             = Float(done) / Float(max(uiState.totalSentences, 1))
+        uiState.currentSentenceIndex += 1
+        uiState.phase                = "Review"
+
+        guard let senseData = repository.getSense(senseId: item.senseId),
+              let vocab     = repository.getVocabularyById(id: senseData.surfaceId) else {
+            loadNextReviewExercise(); return
+        }
+
+        let mastery     = repository.getSenseMastery(senseId: item.senseId)
+        let targetWord  = vocab.wordText
+        let translation = senseData.translations
+
+        guard let sentence = repository.getSentenceForLesson(
+            lessonId: item.lessonId,
+            excludeSentenceIds: uiState.recentSentenceIds,
+            targetSenseId: item.senseId
+        ) else { loadNextReviewExercise(); return }
+
+        // Exercise types for review: no flashcard/reading (user has seen these).
+        // Lean toward harder types; keep listening/dictation overrides.
+        var type: ExerciseTypeNew
+        switch mastery {
+        case ..<6:  type = .multipleChoice
+        case ..<12: type = Bool.random() ? .jumbledEn : .multipleChoice
+        case ..<20: type = Bool.random() ? .cloze     : .jumbledLu
+        default:    type = .cloze
+        }
+        if mastery >= 4  && Float.random(in: 0...1) < 0.22 { type = .listeningComprehension }
+        if mastery >= 8  && Float.random(in: 0...1) < 0.15 { type = .audioDictation }
+
+        // Jumbled tokens
+        var tokens = [String]()
+        if type == .jumbledLu {
+            tokens = cleanAndShuffleTokens(sentence.textLu)
+            if tokens.count < 5 {
+                tokens = (tokens + repository.getRandomDistractorsLu(target: targetWord, count: 2)).shuffled()
+            }
+        } else if type == .jumbledEn {
+            let base = cleanAndShuffleTokens(sentence.textEn)
+            let extras = repository.getRandomDistractorsEn(target: translation, count: 3)
+                .filter { !Set(base.map { $0.lowercased() }).contains($0.lowercased()) }.prefix(2)
+            tokens = (base + extras).shuffled()
+        }
+
+        // MCQ options
+        var mcqOptions      = [String]()
+        var sentenceBlank   = ""
+        if type == .multipleChoice {
+            let words     = sentence.textLu.split(separator: " ").map(String.init)
+            let safeIdx   = min(max(sentence.clozeIndex, 0), words.count - 1)
+            let punctSet  = CharacterSet(charactersIn: ".,!?;:'\"()")
+            let answer    = (safeIdx < words.count ? words[safeIdx] : "").trimmingCharacters(in: punctSet)
+            sentenceBlank = words.enumerated().map { i, w in i == safeIdx ? "______" : w }.joined(separator: " ")
+            let isCap     = answer.first?.isUppercase ?? false
+            let raw       = repository.getSmartDistractorsLu(target: answer, senseId: item.senseId, count: 3)
+            let dists     = raw.map { isCap ? $0.prefix(1).uppercased() + $0.dropFirst()
+                                            : $0.prefix(1).lowercased() + $0.dropFirst() }
+            mcqOptions    = (dists + [answer]).shuffled()
+        } else if type == .listeningComprehension {
+            mcqOptions = (repository.getRandomDistractorsEn(target: translation, count: 2) + [translation]).shuffled()
+        }
+
+        // Prompt text
+        let prompt: String; let subtitle: String
+        switch type {
+        case .jumbledEn:              prompt = sentence.textLu;  subtitle = "Translate to English"
+        case .jumbledLu:              prompt = sentence.textEn;  subtitle = "Translate to Luxembourgish"
+        case .multipleChoice:         prompt = sentence.textEn;  subtitle = "Pick the correct word"
+        case .cloze:                  prompt = sentence.textEn;  subtitle = "Type the missing word"
+        case .listeningComprehension: prompt = "";               subtitle = "Listen and choose the meaning"
+        case .audioDictation:         prompt = "";               subtitle = "Listen and write the word"
+        default:                      prompt = sentence.textEn;  subtitle = ""
+        }
+
+        // Paradigm
+        if let json  = senseData.paradigm,
+           let data  = json.data(using: .utf8),
+           let parsed = try? JSONDecoder().decode(SeedParadigm.self, from: data) {
+            uiState.paradigm = parsed.present
+        }
+
+        let newRecent = Array((uiState.recentSentenceIds + [sentence.sentenceId]).suffix(8))
+
+        uiState.recentSentenceIds    = newRecent
+        uiState.lastSenseId          = item.senseId
+        uiState.consecutiveSenseCount = 1
+        uiState.lastExerciseType     = uiState.currentExerciseType
+        uiState.currentExerciseType  = type
+        uiState.currentSentence      = sentence
+        uiState.promptText           = prompt
+        uiState.promptSubtitle       = subtitle
+        uiState.targetWord           = targetWord
+        uiState.displayedTargetWord  = targetWord
+        uiState.targetTranslation    = translation
+        uiState.sentenceParts        = splitSentence(sentence.textLu, index: sentence.clozeIndex)
+        uiState.sentenceWithBlank    = sentenceBlank
+        uiState.multipleChoiceOptions = mcqOptions
+        uiState.shuffledTokens       = tokens
+        uiState.sentenceClozeIndex   = sentence.clozeIndex
+        uiState.targetLodAudioUrl    = vocab.lodAudioUrl
+        uiState.nRuleFormInSentence  = nRuleFormForTarget(sentence.nRuleForm, target: targetWord)
+        uiState.exampleSentenceLu    = sentence.textLu
+        uiState.exampleSentenceEn    = sentence.textEn
+        uiState.currentMastery       = mastery
+        uiState.maxMastery           = 20
+        uiState.isLoading            = false
+        uiState.exerciseLoadedAt     = Date()
     }
 
     // MARK: - Record Result (mastery weighting)
@@ -792,6 +1144,10 @@ final class ExerciseViewModel {
             case .zipfSpeedRun: return 5
             case .conjugationMatch: return 5
             case .paradigmPicker: return 6
+            case .listeningComprehension: return 4
+            case .audioDictation: return 6
+            case .articleChoice: return 4
+            case .pronunciationPractice: return 5  // awarded on submit, not on score arrival
             case .error: return -2
             }
         }
@@ -997,4 +1353,16 @@ final class ExerciseViewModel {
         }
         return cost[len0 - 1]
     }
+}
+
+/// Returns `form` only when it is the target word with its trailing -n removed
+/// (the classic Luxembourgish n-rule drop). Suppresses annotations for articles
+/// or unrelated words (e.g. n_rule_form='de' from an "De Paul…" sentence
+/// where the teaching target is "Fenster" or "Bad").
+private func nRuleFormForTarget(_ form: String?, target: String) -> String? {
+    guard let form, !form.isEmpty else { return nil }
+    let t = target.lowercased()
+    let f = form.lowercased()
+    guard t.hasSuffix("n"), String(t.dropLast()) == f else { return nil }
+    return form
 }

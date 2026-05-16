@@ -19,7 +19,7 @@ struct ZipfsLawInfoScreen: View {
 
     private var heroSection: some View {
         VStack(spacing: 0) {
-            if let img = UIImage(named: "scene_classroom") {
+            if let img = UIImage(named: "scene_school_morning") {
                 ZStack(alignment: .bottomLeading) {
                     Image(uiImage: img)
                         .resizable()
@@ -54,11 +54,7 @@ struct ZipfsLawInfoScreen: View {
                 .padding(.horizontal, 16)
             }
 
-            Text("LuxLingo is built on a mathematical principle that explains why some words are infinitely more valuable to learn than others — and uses it to make every minute of study count.")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+            JustifiedText(text: "LuxLingo is built on a mathematical principle that explains why some words are infinitely more valuable to learn than others — and uses it to make every minute of study count.")
                 .padding(16)
         }
         .background(Color(.systemGray6))
@@ -70,10 +66,7 @@ struct ZipfsLawInfoScreen: View {
     private var didYouKnowSection: some View {
         SectionCard(title: "Did you know?", icon: "lightbulb.fill", iconColor: .luxAmber) {
             VStack(alignment: .leading, spacing: 12) {
-                Text("In every language, a tiny handful of words does most of the heavy lifting. This is Zipf's Law — the most common word appears roughly twice as often as the second most common, three times as often as the third, and so on.")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                JustifiedText(text: "In every language, a tiny handful of words does most of the heavy lifting. This is Zipf's Law — the most common word appears roughly twice as often as the second most common, three times as often as the third, and so on.")
 
                 VStack(spacing: 8) {
                     CoverageStatRow(label: "Top 10 words",  percent: 25, color: .blue)
@@ -81,10 +74,7 @@ struct ZipfsLawInfoScreen: View {
                     CoverageStatRow(label: "Top 500 words", percent: 80, color: .luxGreen)
                 }
 
-                Text("That means just 500 words cover **80% of everyday Luxembourgish conversation**. LuxLingo teaches exactly those words first.")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                JustifiedText(text: "That means just 500 words cover **80% of everyday Luxembourgish conversation**. LuxLingo teaches exactly those words first.")
             }
         }
     }
@@ -94,10 +84,7 @@ struct ZipfsLawInfoScreen: View {
     private var wordExamplesSection: some View {
         SectionCard(title: "See it in action", icon: "text.magnifyingglass", iconColor: .accentColor) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("These five Luxembourgish words alone account for nearly 40% of all words spoken in everyday conversation:")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                JustifiedText(text: "These five Luxembourgish words alone account for nearly 40% of all words spoken in everyday conversation:")
                     .padding(.bottom, 4)
 
                 WordExampleRow(word: "ech",   meaning: "I",        percent: 13)
@@ -147,10 +134,8 @@ struct ZipfsLawInfoScreen: View {
                     }
                 }
 
-                Text("A Luxembourgish advantage: with ~600,000 native speakers, Luxembourgish has a much smaller active vocabulary than French, German or English. This steepens the Zipf curve further — the top 500 words cover an even larger share of everyday speech than in larger languages, making the frequency-first approach especially powerful here.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                JustifiedText(text: "A Luxembourgish advantage: with ~600,000 native speakers, Luxembourgish has a much smaller active vocabulary than French, German or English. This steepens the Zipf curve further — the top 500 words cover an even larger share of everyday speech than in larger languages, making the frequency-first approach especially powerful here.",
+                              uiFont: .preferredFont(forTextStyle: .caption1))
                     .padding(.top, 4)
             }
         }
@@ -195,10 +180,7 @@ struct ZipfsLawInfoScreen: View {
                 }
                 .frame(width: 44, height: 44)
 
-                Text("Each lesson card shows a progress ring — it fills as you practise the words in that lesson and turns fully green when complete. Tap **My Progress** to see your overall vocabulary coverage curve.")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                JustifiedText(text: "Each lesson card shows a progress ring — it fills as you practise the words in that lesson and turns fully green when complete. Tap **My Progress** to see your overall vocabulary coverage curve.")
             }
         }
     }
@@ -606,9 +588,7 @@ private struct GuideRuleRow: View {
                 .font(.subheadline).fontWeight(.semibold)
                 .foregroundColor(color)
                 .frame(width: 100, alignment: .leading)
-            Text(detail)
-                .font(.subheadline).foregroundColor(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            JustifiedText(text: detail)
         }
     }
 }
@@ -618,14 +598,13 @@ private struct GuideExampleRow: View {
     let en: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
+        VStack(alignment: .leading, spacing: 2) {
             Text(lu)
                 .font(.subheadline).fontWeight(.semibold)
-            Text("·")
-                .foregroundColor(.secondary)
             Text(en)
-                .font(.subheadline).foregroundColor(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+                .font(.caption)
+                .foregroundColor(Color(.tertiaryLabel))
+                .italic()
         }
     }
 }
@@ -645,8 +624,7 @@ private struct ArticleRoleRow: View {
                 Image(systemName: icon).font(.caption).foregroundColor(color)
                 Text(role).font(.caption).fontWeight(.bold).foregroundColor(color)
             }
-            Text(detail).font(.caption).foregroundColor(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            JustifiedText(text: detail, uiFont: .preferredFont(forTextStyle: .caption1))
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("Masc").font(.caption2).foregroundColor(.secondary)

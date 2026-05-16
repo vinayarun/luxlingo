@@ -3,6 +3,7 @@ import SwiftUI
 // MARK: - Exercise Screen (port of ExerciseScreen.kt)
 struct ExerciseScreen: View {
     @Bindable var viewModel: ExerciseViewModel
+    var introVisible: Bool = false   // true while the lesson Ken Burns overlay is playing
     let onBack: () -> Void
     @State private var showReadingConjugation = false
     @State private var showGrammarGuide = false
@@ -31,6 +32,9 @@ struct ExerciseScreen: View {
     }
 
     @State private var showCelebration = false
+    @State private var showingPronunciationResult = false
+    @State private var showScoringBanner = false   // brief "checking pronunciation" hint
+    private let pronService = PronunciationService.shared
 
     var body: some View {
         Group {
@@ -40,9 +44,11 @@ struct ExerciseScreen: View {
                 }
             } else if viewModel.uiState.isLessonFinished {
                 LessonSummaryScreen(
-                    masteredSenses: viewModel.uiState.masteredSenses,
-                    sessionXP: viewModel.uiState.sessionXP,
-                    onBackToMenu: onBack
+                    masteredSenses:  viewModel.uiState.masteredSenses,
+                    sessionXP:       viewModel.uiState.sessionXP,
+                    lessonNumber:    viewModel.uiState.lessonNumber,
+                    isReviewSession: viewModel.uiState.isReviewSession,
+                    onBackToMenu:    onBack
                 )
             } else {
                 exerciseContent
@@ -57,6 +63,36 @@ struct ExerciseScreen: View {
 
     @ViewBuilder
     private var exerciseContent: some View {
+        contentBody
+            .overlay {
+                if showingPronunciationResult,
+                   let result = viewModel.uiState.pendingPronunciationResult {
+                    PronunciationResultCard(result: result) {
+                        showingPronunciationResult = false
+                        viewModel.uiState.pendingPronunciationResult = nil
+                        viewModel.onContinueAfterFeedback()
+                    }
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                }
+            }
+            .animation(.easeInOut(duration: 0.3), value: showingPronunciationResult)
+            .sheet(isPresented: $showGrammarGuide) {
+                NavigationView {
+                    LanguageGuideScreen(scrollTo: grammarGuideSection)
+                        .navigationTitle("Grammar Tips")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Back to Lesson") { showGrammarGuide = false }
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                }
+            }
+    }
+
+    @ViewBuilder
+    private var contentBody: some View {
         VStack(spacing: 0) {
             if viewModel.uiState.isLoading {
                 Spacer()
@@ -80,8 +116,9 @@ struct ExerciseScreen: View {
 
                         Spacer().frame(height: 32)
 
-                        // Prompt Text
-                        if viewModel.uiState.currentExerciseType != .matching {
+                        // Prompt Text — hidden for pronunciation (that view manages its own header)
+                        let isPronunciation = viewModel.uiState.currentExerciseType == .pronunciationPractice
+                        if viewModel.uiState.currentExerciseType != .matching && !isPronunciation {
                             VStack(spacing: 8) {
                                 // Only show prompt if it's explicitly set and not just a fallback to textEn
                                 if !viewModel.uiState.promptText.isEmpty {
@@ -115,12 +152,28 @@ struct ExerciseScreen: View {
 
                         Spacer().frame(height: 8)
 
-                        // Character avatars — shown for all named characters in the sentence
+                        // Character avatars or vocab image thumbnail
                         let exerciseType = viewModel.uiState.currentExerciseType
                         let avatars = characterAvatarAssets
-                        if !avatars.isEmpty,
+                        let vocabImg = (exerciseType == .flashcard || exerciseType == .reading)
+                            ? UIImage(named: vocabAssetName(for: viewModel.uiState.displayedTargetWord))
+                            : nil
+                        if let img = vocabImg, exerciseType == .reading {
+                            // Reading exercise: show small vocab image thumbnail instead of avatar
+                            Image(uiImage: img)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 90)
+                                .background(Color.white)
+                                .cornerRadius(12)
+                                .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
+                                .transition(.opacity.combined(with: .scale(scale: 0.85)))
+                        } else if !avatars.isEmpty,
+                           vocabImg == nil,
                            exerciseType != .matching,
-                           exerciseType != .zipfSpeedRun {
+                           exerciseType != .zipfSpeedRun,
+                           exerciseType != .listeningComprehension,
+                           exerciseType != .audioDictation {
                             HStack(spacing: 16) {
                                 ForEach(avatars, id: \.self) { asset in
                                     CharacterAvatarView(assetName: asset)
@@ -132,13 +185,12 @@ struct ExerciseScreen: View {
                             .animation(.luxSpring, value: avatars.joined())
                         }
 
-                        // Paradigm-mismatch hint — shown for all exercise types when the sentence
-                        // uses a conjugated form of the lemma (e.g. "ass" when teaching "sinn")
+                        // Mismatch hint — sentence uses a different form/synonym of the taught word
+                        // (e.g. "ass" for "sinn", or "Buedzëmmer" for "Bad")
                         let sentForm  = viewModel.uiState.targetWord
                         let lemmaForm = viewModel.uiState.displayedTargetWord
                         let exerciseTypeForHint = viewModel.uiState.currentExerciseType
-                        if viewModel.uiState.paradigm != nil,
-                           !sentForm.isEmpty, !lemmaForm.isEmpty,
+                        if !sentForm.isEmpty, !lemmaForm.isEmpty,
                            sentForm.lowercased() != lemmaForm.lowercased(),
                            exerciseTypeForHint != .matching,
                            exerciseTypeForHint != .zipfSpeedRun,
@@ -153,6 +205,20 @@ struct ExerciseScreen: View {
                             .foregroundColor(.secondary)
                             .padding(.horizontal, 16)
                             .padding(.top, 2)
+                        }
+
+                        // "Checking pronunciation" banner — fades out after 4s
+                        if showScoringBanner {
+                            HStack(spacing: 6) {
+                                Image(systemName: "waveform.badge.clock")
+                                    .foregroundColor(.accentColor)
+                                Text("Checking pronunciation in background…")
+                                    .font(.caption).foregroundColor(.secondary)
+                            }
+                            .padding(.horizontal, 16).padding(.vertical, 8)
+                            .background(Color.accentColor.opacity(0.08))
+                            .cornerRadius(10)
+                            .transition(.opacity)
                         }
 
                         // Dynamic Exercise Content
@@ -175,8 +241,10 @@ struct ExerciseScreen: View {
                 if viewModel.uiState.isFeedbackVisible {
                     feedbackBanner
                 } else {
-                    // Skip button
-                    if viewModel.uiState.failureCount >= 3 {
+                    // Skip button — audio dictation shows after 1 failure (keyboard issues
+                    // on device could strand the user); all other types after 3 failures.
+                    let skipThreshold = viewModel.uiState.currentExerciseType == .audioDictation ? 1 : 3
+                    if viewModel.uiState.failureCount >= skipThreshold {
                         let isMatching = viewModel.uiState.currentExerciseType == .matching
                         Button(isMatching ? "Skip" : "Skip / Reveal Answer") {
                             viewModel.onSkipExercise()
@@ -193,6 +261,20 @@ struct ExerciseScreen: View {
                             } else if viewModel.uiState.currentExerciseType == .flashcard {
                                 AudioFeedbackService.shared.playCorrect()
                                 viewModel.onFlashcardContinue()
+                            } else if viewModel.uiState.currentExerciseType == .pronunciationPractice,
+                                      let url = pronService.recordingURL {
+                                // Submit recording async, show immediate "submitted" feedback
+                                pronService.submitForScoring(
+                                    audioURL:   url,
+                                    targetWord: viewModel.uiState.displayedTargetWord,
+                                    senseId:    viewModel.uiState.lastSenseId
+                                )
+                                pronService.recordingURL = nil
+                                showScoringBanner = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                    showScoringBanner = false
+                                }
+                                viewModel.onPronunciationSubmitted()
                             } else {
                                 viewModel.checkAnswer()
                             }
@@ -242,12 +324,14 @@ struct ExerciseScreen: View {
         if viewModel.uiState.isFeedbackVisible { return true }
         if viewModel.uiState.currentExerciseType == .reading { return true }
         if viewModel.uiState.currentExerciseType == .flashcard { return true }
-        
+        // Pronunciation: only enable after a recording has been made
+        if viewModel.uiState.currentExerciseType == .pronunciationPractice {
+            return pronService.recordingURL != nil
+        }
         switch viewModel.uiState.currentExerciseType {
         case .nRuleHunter:
-            return true  // always active — submitting blank (no n) is a valid answer
+            return true
         case .jumbledLu, .jumbledEn:
-            // Only enable check for jumbled if at least one token is selected
             return !viewModel.uiState.userInput.isEmpty && viewModel.uiState.feedback == .none
         default:
             return !viewModel.uiState.userInput.isEmpty && viewModel.uiState.feedback == .none
@@ -259,6 +343,7 @@ struct ExerciseScreen: View {
         switch viewModel.uiState.currentExerciseType {
         case .reading: return "Continue"
         case .flashcard: return "Got it!"
+        case .pronunciationPractice: return pronService.recordingURL != nil ? "Check" : "Record first"
         default: return "Check"
         }
     }
@@ -303,7 +388,9 @@ struct ExerciseScreen: View {
                         Spacer()
                     }
 
-                    if viewModel.uiState.paradigm != nil || viewModel.uiState.nRuleFormInSentence != nil {
+                    if (viewModel.uiState.paradigm != nil || viewModel.uiState.nRuleFormInSentence != nil),
+                       viewModel.uiState.currentExerciseType != .listeningComprehension,
+                       viewModel.uiState.currentExerciseType != .audioDictation {
                         HStack(spacing: 8) {
                             if viewModel.uiState.paradigm != nil {
                                 Button { showReadingConjugation = true } label: {
@@ -376,19 +463,6 @@ struct ExerciseScreen: View {
                         )
                         .presentationDetents([.medium])
                         .presentationDragIndicator(.visible)
-                    }
-                }
-                .sheet(isPresented: $showGrammarGuide) {
-                    NavigationView {
-                        LanguageGuideScreen(scrollTo: grammarGuideSection)
-                            .navigationTitle("Grammar Tips")
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbar {
-                                ToolbarItem(placement: .navigationBarTrailing) {
-                                    Button("Back to Lesson") { showGrammarGuide = false }
-                                        .fontWeight(.semibold)
-                                }
-                            }
                     }
                 }
 
@@ -477,39 +551,86 @@ struct ExerciseScreen: View {
                 }
             }
 
-        case .conjugationMatch:
-            ConjugationMatchExercise(
-                sentence: viewModel.uiState.currentSentence?.textLu ?? "",
-                highlightedForm: viewModel.uiState.targetWord,
-                options: viewModel.uiState.conjugationOptions,
-                selectedOption: viewModel.uiState.selectedOption,
-                correctOption: viewModel.uiState.correctOption,
+        case .audioDictation:
+            AudioDictationExercise(
+                word:         viewModel.uiState.displayedTargetWord,
+                audioUrl:     viewModel.uiState.targetLodAudioUrl,
+                introVisible: introVisible,
+                userInput:    Binding(
+                    get: { viewModel.uiState.userInput },
+                    set: { viewModel.onInputChanged($0) }
+                ),
+                feedback:     viewModel.uiState.feedback
+            )
+
+        case .pronunciationPractice:
+            // Submit is handled by the standard Check button in the bottom action bar.
+            // Skip goes straight to next exercise without recording.
+            PronunciationExercise(
+                targetWord:    viewModel.uiState.displayedTargetWord,
+                translation:   viewModel.uiState.targetTranslation,
+                lodAudioUrl:   viewModel.uiState.targetLodAudioUrl,
+                isForSentence: false,
+                onSkip: { viewModel.loadNextExercise() },
+                onSubmit: { _ in }   // unused — Check button handles submission
+            )
+
+        case .listeningComprehension:
+            ListeningComprehensionExercise(
+                word:              viewModel.uiState.displayedTargetWord,
+                audioUrl:          viewModel.uiState.targetLodAudioUrl,
+                introVisible:      introVisible,
+                options:           viewModel.uiState.multipleChoiceOptions,
+                selectedOption:    viewModel.uiState.selectedOption,
+                correctOption:     viewModel.uiState.correctOption,
                 isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
-                isWrongAnswer: isWrongAnswer,
-                failureCount: viewModel.uiState.failureCount,
+                isWrongAnswer:     isWrongAnswer,
+                failureCount:      viewModel.uiState.failureCount,
                 onSelect: { option in
                     viewModel.onInputChanged(option)
                     viewModel.uiState.selectedOption = option
                 }
             )
 
+        case .conjugationMatch:
+            VStack(spacing: 12) {
+                ConjugationMatchExercise(
+                    sentence: viewModel.uiState.currentSentence?.textLu ?? "",
+                    highlightedForm: viewModel.uiState.targetWord,
+                    options: viewModel.uiState.conjugationOptions,
+                    selectedOption: viewModel.uiState.selectedOption,
+                    correctOption: viewModel.uiState.correctOption,
+                    isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                    isWrongAnswer: isWrongAnswer,
+                    failureCount: viewModel.uiState.failureCount,
+                    onSelect: { option in
+                        viewModel.onInputChanged(option)
+                        viewModel.uiState.selectedOption = option
+                    }
+                )
+                grammarTipsLink
+            }
+
         case .paradigmPicker:
-            ParadigmPickerExercise(
-                lemma: viewModel.uiState.displayedTargetWord,
-                translation: viewModel.uiState.targetTranslation,
-                pronoun: viewModel.uiState.paradigmPromptPronoun,
-                options: viewModel.uiState.paradigmPickerOptions,
-                paradigmRows: viewModel.uiState.paradigm ?? [],
-                selectedOption: viewModel.uiState.selectedOption,
-                correctOption: viewModel.uiState.paradigmCorrectForm,
-                isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
-                isWrongAnswer: isWrongAnswer,
-                failureCount: viewModel.uiState.failureCount,
-                onSelect: { option in
-                    viewModel.onInputChanged(option)
-                    viewModel.uiState.selectedOption = option
-                }
-            )
+            VStack(spacing: 12) {
+                ParadigmPickerExercise(
+                    lemma: viewModel.uiState.displayedTargetWord,
+                    translation: viewModel.uiState.targetTranslation,
+                    pronoun: viewModel.uiState.paradigmPromptPronoun,
+                    options: viewModel.uiState.paradigmPickerOptions,
+                    paradigmRows: viewModel.uiState.paradigm ?? [],
+                    selectedOption: viewModel.uiState.selectedOption,
+                    correctOption: viewModel.uiState.paradigmCorrectForm,
+                    isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                    isWrongAnswer: isWrongAnswer,
+                    failureCount: viewModel.uiState.failureCount,
+                    onSelect: { option in
+                        viewModel.onInputChanged(option)
+                        viewModel.uiState.selectedOption = option
+                    }
+                )
+                grammarTipsLink
+            }
 
         case .matching:
             VStack(spacing: 16) {
@@ -581,7 +702,37 @@ struct ExerciseScreen: View {
                     onSwipe: { viewModel.onSpeedRunSwipe(correct: $0) }
                 )
             }
+
+        case .articleChoice:
+            ArticleChoiceExercise(
+                sentence:          viewModel.uiState.articleSentence,
+                sentenceEn:        viewModel.uiState.articleSentenceEn,
+                options:           viewModel.uiState.articleOptions,
+                selectedOption:    viewModel.uiState.selectedMCQOption,
+                correctOption:     viewModel.uiState.correctArticle,
+                isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                isWrongAnswer:     isWrongAnswer,
+                failureCount:      viewModel.uiState.failureCount,
+                ruleHint:          viewModel.uiState.articleRuleHint,
+                onSelect:          { viewModel.selectMCQOption($0) }
+            )
         }
+    }
+
+    /// Small "Open Grammar Tips" link shown under conjugation exercises
+    private var grammarTipsLink: some View {
+        Button {
+            grammarGuideSection = .conjugation
+            showGrammarGuide    = true
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "book.pages")
+                Text("Open conjugation guide")
+            }
+            .font(.caption)
+            .foregroundColor(.accentColor)
+        }
+        .buttonStyle(.plain)
     }
 
     private var isWrongAnswer: Bool {
@@ -599,6 +750,12 @@ struct ExerciseScreen: View {
             return viewModel.uiState.displayedTargetWord
         case .paradigmPicker:
             return viewModel.uiState.paradigmCorrectForm
+        case .listeningComprehension:
+            return viewModel.uiState.targetTranslation
+        case .audioDictation:
+            return viewModel.uiState.displayedTargetWord
+        case .articleChoice:
+            return viewModel.uiState.correctArticle
         default:
             let words = sentence.textLu.split(separator: " ").map(String.init)
             let safeIdx = min(max(sentence.clozeIndex, 0), words.count - 1)
@@ -610,7 +767,8 @@ struct ExerciseScreen: View {
         VStack(spacing: 16) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(isWrongAnswer ? "Not quite!" : "Great job!")
+                    let isPronunciation = viewModel.uiState.currentExerciseType == .pronunciationPractice
+                    Text(isPronunciation ? "Recording submitted!" : (isWrongAnswer ? "Not quite!" : "Great job!"))
                         .font(.title2)
                         .fontWeight(.bold)
 
@@ -624,16 +782,24 @@ struct ExerciseScreen: View {
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                         }
+                    } else if viewModel.uiState.currentExerciseType == .pronunciationPractice {
+                        Text("Result coming shortly — continue your lesson.")
+                            .font(.subheadline)
+                    } else if viewModel.uiState.feedback == .typo
+                               && viewModel.uiState.currentExerciseType == .audioDictation {
+                        Text("Close! Correct spelling: \(correctAnswerText)")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
                     } else {
                         Text(FeedbackColors.message(for: viewModel.uiState.feedback))
                             .font(.subheadline)
                     }
                     
-                    // Show EN translation for context — but not for jumbled/matching/speedrun exercises
+                    // Show EN translation only for exercises where sentence context adds value
                     let exerciseType = viewModel.uiState.currentExerciseType
-                    let isJumbled = exerciseType == .jumbledEn || exerciseType == .jumbledLu
-                    if let sentence = viewModel.uiState.currentSentence,
-                       exerciseType != .matching, exerciseType != .zipfSpeedRun, !isJumbled {
+                    let sentenceContextTypes: Set<ExerciseTypeNew> = [.cloze, .multipleChoice, .reading, .nRuleHunter]
+                    if sentenceContextTypes.contains(exerciseType),
+                       let sentence = viewModel.uiState.currentSentence {
                         Text(sentence.textEn)
                             .font(.caption)
                             .opacity(0.85)
@@ -649,7 +815,16 @@ struct ExerciseScreen: View {
             .foregroundColor(.white)
 
             Button(action: {
-                viewModel.onContinueAfterFeedback()
+                let isRetry = isWrongAnswer && viewModel.uiState.failureCount < 2
+                if !isRetry, let result = pronService.newResultAvailable {
+                    // Show pronunciation result before advancing
+                    pronService.newResultAvailable = nil
+                    showingPronunciationResult = true
+                    // Store it temporarily so the overlay can display it
+                    viewModel.uiState.pendingPronunciationResult = result
+                } else {
+                    viewModel.onContinueAfterFeedback()
+                }
             }) {
                 let label = isWrongAnswer && viewModel.uiState.failureCount < 2 ? "Try again" : "Continue"
                 Text(label)
@@ -725,38 +900,40 @@ struct ClozeSentenceInput: View {
     let feedback: AnswerFeedback
     let onDone: () -> Void
 
-    private var feedbackColor: Color {
-        FeedbackColors.text(for: feedback)
-    }
+    private var feedbackColor: Color { FeedbackColors.text(for: feedback) }
 
     var body: some View {
-        HStack(alignment: .center) {
-            if let before = parts.first, !before.isEmpty {
-                Text(before + " ")
-                    .font(.title3)
-            }
+        VStack(spacing: 14) {
+            // Full sentence with blank — wraps naturally, no one-line constraint
+            let before = parts.first ?? ""
+            let after  = parts.count > 1 ? parts[1] : ""
+            let blanked = (before.isEmpty ? "" : before + " ")
+                        + "______"
+                        + (after.isEmpty ? "" : " " + after)
 
+            Text(blanked)
+                .font(.title3)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 8)
+
+            // Input field sits below — clearly associated with the blank above
             VStack(spacing: 2) {
-                TextField("type here", text: $userInput)
+                TextField("type the missing word", text: $userInput)
                     .font(.title3)
                     .fontWeight(.medium)
                     .multilineTextAlignment(.center)
-                    .frame(minWidth: 80)
-                    .fixedSize(horizontal: true, vertical: false)
                     .onSubmit { onDone() }
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
+                    .padding(.horizontal, 24)
 
                 Rectangle()
                     .fill(feedbackColor)
                     .frame(height: 3)
+                    .padding(.horizontal, 24)
                     .animation(.luxQuick, value: feedback)
-            }
-            .frame(minWidth: 50)
-
-            if parts.count > 1, !parts[1].isEmpty {
-                Text(" " + parts[1])
-                    .font(.title3)
             }
         }
     }
@@ -797,17 +974,23 @@ private struct CharacterAvatarView: View {
 
 // MARK: - Celebration (confetti burst before lesson summary)
 
+private enum ParticleShape { case rect, circle, star, ribbon }
+
 private struct ConfettiParticle {
-    let startX: CGFloat      // 0–1 fraction of screen width
-    let delay: Double        // seconds before this particle starts
-    let speed: Double        // pixels/sec base speed
-    let rotSpeed: Double     // radians/sec
-    let startRot: Double     // initial rotation (radians)
-    let swayFreq: Double     // horizontal sway frequency
-    let swayPhase: Double    // horizontal sway phase offset
-    let w: CGFloat           // width
-    let h: CGFloat           // height
-    let color: Color
+    let shape:     ParticleShape
+    let originX:   CGFloat    // 0–1 fraction; burst from center or top
+    let originY:   CGFloat    // 0–1 fraction
+    let angle:     Double     // initial launch angle (radians from up)
+    let burst:     Double     // outward burst speed (burst phase)
+    let fall:      Double     // downward gravity speed after burst
+    let delay:     Double
+    let rotSpeed:  Double
+    let startRot:  Double
+    let swayFreq:  Double
+    let swayAmp:   Double
+    let swayPhase: Double
+    let size:      CGFloat
+    let color:     Color
 }
 
 struct CelebrationView: View {
@@ -815,80 +998,196 @@ struct CelebrationView: View {
 
     @State private var particles: [ConfettiParticle] = []
     @State private var startDate: Date = .now
-    @State private var iconScale: CGFloat = 0.01
-    @State private var textOpacity: Double = 0
+    @State private var badgeScale: CGFloat = 0.01
+    @State private var badgeOpacity: Double = 0
+    @State private var ringScale: CGFloat = 0.01
+    @State private var ringOpacity: Double = 0.8
+    @State private var xpOpacity: Double = 0
+    @State private var xpOffset: CGFloat = 20
 
     private let palette: [Color] = [
-        .luxGreen, .luxAmber,
-        Color(red: 0.28, green: 0.52, blue: 1.0),
-        .orange, .pink, .purple,
-        Color(red: 1.0, green: 0.2, blue: 0.3), .cyan,
+        .luxGreen, Color(red: 0.13, green: 0.83, blue: 0.56),
+        .luxAmber, Color(red: 1.0, green: 0.75, blue: 0.0),
+        Color(red: 0.28, green: 0.55, blue: 1.0),
+        .pink, Color(red: 1.0, green: 0.3, blue: 0.5),
+        .cyan, .purple, .orange,
     ]
 
     var body: some View {
         ZStack {
-            Color(.systemBackground).opacity(0.93).ignoresSafeArea()
+            // Deep background — dark to let particles pop
+            LinearGradient(
+                colors: [Color(red: 0.04, green: 0.08, blue: 0.18),
+                         Color(red: 0.06, green: 0.14, blue: 0.28)],
+                startPoint: .top, endPoint: .bottom
+            )
+            .ignoresSafeArea()
 
-            // Confetti
+            // Particles (Canvas for 60fps performance)
             GeometryReader { geo in
-                TimelineView(.animation(minimumInterval: 1.0 / 60.0)) { tl in
-                    let elapsed = tl.date.timeIntervalSince(startDate)
+                TimelineView(.animation(minimumInterval: 1.0/60.0)) { tl in
+                    let t = tl.date.timeIntervalSince(startDate)
                     Canvas { ctx, size in
+                        let cx = size.width  * 0.5
+                        let cy = size.height * 0.38
+
                         for p in particles {
-                            let t = max(0, elapsed - p.delay)
-                            let x = p.startX * size.width
-                                  + CGFloat(sin(t * p.swayFreq + p.swayPhase) * 20)
-                            let y = -50 + CGFloat(t * p.speed + 0.5 * 200 * t * t)
-                            guard y < size.height + 60 else { continue }
-                            let rot = p.startRot + t * p.rotSpeed
-                            // Fade out in the bottom 30% of the screen
-                            let fade = max(0, min(1, 1 - (y - size.height * 0.7) / (size.height * 0.3)))
-                            var rect = Path(CGRect(x: -p.w / 2, y: -p.h / 2, width: p.w, height: p.h))
-                            ctx.fill(
-                                rect.applying(
-                                    CGAffineTransform(rotationAngle: rot)
-                                        .concatenating(CGAffineTransform(translationX: x, y: y))
-                                ),
-                                with: .color(p.color.opacity(fade))
-                            )
+                            let pt = max(0, t - p.delay)
+                            guard pt > 0 else { continue }
+
+                            // Burst phase (0–0.4s): fly outward from origin
+                            // Fall phase: gravity + sway
+                            let burstPhase = min(pt, 0.4)
+                            let fallPhase  = max(0, pt - 0.4)
+
+                            let bx = CGFloat(sin(p.angle) * p.burst * burstPhase)
+                            let by = CGFloat(-cos(p.angle) * p.burst * burstPhase)
+                            let fx = CGFloat(sin(p.swayFreq * fallPhase + p.swayPhase) * p.swayAmp)
+                            let fy = CGFloat(p.fall * fallPhase + 0.5 * 320 * fallPhase * fallPhase)
+
+                            let x = cx + p.originX * size.width * 0.15 + bx + fx
+                            let y = cy + p.originY * size.height * 0.08 + by + fy
+
+                            guard y < size.height + 80 else { continue }
+
+                            let fade = max(0.0, min(1.0,
+                                1.0 - max(0, (y - size.height * 0.72) / (size.height * 0.28))))
+                            let rot = p.startRot + pt * p.rotSpeed
+
+                            ctx.opacity = fade
+                            let tf = CGAffineTransform(translationX: x, y: y)
+                                .rotated(by: rot)
+
+                            switch p.shape {
+                            case .rect:
+                                let r = Path(CGRect(x: -p.size/2, y: -p.size*1.6/2,
+                                                    width: p.size, height: p.size * 1.6))
+                                ctx.fill(r.applying(tf), with: .color(p.color))
+                            case .circle:
+                                let c = Path(ellipseIn: CGRect(x: -p.size/2, y: -p.size/2,
+                                                               width: p.size, height: p.size))
+                                ctx.fill(c.applying(tf), with: .color(p.color))
+                            case .star:
+                                ctx.fill(starPath(size: p.size).applying(tf), with: .color(p.color))
+                            case .ribbon:
+                                // Thin long rectangle (ribbon)
+                                let rib = Path(CGRect(x: -p.size*0.3/2, y: -p.size/2,
+                                                      width: p.size*0.3, height: p.size))
+                                ctx.fill(rib.applying(tf), with: .color(p.color))
+                            }
                         }
                     }
                 }
                 .ignoresSafeArea()
             }
 
-            // Central "well done" message
-            VStack(spacing: 14) {
-                Text("🎉")
-                    .font(.system(size: 86))
-                    .scaleEffect(iconScale)
-                    .animation(.spring(response: 0.5, dampingFraction: 0.52), value: iconScale)
+            // Badge + ring
+            VStack(spacing: 0) {
+                Spacer()
+
+                ZStack {
+                    // Expanding ring
+                    Circle()
+                        .stroke(Color.luxGreen.opacity(0.4), lineWidth: 3)
+                        .frame(width: 160, height: 160)
+                        .scaleEffect(ringScale)
+                        .opacity(ringOpacity)
+
+                    // Checkmark badge
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(colors: [Color.luxGreen,
+                                                        Color(red: 0.05, green: 0.65, blue: 0.35)],
+                                               startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .frame(width: 110, height: 110)
+                            .shadow(color: Color.luxGreen.opacity(0.5), radius: 24, y: 8)
+
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 52, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                    .scaleEffect(badgeScale)
+                    .opacity(badgeOpacity)
+                }
+
+                Spacer().frame(height: 28)
 
                 Text("Lesson Complete!")
-                    .font(.title2).fontWeight(.bold)
-                    .opacity(textOpacity)
-                    .animation(.easeIn(duration: 0.25).delay(0.15), value: textOpacity)
+                    .font(.title.bold())
+                    .foregroundColor(.white)
+                    .opacity(badgeOpacity)
+
+                Spacer().frame(height: 10)
+
+                Text("Well done — keep it up!")
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.7))
+                    .opacity(xpOpacity)
+                    .offset(y: xpOffset)
+
+                Spacer()
             }
         }
         .onAppear {
             startDate = .now
-            particles = (0..<75).map { _ in
-                ConfettiParticle(
-                    startX:    CGFloat.random(in: 0.02...0.98),
-                    delay:     Double.random(in: 0...0.45),
-                    speed:     Double.random(in: 130...300),
-                    rotSpeed:  Double.random(in: -5...5),
-                    startRot:  Double.random(in: 0...(2 * .pi)),
-                    swayFreq:  Double.random(in: 1.0...3.5),
-                    swayPhase: Double.random(in: 0...(2 * .pi)),
-                    w:         CGFloat.random(in: 6...14),
-                    h:         CGFloat.random(in: 9...20),
-                    color:     palette.randomElement()!
-                )
+            buildParticles()
+
+            // Badge bounce in
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.48)) {
+                badgeScale   = 1.0
+                badgeOpacity = 1.0
             }
-            iconScale   = 1
-            textOpacity = 1
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { onComplete() }
+            // Expanding ring pulse
+            withAnimation(.easeOut(duration: 0.7)) {
+                ringScale   = 1.6
+                ringOpacity = 0
+            }
+            // Sub-text fades up
+            withAnimation(.easeOut(duration: 0.4).delay(0.3)) {
+                xpOpacity = 1
+                xpOffset  = 0
+            }
+            // Auto-advance after 2.2s
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) { onComplete() }
         }
+    }
+
+    private func buildParticles() {
+        let shapes: [ParticleShape] = [.rect, .rect, .circle, .star, .ribbon, .rect]
+        particles = (0..<110).map { _ in
+            // Mix: burst from center (60%) + rain from top (40%)
+            let fromCenter = Double.random(in: 0...1) < 0.65
+            return ConfettiParticle(
+                shape:     shapes.randomElement()!,
+                originX:   fromCenter ? CGFloat.random(in: -0.3...0.3) : CGFloat.random(in: -2.5...2.5),
+                originY:   fromCenter ? CGFloat.random(in: -0.1...0.1) : CGFloat.random(in: -1.5 ... -0.2),
+                angle:     fromCenter ? Double.random(in: -.pi ... .pi) : Double.random(in: -0.6...0.6),
+                burst:     fromCenter ? Double.random(in: 280...600) : Double.random(in: 0...60),
+                fall:      fromCenter ? Double.random(in: 60...180)  : Double.random(in: 100...260),
+                delay:     Double.random(in: 0...0.55),
+                rotSpeed:  Double.random(in: -8...8),
+                startRot:  Double.random(in: 0...(2 * .pi)),
+                swayFreq:  Double.random(in: 1.2...3.5),
+                swayAmp:   Double.random(in: 8...24),
+                swayPhase: Double.random(in: 0...(2 * .pi)),
+                size:      CGFloat.random(in: 6...15),
+                color:     palette.randomElement()!
+            )
+        }
+    }
+
+    private func starPath(size: CGFloat) -> Path {
+        var path = Path()
+        let r = size / 2, ri = r * 0.42, n = 5
+        for i in 0..<(n * 2) {
+            let a = Double(i) * .pi / Double(n) - .pi / 2
+            let radius = i.isMultiple(of: 2) ? r : ri
+            let pt = CGPoint(x: CGFloat(cos(a)) * radius, y: CGFloat(sin(a)) * radius)
+            i == 0 ? path.move(to: pt) : path.addLine(to: pt)
+        }
+        path.closeSubpath()
+        return path
     }
 }

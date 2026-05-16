@@ -91,8 +91,11 @@ final class CurriculumEntity {
     var prereqs: String?
     var themeTag: String?
     var orderIndex: Int
+    var lessonType: String    = "core"  // default allows SwiftData lightweight migration
+    var situationTag: String?           // optional → nil by default
+    var unitIndex: Int        = 0       // default allows SwiftData lightweight migration
 
-    init(lessonId: String, titleEn: String, coreSenses: String, secondarySenses: String? = nil, prereqs: String? = nil, themeTag: String? = nil, orderIndex: Int = 0) {
+    init(lessonId: String, titleEn: String, coreSenses: String, secondarySenses: String? = nil, prereqs: String? = nil, themeTag: String? = nil, orderIndex: Int = 0, lessonType: String = "core", situationTag: String? = nil, unitIndex: Int = 0) {
         self.lessonId = lessonId
         self.titleEn = titleEn
         self.coreSenses = coreSenses
@@ -100,6 +103,30 @@ final class CurriculumEntity {
         self.prereqs = prereqs
         self.themeTag = themeTag
         self.orderIndex = orderIndex
+        self.lessonType = lessonType
+        self.situationTag = situationTag
+        self.unitIndex = unitIndex
+    }
+}
+
+// MARK: - Article Exercise (Grammar Layer)
+@Model
+final class ArticleExerciseEntity {
+    @Attribute(.unique) var exerciseId: String
+    var senseId: String
+    var textLu: String         // sentence with blank word as "___"
+    var textEn: String
+    var articleIndex: Int
+    var correct: String
+    var options: String        // JSON array ["de","den","dem","e"]
+    var ruleHint: String
+    var difficulty: String
+
+    init(exerciseId: String, senseId: String, textLu: String, textEn: String,
+         articleIndex: Int, correct: String, options: String, ruleHint: String, difficulty: String) {
+        self.exerciseId = exerciseId; self.senseId = senseId; self.textLu = textLu
+        self.textEn = textEn; self.articleIndex = articleIndex; self.correct = correct
+        self.options = options; self.ruleHint = ruleHint; self.difficulty = difficulty
     }
 }
 

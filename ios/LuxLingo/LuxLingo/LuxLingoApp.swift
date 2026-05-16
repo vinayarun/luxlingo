@@ -13,7 +13,8 @@ struct LuxLingoApp: App {
             SentencesEntity.self,
             CurriculumEntity.self,
             UserProgressEntity.self,
-            LessonStatusEntity.self
+            LessonStatusEntity.self,
+            ArticleExerciseEntity.self
         ])
     }
 }

@@ -42,6 +42,7 @@ final class ContentRepository: ObservableObject {
         try? db.modelContext.delete(model: VocabularyEntity.self)
         try? db.modelContext.delete(model: SentencesEntity.self)
         try? db.modelContext.delete(model: UserProgressEntity.self)
+        try? db.modelContext.delete(model: ArticleExerciseEntity.self)
         db.save()
         await Task.yield()
 
@@ -103,14 +104,20 @@ final class ContentRepository: ObservableObject {
         db.save()
         await Task.yield()
 
-        // 4. Curriculum
+        // 4. Curriculum (core lessons)
         for (index, curr) in seedData.curriculum.enumerated() {
+            // Derive unit index from lesson number: lesson_N → (N-1)/7
+            let lessonNum = Int(curr.lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 1
+            let derivedUnitIndex = (lessonNum - 1) / 7
             db.modelContext.insert(CurriculumEntity(
                 lessonId: curr.lessonId,
                 titleEn: curr.titleEn,
                 coreSenses: curr.coreSenses.joined(separator: ","),
                 secondarySenses: curr.secondarySenses?.joined(separator: ","),
-                orderIndex: index
+                orderIndex: index,
+                lessonType: "core",
+                situationTag: nil,
+                unitIndex: derivedUnitIndex
             ))
             db.modelContext.insert(LessonStatusEntity(
                 lessonId: curr.lessonId,
@@ -122,6 +129,54 @@ final class ContentRepository: ObservableObject {
             ))
         }
         db.save()
+        await Task.yield()
+
+        // 5. Article Exercises
+        if let articleExercises = seedData.articleExercises {
+            let encoder = JSONEncoder()
+            for ex in articleExercises {
+                let optionsJson = (try? encoder.encode(ex.options)).flatMap { String(data: $0, encoding: .utf8) } ?? "[]"
+                db.modelContext.insert(ArticleExerciseEntity(
+                    exerciseId: ex.id,
+                    senseId: ex.senseId,
+                    textLu: ex.textLu,
+                    textEn: ex.textEn,
+                    articleIndex: ex.articleIndex,
+                    correct: ex.correct,
+                    options: optionsJson,
+                    ruleHint: ex.ruleHint,
+                    difficulty: ex.difficulty
+                ))
+            }
+            db.save()
+            await Task.yield()
+        }
+
+        // 6. Bonus Lessons
+        if let bonusLessons = seedData.bonusLessons {
+            let bonusOffset = seedData.curriculum.count
+            for (index, bonus) in bonusLessons.enumerated() {
+                db.modelContext.insert(CurriculumEntity(
+                    lessonId: bonus.lessonId,
+                    titleEn: bonus.titleEn,
+                    coreSenses: bonus.coreSenses.joined(separator: ","),
+                    themeTag: bonus.sceneImage,    // store sceneImage name in themeTag
+                    orderIndex: bonusOffset + index,
+                    lessonType: "bonus",
+                    situationTag: bonus.situationTag,
+                    unitIndex: bonus.unitIndex
+                ))
+                db.modelContext.insert(LessonStatusEntity(
+                    lessonId: bonus.lessonId,
+                    titleEn: bonus.titleEn,
+                    isCompleted: false,
+                    mastery: 0,
+                    completionPercentage: 0.0,
+                    orderIndex: bonusOffset + index
+                ))
+            }
+            db.save()
+        }
 
         UserDefaults.standard.set(seedData.version, forKey: "last_seeded_version")
         print("[LuxLingo] Seed complete v\(seedData.version).")
@@ -261,6 +316,7 @@ final class ContentRepository: ObservableObject {
             .map { sense -> String in sense.translations }
             .filter { word in
                 word.lowercased() != target.lowercased()
+                && !word.contains(" ")   // exclude multi-word phrases — they split badly in jumbled exercises
                 && word.unicodeScalars.allSatisfy { !lbChars.contains($0) }
             }
 
@@ -451,5 +507,151 @@ final class ContentRepository: ObservableObject {
 
     func getAllLessonStatuses() -> [LessonStatusEntity] {
         return db.getAllLessonStatuses()
+    }
+
+    // MARK: - Vocabulary browser & Review mode
+
+    /// All encountered words (mastery > 0) across the given lesson IDs, sorted A-Z.
+    func getEncounteredVocab(for lessonIds: [String]) -> [VocabWord] {
+        var seen   = Set<String>()
+        var result = [VocabWord]()
+        for lessonId in lessonIds {
+            for sense in getLessonCoreSenses(lessonId: lessonId) {
+                guard !seen.contains(sense.senseId) else { continue }
+                seen.insert(sense.senseId)
+                let mastery = getSenseMastery(senseId: sense.senseId)
+                guard mastery > 0, let vocab = getVocabularyById(id: sense.surfaceId) else { continue }
+                let sentence = getSentenceForLesson(lessonId: lessonId, targetSenseId: sense.senseId)
+                result.append(VocabWord(
+                    senseId:     sense.senseId,
+                    wordLu:      vocab.wordText,
+                    primaryEn:   sense.translations,
+                    exampleLu:   sentence?.textLu ?? "",
+                    exampleEn:   sentence?.textEn ?? "",
+                    mastery:     mastery,
+                    lodAudioUrl: vocab.lodAudioUrl
+                ))
+            }
+        }
+        return result.sorted { $0.wordLu.localizedCaseInsensitiveCompare($1.wordLu) == .orderedAscending }
+    }
+
+    /// Total encountered word count — shown on the home-screen Review card.
+    func reviewableWordCount() -> Int {
+        var seen = Set<String>(); var count = 0
+        for status in getAllLessonStatuses() {
+            for sense in getLessonCoreSenses(lessonId: status.lessonId) {
+                guard !seen.contains(sense.senseId) else { continue }
+                seen.insert(sense.senseId)
+                if getSenseMastery(senseId: sense.senseId) > 0 { count += 1 }
+            }
+        }
+        return count
+    }
+
+    /// 3-bucket review queue so every session balances weak words, consolidation, and long-term retention.
+    ///
+    /// Bucket A (~60 %): lowest mastery — words still being learned.
+    /// Bucket B (~20 %): medium mastery — solidifying knowledge.
+    /// Bucket C (~20 %): random draw from all encountered words, including fully mastered —
+    ///                   prevents forgetting of older vocabulary.
+    ///
+    /// Within A and B, older lessons are preferred over same-mastery recent ones
+    /// so that early vocabulary doesn't silently decay once newer lessons push it out.
+    func buildReviewQueue(limit: Int = 10) -> [(senseId: String, lessonId: String)] {
+        struct Entry { let senseId: String; let lessonId: String; let mastery: Int; let lessonNum: Int }
+
+        var seen = Set<String>()
+        var all = [Entry]()
+
+        // Collect all encountered words, ordered by lesson completion (oldest first)
+        let statuses = getAllLessonStatuses().sorted {
+            let a = Int($0.lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
+            let b = Int($1.lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
+            return a < b
+        }
+        for status in statuses {
+            let lessonNum = Int(status.lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
+            for sense in getLessonCoreSenses(lessonId: status.lessonId) {
+                guard !seen.contains(sense.senseId) else { continue }
+                seen.insert(sense.senseId)
+                let m = getSenseMastery(senseId: sense.senseId)
+                if m > 0 { all.append(Entry(senseId: sense.senseId, lessonId: status.lessonId, mastery: m, lessonNum: lessonNum)) }
+            }
+        }
+
+        guard !all.isEmpty else { return [] }
+
+        // Sort by mastery asc, then by lesson age desc (older lesson = higher priority within same mastery)
+        let sorted = all.sorted {
+            if $0.mastery != $1.mastery { return $0.mastery < $1.mastery }
+            return $0.lessonNum < $1.lessonNum
+        }
+
+        let bucketA = max(1, Int(Double(limit) * 0.60))   // weakest
+        let bucketB = max(1, Int(Double(limit) * 0.20))   // medium
+        let bucketC = limit - bucketA - bucketB            // random from all
+
+        var result = [Entry]()
+        var usedIds = Set<String>()
+
+        // A: lowest mastery
+        for e in sorted.prefix(bucketA) {
+            result.append(e); usedIds.insert(e.senseId)
+        }
+
+        // B: medium band (skip what A already took)
+        let midStart = min(bucketA, sorted.count)
+        let midEnd   = min(bucketA + bucketB * 3, sorted.count)  // look ahead to find B candidates
+        for e in sorted[midStart..<midEnd] where !usedIds.contains(e.senseId) {
+            if result.filter({ $0.mastery >= 10 && $0.mastery < 20 }).count < bucketB {
+                result.append(e); usedIds.insert(e.senseId)
+            }
+        }
+
+        // C: random from all (including fully mastered) to prevent forgetting
+        let remaining = all.filter { !usedIds.contains($0.senseId) }.shuffled()
+        for e in remaining.prefix(bucketC) {
+            result.append(e); usedIds.insert(e.senseId)
+        }
+
+        // Cap and shuffle so the order inside each bucket isn't predictable
+        return result.prefix(limit).map { ($0.senseId, $0.lessonId) }.shuffled()
+    }
+
+    // MARK: - Article Exercises
+
+    func getArticleExercise(for senseId: String) -> ArticleExerciseEntity? {
+        let exercises = (try? db.modelContext.fetch(
+            FetchDescriptor<ArticleExerciseEntity>(
+                predicate: #Predicate { $0.senseId == senseId }
+            )
+        )) ?? []
+        return exercises.randomElement()
+    }
+
+    // MARK: - Bonus Lessons
+
+    func getBonusLessons() -> [CurriculumEntity] {
+        let all = (try? db.modelContext.fetch(
+            FetchDescriptor<CurriculumEntity>(
+                predicate: #Predicate { $0.lessonType == "bonus" },
+                sortBy: [SortDescriptor(\.unitIndex)]
+            )
+        )) ?? []
+        return all
+    }
+
+    func isBonusLessonUnlocked(unitIndex: Int) -> Bool {
+        let coreLessons = (try? db.modelContext.fetch(
+            FetchDescriptor<CurriculumEntity>(
+                predicate: #Predicate { $0.lessonType == "core" && $0.unitIndex == unitIndex }
+            )
+        )) ?? []
+        let completedCount = coreLessons.filter { lesson in
+            let status = db.getLessonStatus(lesson.lessonId)
+            return status?.isCompleted == true
+        }.count
+        return completedCount >= 4
     }
 }

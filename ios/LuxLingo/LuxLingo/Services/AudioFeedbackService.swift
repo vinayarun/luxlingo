@@ -2,8 +2,8 @@ import AVFoundation
 import UIKit
 
 /// Plays short tonal feedback sounds and fires haptics on correct/wrong answers.
-/// Audio uses the .ambient session category — sounds respect the mute switch and
-/// mix with whatever the user is already listening to.
+/// Audio uses .duckOthers (set by TTSService) — background podcasts/music briefly
+/// lower while a tone plays, then restore automatically when the tone finishes.
 @MainActor
 final class AudioFeedbackService {
     static let shared = AudioFeedbackService()
@@ -12,14 +12,15 @@ final class AudioFeedbackService {
     private var wrongPlayer: AVAudioPlayer?
     private let successGenerator = UINotificationFeedbackGenerator()
     private let errorGenerator   = UINotificationFeedbackGenerator()
+    // Delegate that deactivates the audio session when a short tone finishes,
+    // letting iOS tell podcasts/music to restore their volume immediately.
+    private let toneDelegate = _ToneDelegate()
 
     private init() {
-        // Don't touch the audio session here — TTSService owns it and sets .playback,
-        // which also lets our feedback tones play through even when the phone is muted.
-        // That's the right call for a language learning app.
         correctPlayer = player(for: "correct")
         wrongPlayer   = player(for: "wrong")
-        // Warm up haptic engines so first fire has no latency
+        correctPlayer?.delegate = toneDelegate
+        wrongPlayer?.delegate   = toneDelegate
         successGenerator.prepare()
         errorGenerator.prepare()
     }
@@ -63,5 +64,13 @@ final class AudioFeedbackService {
         correctPlayer?.play()
         successGenerator.notificationOccurred(.success)
         successGenerator.prepare()
+    }
+}
+
+// Deactivates the shared AVAudioSession when a short feedback tone finishes,
+// signalling iOS to restore background audio (podcasts, music) to full volume.
+private final class _ToneDelegate: NSObject, AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully _: Bool) {
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 }

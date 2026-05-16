@@ -6,6 +6,7 @@ import SwiftData
 @Observable
 final class MainViewModel {
     var units: [CourseUnit] = []
+    var bonusLessonInfos: [BonusLessonInfo] = []
     private let repository: ContentRepository
 
     init(repository: ContentRepository) {
@@ -69,9 +70,34 @@ final class MainViewModel {
         
         self.units = modules
 
-        print("[LuxLingo] MainViewModel: Mapped \(rawUnits.count) lessons into \(modules.count) thematic units")
+        // Load bonus lessons
+        let rawBonus = repository.getBonusLessons()
+        self.bonusLessonInfos = rawBonus.map { entity in
+            BonusLessonInfo(
+                id: entity.lessonId,
+                titleEn: entity.titleEn,
+                situationTag: entity.situationTag ?? "",
+                sceneImage: entity.themeTag ?? "",   // sceneImage stored in themeTag for bonus
+                unitIndex: entity.unitIndex,
+                isUnlocked: repository.isBonusLessonUnlocked(unitIndex: entity.unitIndex)
+            )
+        }
+
+        print("[LuxLingo] MainViewModel: Mapped \(rawUnits.count) lessons into \(modules.count) thematic units, \(self.bonusLessonInfos.count) bonus lessons")
     }
     
+    // MARK: - Vocabulary & Review
+
+    func vocabWords(for unit: CourseUnit) -> [VocabWord] {
+        repository.getEncounteredVocab(for: unit.lessons.map { $0.id })
+    }
+
+    func allVocabWords() -> [VocabWord] {
+        repository.getEncounteredVocab(for: units.flatMap { $0.lessons.map { $0.id } })
+    }
+
+    var reviewWordCount: Int { repository.reviewableWordCount() }
+
     private func lessonTitle(number: Int, luxWords: [String]) -> String {
         // Fixed thematic names for the first 20 lessons (most studied)
         let named: [Int: String] = [

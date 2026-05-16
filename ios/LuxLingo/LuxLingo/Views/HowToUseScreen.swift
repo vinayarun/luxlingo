@@ -49,6 +49,22 @@ struct HowToUseScreen: View {
                 ExerciseTypeRow(icon: "bolt.fill", color: .luxAmber,
                                 name: "Speed Round",
                                 description: "Swipe right if the translation shown is correct, left if it's wrong — as fast as you can.")
+                Divider().padding(.leading, 44)
+                ExerciseTypeRow(icon: "ear.fill", color: .teal,
+                                name: "Listening",
+                                description: "The word plays automatically — no text shown. Pick the correct English meaning from three options. Trains your ear, not your eye.")
+                Divider().padding(.leading, 44)
+                ExerciseTypeRow(icon: "waveform.and.mic", color: .pink,
+                                name: "Audio Dictation",
+                                description: "Hear the word and type it in Luxembourgish from memory. Minor spelling errors are flagged but still counted — Luxembourgish spelling from audio is hard!")
+                Divider().padding(.leading, 44)
+                ExerciseTypeRow(icon: "arrow.triangle.2.circlepath", color: .orange,
+                                name: "Conjugation Match",
+                                description: "A sentence shows a conjugated verb form — identify which infinitive it belongs to. Covers suppletive verbs like sinn → ass.")
+                Divider().padding(.leading, 44)
+                ExerciseTypeRow(icon: "tablecells.fill", color: .luxGreen,
+                                name: "Verb Forms",
+                                description: "Given a verb's conjugation table with one row blanked, pick the correct form for that pronoun.")
             }
         }
     }
@@ -73,6 +89,10 @@ struct HowToUseScreen: View {
                 FeatureRow(icon: "person.2.fill", color: .luxGreen,
                            name: "Characters",
                            description: "Meet Marc, Anna, Lena, Paul, Bello, Claire and Mr. Weiss — their avatars appear when they feature in a sentence.")
+                Divider().padding(.leading, 44)
+                FeatureRow(icon: "book.pages", color: .luxPurple,
+                           name: "Grammar Tips",
+                           description: "Open the menu and tap Grammar Tips for quick-reference cards on the N-Rule, articles, verb conjugation, suppletive verbs and capitalisation. The n-rule and conjugation chips in exercises link directly to the relevant card.")
             }
         }
     }
@@ -110,7 +130,8 @@ struct HowToUseScreen: View {
                 TipRow(number: "2", text: "Come back daily to keep your streak alive and reinforce what you've learned.")
                 TipRow(number: "3", text: "Use the word lookup freely — understanding words in context speeds up learning.")
                 TipRow(number: "4", text: "If you're stuck, tap \"Need a hint?\" or use Skip after 3 wrong answers.")
-                TipRow(number: "5", text: "The Eifeler Regel (n-rule) is tricky — use the hint card until it clicks.")
+                TipRow(number: "5", text: "The Eifeler Regel (n-rule) is tricky — use the hint card until it clicks, then check the Grammar Tips tab for the UNITED ZOHA memory trick.")
+                TipRow(number: "6", text: "Listening and Dictation exercises unlock after a few practices — they train a different skill from reading. Keep your volume on!")
             }
             .padding(.vertical, 4)
         }
@@ -184,7 +205,7 @@ private struct InfoRow: View {
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(name).font(.subheadline).fontWeight(.semibold)
-                Text(description).font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+                JustifiedText(text: description, uiFont: .preferredFont(forTextStyle: .caption1))
             }
             Spacer(minLength: 0)
         }
@@ -204,10 +225,7 @@ private struct TipRow: View {
                 .frame(width: 20, height: 20)
                 .background(Color.luxAmber)
                 .clipShape(Circle())
-            Text(text)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            JustifiedText(text: text, uiFont: .preferredFont(forTextStyle: .subheadline))
         }
     }
 }

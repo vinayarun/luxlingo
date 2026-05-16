@@ -2,9 +2,10 @@ import SwiftUI
 import Charts
 
 struct StatsScreen: View {
-    let units: [CourseUnit]
-    let xp: Int
-    let streak: Int
+    let units:      [CourseUnit]
+    let xp:         Int
+    let streak:     Int
+    var allVocab:   [VocabWord] = []   // all encountered words across all lessons
 
     private var allLessons: [Lesson] { units.flatMap { $0.lessons } }
     private var totalWords: Int     { allLessons.reduce(0) { $0 + $1.totalWords } }
@@ -50,6 +51,7 @@ struct StatsScreen: View {
                 chartSection
                 if let pos = currentPosition { coverageCallout(pos) }
                 statsGrid
+                if !allVocab.isEmpty { vocabularySection }
             }
             .padding(16)
         }
@@ -229,6 +231,169 @@ struct StatsScreen: View {
                 )
             }
         }
+    }
+}
+
+// MARK: - Vocabulary section (embedded in My Progress)
+
+extension StatsScreen {
+    var vocabularySection: some View {
+        VocabularyListContent(title: "My Vocabulary", words: allVocab)
+    }
+}
+
+// MARK: - Vocabulary Sheet (presented as a sheet from UnitCard)
+
+struct VocabularySheet: View {
+    let title:     String
+    let sceneName: String?
+    let words:     [VocabWord]
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                // Scene banner header
+                if let name = sceneName, let img = UIImage(named: name) {
+                    ZStack(alignment: .bottomLeading) {
+                        Image(uiImage: img)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 110)
+                            .clipped()
+                        LinearGradient(colors: [.clear, .black.opacity(0.55)],
+                                       startPoint: .top, endPoint: .bottom)
+                        Text(title)
+                            .font(.title3).fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 16).padding(.bottom, 10)
+                    }
+                }
+                VocabularyListContent(title: title, words: words)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") { dismiss() }
+                        .fontWeight(.semibold)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Shared vocabulary list (used by both StatsScreen and VocabularySheet)
+
+struct VocabularyListContent: View {
+    let title: String
+    let words: [VocabWord]
+    @State private var filter: VocabFilter = .all
+
+    enum VocabFilter: String, CaseIterable {
+        case all = "All", inProgress = "In Progress", mastered = "Mastered"
+    }
+
+    private var filtered: [VocabWord] {
+        switch filter {
+        case .all:        return words
+        case .inProgress: return words.filter { $0.mastery < 20 }
+        case .mastered:   return words.filter { $0.mastery >= 20 }
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("\(words.count) words encountered")
+                    .font(.caption).foregroundColor(.secondary)
+                Spacer()
+            }
+            .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 6)
+
+            Picker("Filter", selection: $filter) {
+                ForEach(VocabFilter.allCases, id: \.self) { f in
+                    Text(f.rawValue).tag(f)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, 16).padding(.bottom, 10)
+
+            if filtered.isEmpty {
+                Text(filter == .mastered ? "No mastered words yet." : "No words in progress.")
+                    .font(.subheadline).foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(32)
+            } else {
+                // Use a plain list so it works both in a sheet and embedded in a ScrollView
+                VStack(spacing: 0) {
+                    ForEach(filtered) { word in
+                        VocabWordRow(word: word)
+                        if word.id != filtered.last?.id {
+                            Divider().padding(.leading, 16)
+                        }
+                    }
+                }
+                .background(Color(.systemBackground))
+                .cornerRadius(12)
+                .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+                .padding(.horizontal, 16)
+            }
+
+            Spacer(minLength: 12)
+        }
+    }
+}
+
+struct VocabWordRow: View {
+    let word: VocabWord
+
+    private var masteryFraction: Double {
+        Double(min(word.mastery, 20)) / 20.0
+    }
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            // Speaker / audio
+            SpeakerButton(text: word.wordLu, audioUrl: word.lodAudioUrl)
+                .font(.callout)
+                .frame(width: 30, height: 30)
+                .background(Color.accentColor.opacity(0.08))
+                .clipShape(Circle())
+
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(word.wordLu)
+                        .font(.subheadline).fontWeight(.semibold)
+                    Text(word.primaryEn)
+                        .font(.caption).foregroundColor(.secondary)
+                }
+                if !word.exampleLu.isEmpty {
+                    Text(word.exampleLu)
+                        .font(.caption).foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+            }
+
+            Spacer(minLength: 0)
+
+            // Mastery ring
+            ZStack {
+                Circle().stroke(Color(.systemGray5), lineWidth: 3)
+                Circle()
+                    .trim(from: 0, to: masteryFraction)
+                    .stroke(word.mastery >= 20 ? Color.luxGreen : Color.accentColor,
+                            style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                if word.mastery >= 20 {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 8, weight: .bold))
+                        .foregroundColor(.luxGreen)
+                }
+            }
+            .frame(width: 28, height: 28)
+        }
+        .padding(.horizontal, 16).padding(.vertical, 10)
     }
 }
 
