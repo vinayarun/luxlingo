@@ -8,6 +8,7 @@ struct HowToUseScreen: View {
                 featuresSection
                 progressSection
                 tipsSection
+                aboutSection
             }
             .padding(16)
         }
@@ -132,6 +133,61 @@ struct HowToUseScreen: View {
                 TipRow(number: "4", text: "If you're stuck, tap \"Need a hint?\" or use Skip after 3 wrong answers.")
                 TipRow(number: "5", text: "The Eifeler Regel (n-rule) is tricky — use the hint card until it clicks, then check the Grammar Tips tab for the UNITED ZOHA memory trick.")
                 TipRow(number: "6", text: "Listening and Dictation exercises unlock after a few practices — they train a different skill from reading. Keep your volume on!")
+            }
+            .padding(.vertical, 4)
+        }
+    }
+
+    private var aboutSection: some View {
+        SectionCard(title: "About LuxLingo", icon: "info.circle.fill", iconColor: .luxGreen) {
+            VStack(alignment: .leading, spacing: 14) {
+                Text("LuxLingo is a free, ad-free app for learning Luxembourgish — built with care for everyone who wants to connect with Luxembourg's national language.")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                Divider()
+
+                // Contact
+                VStack(alignment: .leading, spacing: 6) {
+                    Label("Contact & Feedback", systemImage: "envelope.fill")
+                        .font(.subheadline).fontWeight(.semibold)
+                    Text("Found an error in a sentence or exercise? Use the")
+                        .font(.caption).foregroundColor(.secondary)
+                    + Text(" 🚩 flag button ")
+                        .font(.caption).fontWeight(.semibold).foregroundColor(.secondary)
+                    + Text("during any exercise to report it directly.")
+                        .font(.caption).foregroundColor(.secondary)
+                    Text("For anything else, email us:")
+                        .font(.caption).foregroundColor(.secondary)
+                    Button {
+                        if let url = URL(string: "mailto:luxlingo.app@gmail.com") {
+                            UIApplication.shared.open(url)
+                        }
+                    } label: {
+                        Text("luxlingo.app@gmail.com")
+                            .font(.subheadline).fontWeight(.semibold)
+                            .foregroundColor(.luxGreen)
+                    }
+                }
+
+                Divider()
+
+                // Credits
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("Powered by", systemImage: "flag.fill")
+                        .font(.subheadline).fontWeight(.semibold)
+                    Group {
+                        Text("• ") + Text("LOD.lu").bold() + Text(" — Lëtzebuerger Online Dictionnaire")
+                        Text("• ") + Text("Sproochmaschinn.lu").bold() + Text(" — Luxembourg TTS")
+                        Text("• ") + Text("LuxASR / LuxMT").bold() + Text(" — University of Luxembourg")
+                    }
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+
+                Text("Version 1.0 · May 2026")
+                    .font(.caption2)
+                    .foregroundColor(Color(.tertiaryLabel))
             }
             .padding(.vertical, 4)
         }

@@ -254,23 +254,18 @@ struct ConjugationMatchExercise: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Sentence with the conjugated form highlighted
+            // Sentence shown once, with the verb underlined
             VStack(spacing: 6) {
-                Text("Find the verb")
+                Text("Which verb is this a form of?")
                     .font(.caption).fontWeight(.semibold)
                     .foregroundColor(.secondary)
-                HighlightedSentenceText(sentence: sentence, highlight: highlightedForm)
+                UnderlinedVerbSentenceText(sentence: sentence, highlight: highlightedForm)
                     .multilineTextAlignment(.center)
                     .padding(16)
                     .frame(maxWidth: .infinity)
                     .background(Color(.systemGray6))
                     .cornerRadius(12)
             }
-
-            Text("Which verb does '\(highlightedForm)' come from?")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
 
             ForEach(options, id: \.self) { option in
                 let isSelected = selectedOption == option
@@ -286,6 +281,29 @@ struct ConjugationMatchExercise: View {
                 )
             }
         }
+    }
+}
+
+// Sentence text where the target verb is bold + underlined (not just coloured)
+private struct UnderlinedVerbSentenceText: View {
+    let sentence: String
+    let highlight: String
+
+    var body: some View {
+        let words = sentence.split(separator: " ").map(String.init)
+        var result = AttributedString()
+        for (i, word) in words.enumerated() {
+            let clean = word.trimmingCharacters(in: .punctuationCharacters)
+            var part = AttributedString(word)
+            if clean.lowercased() == highlight.lowercased() {
+                part.foregroundColor = .primary
+                part.font = .systemFont(ofSize: 17, weight: .bold)
+                part.underlineStyle = .single
+            }
+            result += part
+            if i < words.count - 1 { result += AttributedString(" ") }
+        }
+        return Text(result).font(.title3)
     }
 }
 
@@ -599,7 +617,8 @@ struct FlashcardExercise: View {
         }
         .sheet(isPresented: $showConjugation) {
             if let p = paradigm {
-                ConjugationPanel(lemma: targetWord, translation: translation, rows: p)
+                ConjugationPanel(lemma: targetWord, translation: translation, rows: p,
+                                 sentenceForm: sentenceTargetWord)
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }
@@ -643,6 +662,7 @@ struct ConjugationPanel: View {
     let lemma: String
     let translation: String
     let rows: [String]   // ["ech kann", "du kanns", ...]
+    var sentenceForm: String? = nil  // actual form used in the sentence, for the description line
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -712,9 +732,18 @@ struct ConjugationPanel: View {
     }
 
     private func conjugatedForm(from rows: [String]) -> String? {
-        guard rows.count > 2 else { return nil }
-        let form = verbFormOnly(rows[2])
-        return form.lowercased() == lemma.lowercased() ? nil : form
+        // Prefer the actual sentence form if provided
+        if let sf = sentenceForm, !sf.isEmpty, sf.lowercased() != lemma.lowercased() {
+            return sf
+        }
+        // Fallback: find the first row whose verb form differs from the lemma
+        for row in rows {
+            let form = verbFormOnly(row)
+            if !form.isEmpty && form.lowercased() != lemma.lowercased() {
+                return form
+            }
+        }
+        return nil
     }
 }
 
@@ -1180,7 +1209,6 @@ struct PronunciationExercise: View {
     @State private var recordingURL: URL? = nil
     @State private var playbackPlayer: AVAudioPlayer? = nil
     @State private var isPlayingBack = false
-    @State private var isTTSPlaying  = false  // true while reference is playing
 
     private let service = PronunciationService.shared
 
@@ -1211,30 +1239,29 @@ struct PronunciationExercise: View {
 
             // ── TTS reference (single speaker button, no duplicate icon) ─────
             Button {
-                isTTSPlaying = true
                 Task {
                     if let url = lodAudioUrl {
                         await TTSService.shared.speakUrl(url, identifier: targetWord)
                     } else {
                         await TTSService.shared.speak(targetWord)
                     }
-                    isTTSPlaying = false
                 }
             } label: {
+                let ttsActive = TTSService.shared.playState != .idle
                 HStack(spacing: 8) {
                     Image(systemName: "speaker.wave.2.fill")
                         .font(.title3)
-                        .foregroundColor(isTTSPlaying ? .white : .secondary)
-                    Text(isTTSPlaying ? "Playing reference…" : "Hear reference")
+                        .foregroundColor(ttsActive ? .white : .secondary)
+                    Text(ttsActive ? "Playing reference…" : "Hear reference")
                         .font(.caption)
-                        .foregroundColor(isTTSPlaying ? .white.opacity(0.9) : .secondary)
+                        .foregroundColor(ttsActive ? .white.opacity(0.9) : .secondary)
                 }
                 .padding(.horizontal, 14).padding(.vertical, 8)
-                .background(isTTSPlaying ? Color.accentColor : Color(.systemGray6))
+                .background(ttsActive ? Color.accentColor : Color(.systemGray6))
                 .cornerRadius(10)
             }
             .buttonStyle(.plain)
-            .disabled(isTTSPlaying || phase == .recording)
+            .disabled(TTSService.shared.playState != .idle || phase == .recording)
 
             // ── Amplitude bars ───────────────────────────────────────────────
             AmplitudeBarsView(levels: service.amplitudeLevels,
@@ -1265,13 +1292,13 @@ struct PronunciationExercise: View {
                     }
                 }
                 .buttonStyle(.plain)
-                .disabled(phase == .review || isTTSPlaying)
-                .opacity((phase == .review || isTTSPlaying) ? 0.35 : 1)
+                .disabled(phase == .review || TTSService.shared.playState != .idle)
+                .opacity(phase == .review ? 0.35 : 1)
             }
             .frame(height: 90)
 
             // Hint when TTS is blocking the mic
-            if isTTSPlaying && phase == .listen {
+            if TTSService.shared.playState != .idle && phase == .listen {
                 Text("Wait for reference to finish…")
                     .font(.caption2).foregroundColor(.secondary)
             }

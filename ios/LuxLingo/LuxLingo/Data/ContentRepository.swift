@@ -488,6 +488,14 @@ final class ContentRepository: ObservableObject {
         return db.getVocabularyById(id)
     }
 
+    // MARK: - Mark Lesson Started
+
+    func markLessonStarted(lessonId: String) {
+        guard let existing = db.getLessonStatus(lessonId), !existing.hasStarted else { return }
+        existing.hasStarted = true
+        db.save()
+    }
+
     // MARK: - Complete Lesson
 
     func completeLesson(lessonId: String) {
@@ -497,7 +505,8 @@ final class ContentRepository: ObservableObject {
             titleEn: existing?.titleEn ?? "",
             isCompleted: true,
             mastery: existing?.mastery ?? 0,
-            completionPercentage: 100.0
+            completionPercentage: 100.0,
+            hasStarted: true
         )
         db.insertLessonStatus(status)
         db.save()

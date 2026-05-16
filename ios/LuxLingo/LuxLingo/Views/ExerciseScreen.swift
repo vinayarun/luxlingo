@@ -33,7 +33,8 @@ struct ExerciseScreen: View {
 
     @State private var showCelebration = false
     @State private var showingPronunciationResult = false
-    @State private var showScoringBanner = false   // brief "checking pronunciation" hint
+    @State private var showScoringBanner = false
+    @State private var showingFeedback = false
     private let pronService = PronunciationService.shared
 
     var body: some View {
@@ -64,6 +65,16 @@ struct ExerciseScreen: View {
     @ViewBuilder
     private var exerciseContent: some View {
         contentBody
+            .sheet(isPresented: $showingFeedback) {
+                FeedbackSheet(
+                    lessonId:     viewModel.uiState.lessonNumber > 0
+                                  ? "lesson_\(viewModel.uiState.lessonNumber)" : "review",
+                    exerciseType: viewModel.uiState.currentExerciseType.rawValue,
+                    sentenceLu:   viewModel.uiState.currentSentence?.textLu ?? "",
+                    targetWord:   viewModel.uiState.displayedTargetWord
+                )
+                .presentationDetents([.medium, .large])
+            }
             .overlay {
                 if showingPronunciationResult,
                    let result = viewModel.uiState.pendingPronunciationResult {
@@ -111,7 +122,8 @@ struct ExerciseScreen: View {
                             phase: viewModel.uiState.phase,
                             sessionXP: viewModel.uiState.sessionXP,
                             masteryChange: viewModel.uiState.masteryChange,
-                            isFeedbackVisible: viewModel.uiState.isFeedbackVisible
+                            isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                            onFeedback: { showingFeedback = true }
                         )
 
                         Spacer().frame(height: 32)
@@ -459,22 +471,26 @@ struct ExerciseScreen: View {
                         ConjugationPanel(
                             lemma: viewModel.uiState.displayedTargetWord,
                             translation: viewModel.uiState.targetTranslation,
-                            rows: p
+                            rows: p,
+                            sentenceForm: viewModel.uiState.targetWord
                         )
                         .presentationDetents([.medium])
                         .presentationDragIndicator(.visible)
                     }
                 }
 
-                TappableLuSentenceView(
-                    text: viewModel.uiState.currentSentence?.textLu ?? "",
-                    highlight: viewModel.uiState.targetWord,
-                    highlightMeaning: viewModel.uiState.targetTranslation
-                )
-                .font(.title)
+                // conjugationMatch shows its own sentence with the verb underlined — skip here
+                if viewModel.uiState.currentExerciseType != .conjugationMatch {
+                    TappableLuSentenceView(
+                        text: viewModel.uiState.currentSentence?.textLu ?? "",
+                        highlight: viewModel.uiState.targetWord,
+                        highlightMeaning: viewModel.uiState.targetTranslation
+                    )
+                    .font(.title)
 
-                SpeakerButton(text: viewModel.uiState.currentSentence?.textLu ?? "")
-                    .font(.title3)
+                    SpeakerButton(text: viewModel.uiState.currentSentence?.textLu ?? "")
+                        .font(.title3)
+                }
             }
 
         case .jumbledLu, .jumbledEn:
@@ -849,10 +865,11 @@ struct ExerciseScreen: View {
 struct ExerciseHeader: View {
     let progress: Float
     let progressText: String
-    let phase: String        // retained for call-site compatibility; communicated visually by gradient colour
+    let phase: String
     let sessionXP: Int
     let masteryChange: Int
     let isFeedbackVisible: Bool
+    var onFeedback: (() -> Void)? = nil
 
     var body: some View {
         VStack(spacing: 6) {
@@ -886,6 +903,15 @@ struct ExerciseHeader: View {
                 .padding(.vertical, 4)
                 .background(Color.luxAmber.opacity(0.12))
                 .cornerRadius(20)
+
+                if let onFeedback {
+                    Button(action: onFeedback) {
+                        Image(systemName: "exclamationmark.bubble")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.leading, 6)
+                }
             }
 
             LessonProgressBar(progress: progress)

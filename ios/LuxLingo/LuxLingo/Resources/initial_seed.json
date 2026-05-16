@@ -1,5 +1,5 @@
 {
-  "version": 8.53,
+  "version": 8.55,
   "vocabulary": [
     {
       "surface_id": "w_an",
@@ -27316,7 +27316,7 @@
         "s_kommen_1"
       ],
       "text_en": "Please come inside.",
-      "text_lu": "Kommt bitte herein.",
+      "text_lu": "Kënnt w.e.g. eran.",
       "cloze_index": 0,
       "audio_url": "",
       "difficulty": "simple",
@@ -37923,8 +37923,8 @@
       "sense_ids": [
         "s_ech_1"
       ],
-      "text_en": "I am Anna and Marc is my brother.",
-      "text_lu": "Ech sinn d'Anna a de Marc ass mäi Brudder.",
+      "text_en": "I am Anna and Paul is my brother.",
+      "text_lu": "Ech sinn d'Anna a de Paul ass mäi Brudder.",
       "cloze_index": 0,
       "audio_url": "",
       "difficulty": "intermediate",
@@ -68492,9 +68492,9 @@
         "s_brudder_1"
       ],
       "text_en": "Natali plays with Bello now.",
-      "text_lu": "Natali spillt elo mat Brudder.",
+      "text_lu": "Natali spillt elo mat Bello.",
       "difficulty": "intermediate",
-      "cloze_index": 4,
+      "cloze_index": 1,
       "audio_url": "",
       "cloze_confidence": "exact",
       "exact_form": true
@@ -98073,7 +98073,7 @@
         "s_kommen_1"
       ],
       "text_en": "Come here, Bello!",
-      "text_lu": "Komm rüber, Kumpel!",
+      "text_lu": "Komm hei, Bello!",
       "difficulty": "simple",
       "cloze_index": 0,
       "audio_url": "",

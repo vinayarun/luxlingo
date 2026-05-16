@@ -41,9 +41,9 @@ final class MainViewModel {
             let lessonNumber = Int(unit.title.replacingOccurrences(of: "Lesson ", with: "")) ?? 1
             let coverage = min(85, Int(25.0 * log10(Double(max(1, lessonNumber * 7)))))
 
-            // Real practice progress — only shown for lessons the user has actually started
+            // Real practice progress — only shown for lessons the user has actively opened
             let totalWords = coreSenses.count
-            let practicedWords = status != nil ? coreSenses.filter {
+            let practicedWords = status?.hasStarted == true ? coreSenses.filter {
                 repository.getSenseMastery(senseId: $0.senseId) > 2
             }.count : 0
 

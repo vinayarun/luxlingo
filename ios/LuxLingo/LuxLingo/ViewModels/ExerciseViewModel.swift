@@ -114,6 +114,7 @@ final class ExerciseViewModel {
         self.lessonId   = lessonId
         self.repository = repository
         uiState.lessonNumber = Int(lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
+        repository.markLessonStarted(lessonId: lessonId)
         loadNextExercise()
     }
 

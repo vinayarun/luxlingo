@@ -162,7 +162,7 @@ struct SplashScreen: View {
                 if !showScene {
                     ProgressView().tint(nil).scaleEffect(1.3)
                 }
-                Text("Preparing your village…")
+                Text("Mecher erwächt…")
                     .font(.subheadline)
                     .foregroundColor(showScene ? .white.opacity(0.85) : .secondary)
                 Spacer()

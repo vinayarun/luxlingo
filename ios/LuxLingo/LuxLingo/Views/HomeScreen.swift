@@ -418,10 +418,11 @@ struct MenuSheet: View {
 
     private struct TabItem { let label: String; let icon: String }
     private let tabs: [TabItem] = [
-        TabItem(label: "How to Use",     icon: "hand.tap.fill"),
-        TabItem(label: "Our Method",     icon: "atom"),
-        TabItem(label: "My Progress",    icon: "chart.bar.fill"),
-        TabItem(label: "Grammar Tips", icon: "book.pages"),
+        TabItem(label: "How to Use",   icon: "hand.tap.fill"),
+        TabItem(label: "Our Method",   icon: "atom"),
+        TabItem(label: "My Progress",  icon: "chart.bar.fill"),
+        TabItem(label: "Grammar",      icon: "book.pages"),
+        TabItem(label: "Characters",   icon: "person.3.fill"),
     ]
 
     var body: some View {
@@ -487,6 +488,7 @@ struct MenuSheet: View {
         case 1: ZipfsLawInfoScreen()
         case 2: StatsScreen(units: units, xp: xp, streak: streak, allVocab: allVocab)
         case 3: LanguageGuideScreen()
+        case 4: CharacterIntroScreen()
         default: HowToUseScreen()
         }
     }

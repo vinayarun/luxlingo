@@ -166,13 +166,15 @@ final class LessonStatusEntity {
     var mastery: Int
     var completionPercentage: Double
     var orderIndex: Int
+    var hasStarted: Bool = false   // true only when user has actively opened this lesson
 
-    init(lessonId: String, titleEn: String = "", isCompleted: Bool = false, mastery: Int = 0, completionPercentage: Double = 0.0, orderIndex: Int = 0) {
+    init(lessonId: String, titleEn: String = "", isCompleted: Bool = false, mastery: Int = 0, completionPercentage: Double = 0.0, orderIndex: Int = 0, hasStarted: Bool = false) {
         self.lessonId = lessonId
         self.titleEn = titleEn
         self.isCompleted = isCompleted
         self.mastery = mastery
         self.completionPercentage = completionPercentage
         self.orderIndex = orderIndex
+        self.hasStarted = hasStarted
     }
 }
