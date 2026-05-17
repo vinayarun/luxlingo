@@ -49,7 +49,7 @@ struct HomeScreen: View {
                 ForEach(Array(units.enumerated()), id: \.element.id) { unitIdx, unit in
                     UnitCard(
                         unit: unit,
-                        vocabWords: getVocabForUnit?(unit) ?? [],
+                        vocabLoader: getVocabForUnit.map { loader in { loader(unit) } },
                         bonusLesson: bonusLessons.first { $0.unitIndex == unitIdx },
                         onLessonSelected: onLessonSelected
                     )
@@ -215,11 +215,18 @@ struct BonusLessonCard: View {
 // MARK: - Unit Card
 struct UnitCard: View {
     let unit:             CourseUnit
-    var vocabWords:       [VocabWord] = []
+    var vocabLoader:      (() -> [VocabWord])? = nil   // called lazily on first open
     var bonusLesson:      BonusLessonInfo? = nil
     let onLessonSelected: (String, String) -> Void
 
-    @State private var showVocab = false
+    @State private var showVocab    = false
+    @State private var loadedVocab: [VocabWord] = []
+
+    // Count of words the user has meaningfully practiced in this unit.
+    // Used for the badge before vocab is loaded — avoids an eager DB call.
+    private var encounteredCount: Int {
+        unit.lessons.reduce(0) { $0 + $1.practicedWords }
+    }
 
     // Scene images assigned to units in order; cycles for units beyond the list.
     // UIImage(named:) returns nil silently for any scenes not yet in the asset catalog.
@@ -284,10 +291,10 @@ struct UnitCard: View {
                         .padding(.bottom, 12)
 
                     // Vocab hint badge (top-right) — visible only when words are encountered
-                    if !vocabWords.isEmpty {
+                    if encounteredCount > 0 {
                         HStack(spacing: 4) {
                             Image(systemName: "text.book.closed.fill")
-                            Text("\(vocabWords.count)")
+                            Text("\(encounteredCount)")
                         }
                         .font(.caption2).fontWeight(.semibold)
                         .foregroundColor(.white.opacity(0.85))
@@ -298,12 +305,16 @@ struct UnitCard: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     }
                 }
-                .onTapGesture { if !vocabWords.isEmpty { showVocab = true } }
+                .onTapGesture {
+                    guard encounteredCount > 0 else { return }
+                    if loadedVocab.isEmpty { loadedVocab = vocabLoader?() ?? [] }
+                    showVocab = true
+                }
                 .sheet(isPresented: $showVocab) {
                     VocabularySheet(
                         title:     unit.title,
                         sceneName: Self.sceneNames[(unitIndex - 1) % Self.sceneNames.count],
-                        words:     vocabWords
+                        words:     loadedVocab
                     )
                 }
             }

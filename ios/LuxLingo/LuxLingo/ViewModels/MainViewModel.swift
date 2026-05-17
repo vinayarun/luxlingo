@@ -7,83 +7,116 @@ import SwiftData
 final class MainViewModel {
     var units: [CourseUnit] = []
     var bonusLessonInfos: [BonusLessonInfo] = []
+    var cachedAllVocab: [VocabWord] = []
+    var cachedReviewWordCount: Int = 0
     private let repository: ContentRepository
 
     init(repository: ContentRepository) {
         self.repository = repository
-        loadUnits()
+        // Defer to the next event loop tick so the splash animation gets its
+        // first render before any DB work starts.
+        Task { @MainActor [weak self] in self?.loadUnits() }
     }
 
     func loadUnits() {
-        let statuses = repository.getAllLessonStatuses()
-        let rawUnits = repository.getUnits()
+        // ── 5 bulk DB queries — everything else is pure in-memory ─────────────
+        let allCurriculum = repository.getAllCurriculumRaw()   // all lessons incl. bonus
+        let allSenses     = repository.getAllSensesMap()        // senseId  → SensesEntity
+        let allVocab      = repository.getAllVocabMap()         // surfaceId → VocabularyEntity
+        let allProgress   = repository.getAllProgressMap()      // senseId  → mastery Int
+        let allStatuses   = repository.getAllLessonStatuses()   // lessonId → LessonStatusEntity
 
+        let statusMap = Dictionary(uniqueKeysWithValues: allStatuses.map { ($0.lessonId, $0) })
+
+        // Build lessonId → [SensesEntity] entirely in memory (no per-lesson queries)
+        let curriculumSensesMap: [String: [SensesEntity]] = Dictionary(
+            uniqueKeysWithValues: allCurriculum.map { curr in
+                let ids = curr.coreSenses.split(separator: ",")
+                    .map { String($0).trimmingCharacters(in: .whitespaces) }
+                return (curr.lessonId, ids.compactMap { allSenses[$0] })
+            }
+        )
+
+        // ── Build course modules (core lessons only) ───────────────────────────
+        let coreCurriculum = allCurriculum.filter { $0.lessonType == "core" }
         var modules: [CourseUnit] = []
         var currentLessons: [Lesson] = []
         var currentUnitIndex = 1
         let batchSize = 7
 
-        for (index, unit) in rawUnits.enumerated() {
-            let status = statuses.first { $0.lessonId == unit.id }
-            let coreSenses = repository.getLessonCoreSenses(lessonId: unit.id)
-            let luxWords = coreSenses.compactMap { repository.getVocabularyById(id: $0.surfaceId)?.wordText }.prefix(3)
-            // Show English translations in the subtitle so beginners know what they're learning
-            let enWords = coreSenses.prefix(4).compactMap { repository.getSense(senseId: $0.senseId)?.translations }
-            let objective = enWords.isEmpty
-                ? "Master the core vocabulary"
-                : enWords.joined(separator: " · ")
+        for (index, curr) in coreCurriculum.enumerated() {
+            let coreSenses = curriculumSensesMap[curr.lessonId] ?? []
+            let status     = statusMap[curr.lessonId]
 
-            let numberStr = unit.title.replacingOccurrences(of: "Lesson ", with: "")
-            let lessonInt = Int(numberStr) ?? 1
-            let descriptiveTitle = lessonTitle(number: lessonInt, luxWords: Array(luxWords))
-            
-            // Zipf cumulative coverage (for stats page — not shown in the lesson circle)
-            let lessonNumber = Int(unit.title.replacingOccurrences(of: "Lesson ", with: "")) ?? 1
-            let coverage = min(85, Int(25.0 * log10(Double(max(1, lessonNumber * 7)))))
+            let luxWords = coreSenses.prefix(3).compactMap { allVocab[$0.surfaceId]?.wordText }
+            let enWords  = coreSenses.prefix(4).compactMap { allSenses[$0.senseId]?.translations }
+            let objective = enWords.isEmpty ? "Master the core vocabulary" : enWords.joined(separator: " · ")
 
-            // Real practice progress — only shown for lessons the user has actively opened
-            let totalWords = coreSenses.count
-            let practicedWords = status?.hasStarted == true ? coreSenses.filter {
-                repository.getSenseMastery(senseId: $0.senseId) > 2
-            }.count : 0
+            let lessonNumber = Int(curr.titleEn.replacingOccurrences(of: "Lesson ", with: "")) ?? 1
+            let coverage     = min(85, Int(25.0 * log10(Double(max(1, lessonNumber * 7)))))
+            let practicedWords = status?.hasStarted == true
+                ? coreSenses.filter { (allProgress[$0.senseId] ?? 0) > 2 }.count : 0
 
-            let lesson = Lesson(
-                id: unit.id,
-                title: descriptiveTitle,
+            currentLessons.append(Lesson(
+                id: curr.lessonId,
+                title: lessonTitle(number: lessonNumber, luxWords: Array(luxWords)),
                 objective: objective,
                 exercises: [],
                 isCompleted: status?.isCompleted ?? false,
                 coveragePercent: coverage,
-                totalWords: totalWords,
+                totalWords: coreSenses.count,
                 practicedWords: practicedWords
-            )
-            
-            currentLessons.append(lesson)
-            
-            if currentLessons.count == batchSize || index == rawUnits.count - 1 {
-                let moduleTitle = getModuleTitle(for: currentUnitIndex)
-                modules.append(CourseUnit(id: "module_\(currentUnitIndex)", title: moduleTitle, lessons: currentLessons))
+            ))
+
+            if currentLessons.count == batchSize || index == coreCurriculum.count - 1 {
+                modules.append(CourseUnit(id: "module_\(currentUnitIndex)",
+                                          title: getModuleTitle(for: currentUnitIndex),
+                                          lessons: currentLessons))
                 currentLessons = []
                 currentUnitIndex += 1
             }
         }
-        
         self.units = modules
 
-        // Load bonus lessons
-        let rawBonus = repository.getBonusLessons()
-        self.bonusLessonInfos = rawBonus.map { entity in
+        // ── Bonus lessons ──────────────────────────────────────────────────────
+        let bonusCurriculum = allCurriculum.filter { $0.lessonType == "bonus" }
+        self.bonusLessonInfos = bonusCurriculum.map { entity in
             BonusLessonInfo(
                 id: entity.lessonId,
                 titleEn: entity.titleEn,
                 situationTag: entity.situationTag ?? "",
-                sceneImage: entity.themeTag ?? "",   // sceneImage stored in themeTag for bonus
+                sceneImage: entity.themeTag ?? "",
                 unitIndex: entity.unitIndex,
                 isUnlocked: repository.isBonusLessonUnlocked(unitIndex: entity.unitIndex)
             )
         }
 
-        print("[LuxLingo] MainViewModel: Mapped \(rawUnits.count) lessons into \(modules.count) thematic units, \(self.bonusLessonInfos.count) bonus lessons")
+        // ── Vocab cache — built entirely in memory, no sentence queries ────────
+        var vocabResult: [VocabWord] = []
+        var seen = Set<String>()
+        for curr in coreCurriculum {
+            for sense in curriculumSensesMap[curr.lessonId] ?? [] {
+                guard !seen.contains(sense.senseId) else { continue }
+                seen.insert(sense.senseId)
+                let mastery = allProgress[sense.senseId] ?? 0
+                guard mastery > 0, let vocab = allVocab[sense.surfaceId] else { continue }
+                vocabResult.append(VocabWord(
+                    senseId:     sense.senseId,
+                    wordLu:      vocab.wordText,
+                    primaryEn:   sense.translations,
+                    exampleLu:   "",   // sentence lookup removed — avoids selection algorithm
+                    exampleEn:   "",
+                    mastery:     mastery,
+                    lodAudioUrl: vocab.lodAudioUrl
+                ))
+            }
+        }
+        self.cachedAllVocab = vocabResult.sorted {
+            $0.wordLu.localizedCaseInsensitiveCompare($1.wordLu) == .orderedAscending
+        }
+        self.cachedReviewWordCount = allProgress.values.filter { $0 > 0 }.count
+
+        print("[LuxLingo] loadUnits: \(coreCurriculum.count) lessons → \(modules.count) units (5 DB queries)")
     }
     
     // MARK: - Vocabulary & Review
@@ -92,11 +125,9 @@ final class MainViewModel {
         repository.getEncounteredVocab(for: unit.lessons.map { $0.id })
     }
 
-    func allVocabWords() -> [VocabWord] {
-        repository.getEncounteredVocab(for: units.flatMap { $0.lessons.map { $0.id } })
-    }
+    func allVocabWords() -> [VocabWord] { cachedAllVocab }
 
-    var reviewWordCount: Int { repository.reviewableWordCount() }
+    var reviewWordCount: Int { cachedReviewWordCount }
 
     private func lessonTitle(number: Int, luxWords: [String]) -> String {
         // Fixed thematic names for the first 20 lessons (most studied)

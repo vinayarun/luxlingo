@@ -183,6 +183,16 @@ final class DatabaseManager {
         return (try? modelContext.fetch(descriptor)) ?? []
     }
 
+    func getAllVocabulary() -> [VocabularyEntity] {
+        let descriptor = FetchDescriptor<VocabularyEntity>()
+        return (try? modelContext.fetch(descriptor)) ?? []
+    }
+
+    func getAllUserProgress() -> [UserProgressEntity] {
+        let descriptor = FetchDescriptor<UserProgressEntity>()
+        return (try? modelContext.fetch(descriptor)) ?? []
+    }
+
     // MARK: - Save
 
     func save() {

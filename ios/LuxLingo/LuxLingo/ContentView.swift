@@ -25,7 +25,7 @@ struct ContentView: View {
             if !splashDone {
                 // Always show the splash for the full 2.5 s
                 SplashScreen { splashDone = true }
-            } else if let vm = mainViewModel {
+            } else if let vm = mainViewModel, !vm.units.isEmpty {
                 NavigationStack(path: $navigationPath) {
                     HomeScreen(
                         units:  vm.units,
@@ -49,7 +49,7 @@ struct ContentView: View {
                                     repository: repo,
                                     onBack: {
                                         navigationPath.removeLast()
-                                        mainViewModel?.loadUnits()
+                                        Task { @MainActor in mainViewModel?.loadUnits() }
                                     },
                                     onLessonComplete: { sessionXP in
                                         userPreferences.addXp(sessionXP)
@@ -64,7 +64,7 @@ struct ContentView: View {
                                     repository: repo,
                                     onBack: {
                                         navigationPath.removeLast()
-                                        mainViewModel?.loadUnits()
+                                        Task { @MainActor in mainViewModel?.loadUnits() }
                                     },
                                     isReviewSession: true
                                 )
@@ -278,6 +278,7 @@ struct ExerciseScreenHost: View {
                         onBack()
                     }
                 )
+                .opacity(showIntro ? 0 : 1)
             } else {
                 ProgressView()
                     .onAppear {

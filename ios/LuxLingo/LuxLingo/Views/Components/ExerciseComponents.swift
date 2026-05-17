@@ -156,7 +156,7 @@ private struct DictationTextField: UIViewRepresentable {
         tf.layer.borderColor   = borderColor.cgColor
 
         if !isDisabled {
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 if !tf.isFirstResponder { tf.becomeFirstResponder() }
             }
         } else {

@@ -1,0 +1,923 @@
+{
+  "version": 1,
+  "description": "Thematic A1 lessons for LuxLingo — traditional situational content",
+  "thematic_lessons": [
+    {
+      "id": "theme_greetings",
+      "title_en": "Greetings & Introductions",
+      "title_lu": "Begrëssungen a Virstellungen",
+      "level": "A1",
+      "situation": "Meeting someone for the first time or seeing someone you know",
+      "vocabulary": [
+        { "word_lu": "Moien", "meaning_en": "Hello / Good morning", "pos": "INTERJ", "notes": "Most common Luxembourgish greeting, used any time of day" },
+        { "word_lu": "Gudde Moien", "meaning_en": "Good morning", "pos": "PHRASE", "notes": "More formal than 'Moien'; 'Gudde' is accusative of 'gutt'" },
+        { "word_lu": "Gudden Owend", "meaning_en": "Good evening", "pos": "PHRASE", "notes": "'Owend' starts with a vowel so 'Gudden' (n-rule)" },
+        { "word_lu": "Gudde Mëtteg", "meaning_en": "Good midday / Good afternoon", "pos": "PHRASE", "notes": "Used around lunchtime" },
+        { "word_lu": "Gutt Nacht", "meaning_en": "Good night", "pos": "PHRASE", "notes": "Said when going to sleep" },
+        { "word_lu": "Äddi", "meaning_en": "Goodbye", "pos": "INTERJ", "notes": "Very common informal farewell in Luxembourgish" },
+        { "word_lu": "Servus", "meaning_en": "Hi / Bye (informal)", "pos": "INTERJ", "notes": "Used informally, borrowed from German/Latin" },
+        { "word_lu": "Wéi heeschs du?", "meaning_en": "What is your name? (informal)", "pos": "PHRASE", "notes": "Literally 'How are you called?' — informal 'du'" },
+        { "word_lu": "Wéi heescht Dir?", "meaning_en": "What is your name? (formal)", "pos": "PHRASE", "notes": "Formal 'Dir' — used with adults you don't know well" },
+        { "word_lu": "Ech heeschen...", "meaning_en": "My name is...", "pos": "PHRASE", "notes": "Literally 'I am called...'" },
+        { "word_lu": "Wéi geet et?", "meaning_en": "How are you?", "pos": "PHRASE", "notes": "Very common, informal" },
+        { "word_lu": "Wéi geet et Iech?", "meaning_en": "How are you? (formal)", "pos": "PHRASE", "notes": "Formal version using 'Iech'" },
+        { "word_lu": "Gutt, Merci.", "meaning_en": "Good, thank you.", "pos": "PHRASE", "notes": "'Merci' is universally used in Luxembourg for 'thank you'" },
+        { "word_lu": "Et geet.", "meaning_en": "I'm okay / So-so.", "pos": "PHRASE", "notes": "Literally 'It goes'" },
+        { "word_lu": "Wou kënns du hier?", "meaning_en": "Where are you from? (informal)", "pos": "PHRASE", "notes": "Literally 'Where do you come from?'" },
+        { "word_lu": "Ech kommen aus...", "meaning_en": "I come from...", "pos": "PHRASE", "notes": "Used with country names: Ech kommen aus Däitschland" },
+        { "word_lu": "Wéi al bass du?", "meaning_en": "How old are you? (informal)", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Ech sinn ... Joer al.", "meaning_en": "I am ... years old.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Frou ze treffen!", "meaning_en": "Nice to meet you!", "pos": "PHRASE", "notes": "Literally 'Happy to meet!'" },
+        { "word_lu": "du", "meaning_en": "you (informal singular)", "pos": "PRON", "notes": "Used with children, friends, family" },
+        { "word_lu": "Dir", "meaning_en": "you (formal singular / plural)", "pos": "PRON", "notes": "Capital D; used with strangers and in formal contexts" }
+      ],
+      "sentences": [
+        { "text_lu": "Moien!", "text_en": "Hello!", "difficulty": "simple", "topic_tags": ["greeting"] },
+        { "text_lu": "Gudde Moien, Här Weiss!", "text_en": "Good morning, Mr. Weiss!", "difficulty": "simple", "topic_tags": ["greeting", "formal"] },
+        { "text_lu": "Äddi, Marc!", "text_en": "Goodbye, Marc!", "difficulty": "simple", "topic_tags": ["farewell"] },
+        { "text_lu": "Wéi heeschs du?", "text_en": "What is your name?", "difficulty": "simple", "topic_tags": ["name", "informal"] },
+        { "text_lu": "Ech heeschen Anna.", "text_en": "My name is Anna.", "difficulty": "simple", "topic_tags": ["name"] },
+        { "text_lu": "Wéi geet et?", "text_en": "How are you?", "difficulty": "simple", "topic_tags": ["wellbeing"] },
+        { "text_lu": "Gutt, Merci!", "text_en": "Good, thank you!", "difficulty": "simple", "topic_tags": ["wellbeing"] },
+        { "text_lu": "Ech kommen aus Belsch.", "text_en": "I come from Belgium.", "difficulty": "simple", "topic_tags": ["origin"] },
+        { "text_lu": "Wou kënns du hier?", "text_en": "Where are you from?", "difficulty": "simple", "topic_tags": ["origin"] },
+        { "text_lu": "Ech sinn eelef Joer al.", "text_en": "I am eleven years old.", "difficulty": "simple", "topic_tags": ["age"] },
+        { "text_lu": "Frou ze treffen, Lena!", "text_en": "Nice to meet you, Lena!", "difficulty": "simple", "topic_tags": ["introduction"] },
+        { "text_lu": "Servus, Paul!", "text_en": "Hi, Paul!", "difficulty": "simple", "topic_tags": ["greeting", "informal"] },
+        { "text_lu": "Gudden Owend, wéi heescht Dir?", "text_en": "Good evening, what is your name?", "difficulty": "intermediate", "topic_tags": ["greeting", "name", "formal"] },
+        { "text_lu": "Ech heeschen Claire a ech kommen aus Lëtzebuerg.", "text_en": "My name is Claire and I come from Luxembourg.", "difficulty": "intermediate", "topic_tags": ["name", "origin"] },
+        { "text_lu": "Wéi al bass du, Marc? Ech sinn aacht Joer al.", "text_en": "How old are you, Marc? I am eight years old.", "difficulty": "intermediate", "topic_tags": ["age"] },
+        { "text_lu": "Dat ass meng Frëndin Natali. Si wunnt nieft eis.", "text_en": "This is my friend Natali. She lives next to us.", "difficulty": "intermediate", "topic_tags": ["introduction"] },
+        { "text_lu": "Wéi geet et Iech, Här Weiss? Et geet mir gutt, Merci.", "text_en": "How are you, Mr. Weiss? I am well, thank you.", "difficulty": "intermediate", "topic_tags": ["wellbeing", "formal"] },
+        { "text_lu": "Anna a Paul kommen aus Däitschland, awer si wunnen elo zu Lëtzebuerg.", "text_en": "Anna and Paul come from Germany, but they now live in Luxembourg.", "difficulty": "intermediate", "topic_tags": ["origin", "residence"] }
+      ],
+      "dialogues": [
+        {
+          "title": "First day at school",
+          "lines": [
+            { "speaker": "Claire", "lu": "Moien! Ech heeschen Claire. Wéi heeschs du?", "en": "Hello! My name is Claire. What is your name?" },
+            { "speaker": "Anna", "lu": "Moien! Ech heeschen Anna. Frou ze treffen!", "en": "Hello! My name is Anna. Nice to meet you!" },
+            { "speaker": "Claire", "lu": "Wou kënns du hier, Anna?", "en": "Where are you from, Anna?" },
+            { "speaker": "Anna", "lu": "Ech kommen aus Däitschland. A du?", "en": "I come from Germany. And you?" },
+            { "speaker": "Claire", "lu": "Ech kommen aus Lëtzebuerg. Wéi al bass du?", "en": "I come from Luxembourg. How old are you?" },
+            { "speaker": "Anna", "lu": "Ech sinn eelef Joer al. A du?", "en": "I am eleven years old. And you?" },
+            { "speaker": "Claire", "lu": "Ech sinn och eelef. Äddi, Anna!", "en": "I am also eleven. Goodbye, Anna!" }
+          ]
+        },
+        {
+          "title": "Formal greeting with teacher",
+          "lines": [
+            { "speaker": "Här Weiss", "lu": "Gudde Moien! Wéi heescht Dir?", "en": "Good morning! What is your name?" },
+            { "speaker": "Paul", "lu": "Gudde Moien, Här Weiss. Ech heeschen Paul.", "en": "Good morning, Mr. Weiss. My name is Paul." },
+            { "speaker": "Här Weiss", "lu": "Wéi al sidd Dir, Paul?", "en": "How old are you, Paul?" },
+            { "speaker": "Paul", "lu": "Ech sinn zwielef Joer al.", "en": "I am twelve years old." },
+            { "speaker": "Här Weiss", "lu": "Frou ze treffen, Paul. Wou kommt Dir hier?", "en": "Nice to meet you, Paul. Where do you come from?" },
+            { "speaker": "Paul", "lu": "Ech kommen aus Däitschland, Här Weiss.", "en": "I come from Germany, Mr. Weiss." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_numbers_cardinal",
+      "title_en": "Numbers 1–100",
+      "title_lu": "Zuelen 1–100",
+      "level": "A1",
+      "situation": "Counting, giving prices, stating quantities",
+      "vocabulary": [
+        { "word_lu": "null", "meaning_en": "zero", "pos": "NUM", "notes": "" },
+        { "word_lu": "eent", "meaning_en": "one (standalone)", "pos": "NUM", "notes": "'eent' standalone; 'een' before masculine/neuter nouns, 'eng' before feminine" },
+        { "word_lu": "zwee", "meaning_en": "two", "pos": "NUM", "notes": "" },
+        { "word_lu": "dräi", "meaning_en": "three", "pos": "NUM", "notes": "" },
+        { "word_lu": "véier", "meaning_en": "four", "pos": "NUM", "notes": "" },
+        { "word_lu": "fënnef", "meaning_en": "five", "pos": "NUM", "notes": "" },
+        { "word_lu": "sechs", "meaning_en": "six", "pos": "NUM", "notes": "" },
+        { "word_lu": "siwen", "meaning_en": "seven", "pos": "NUM", "notes": "" },
+        { "word_lu": "aacht", "meaning_en": "eight", "pos": "NUM", "notes": "" },
+        { "word_lu": "néng", "meaning_en": "nine", "pos": "NUM", "notes": "" },
+        { "word_lu": "zéng", "meaning_en": "ten", "pos": "NUM", "notes": "" },
+        { "word_lu": "eelef", "meaning_en": "eleven", "pos": "NUM", "notes": "" },
+        { "word_lu": "zwielef", "meaning_en": "twelve", "pos": "NUM", "notes": "" },
+        { "word_lu": "dräizéng", "meaning_en": "thirteen", "pos": "NUM", "notes": "" },
+        { "word_lu": "véierzéng", "meaning_en": "fourteen", "pos": "NUM", "notes": "" },
+        { "word_lu": "fofzéng", "meaning_en": "fifteen", "pos": "NUM", "notes": "" },
+        { "word_lu": "siechzéng", "meaning_en": "sixteen", "pos": "NUM", "notes": "" },
+        { "word_lu": "siwwenzéng", "meaning_en": "seventeen", "pos": "NUM", "notes": "" },
+        { "word_lu": "uechtzéng", "meaning_en": "eighteen", "pos": "NUM", "notes": "" },
+        { "word_lu": "nonzéng", "meaning_en": "nineteen", "pos": "NUM", "notes": "" },
+        { "word_lu": "zwanzeg", "meaning_en": "twenty", "pos": "NUM", "notes": "" },
+        { "word_lu": "eenanzwanzeg", "meaning_en": "twenty-one", "pos": "NUM", "notes": "Pattern: unit + an + ten" },
+        { "word_lu": "drësseg", "meaning_en": "thirty", "pos": "NUM", "notes": "" },
+        { "word_lu": "véierzeg", "meaning_en": "forty", "pos": "NUM", "notes": "" },
+        { "word_lu": "fofzeg", "meaning_en": "fifty", "pos": "NUM", "notes": "" },
+        { "word_lu": "sechzeg", "meaning_en": "sixty", "pos": "NUM", "notes": "" },
+        { "word_lu": "siwwenzeg", "meaning_en": "seventy", "pos": "NUM", "notes": "" },
+        { "word_lu": "achtzeg", "meaning_en": "eighty", "pos": "NUM", "notes": "" },
+        { "word_lu": "nonzeg", "meaning_en": "ninety", "pos": "NUM", "notes": "" },
+        { "word_lu": "honnert", "meaning_en": "one hundred", "pos": "NUM", "notes": "" },
+        { "word_lu": "Wéi vill?", "meaning_en": "How many? / How much?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Dat kascht...", "meaning_en": "That costs...", "pos": "PHRASE", "notes": "Key phrase for prices" },
+        { "word_lu": "Euro", "meaning_en": "euro", "pos": "NOUN", "notes": "Invariable in Luxembourgish" },
+        { "word_lu": "Cent", "meaning_en": "cent", "pos": "NOUN", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "Eent, zwee, dräi!", "text_en": "One, two, three!", "difficulty": "simple", "topic_tags": ["counting"] },
+        { "text_lu": "Ech sinn aacht Joer al.", "text_en": "I am eight years old.", "difficulty": "simple", "topic_tags": ["age"] },
+        { "text_lu": "Wéi vill Kanner sinn am Klass?", "text_en": "How many children are in the class?", "difficulty": "simple", "topic_tags": ["quantity"] },
+        { "text_lu": "Et sinn zwanzeg Kanner.", "text_en": "There are twenty children.", "difficulty": "simple", "topic_tags": ["quantity"] },
+        { "text_lu": "Dat kascht fënnef Euro.", "text_en": "That costs five euros.", "difficulty": "simple", "topic_tags": ["price"] },
+        { "text_lu": "Meng Telefonsnummer ass null-zéng-zwanzeg-drësseg.", "text_en": "My phone number is 0-10-20-30.", "difficulty": "simple", "topic_tags": ["phone"] },
+        { "text_lu": "Et gi siwen Deeg an enger Woch.", "text_en": "There are seven days in a week.", "difficulty": "simple", "topic_tags": ["time"] },
+        { "text_lu": "Ech hunn zwee Geschwëster.", "text_en": "I have two siblings.", "difficulty": "simple", "topic_tags": ["family"] },
+        { "text_lu": "Dat kascht véierzeg Euro a fofzeg Cent.", "text_en": "That costs forty euros and fifty cents.", "difficulty": "intermediate", "topic_tags": ["price"] },
+        { "text_lu": "Marc huet aacht Croissanten a se kaschteg dräi Euro.", "text_en": "Marc has eight croissants and they cost three euros.", "difficulty": "intermediate", "topic_tags": ["price", "food"] },
+        { "text_lu": "Wéi vill kascht dat? — Et kascht nonzeg-néng Euro.", "text_en": "How much does that cost? — It costs ninety-nine euros.", "difficulty": "intermediate", "topic_tags": ["price"] },
+        { "text_lu": "An der Schoul sinn honnert Kanner.", "text_en": "There are one hundred children in the school.", "difficulty": "intermediate", "topic_tags": ["quantity"] },
+        { "text_lu": "Natali ass fënnef Joer al an hir Schwëster ass siwwenzéng.", "text_en": "Natali is five years old and her sister is seventeen.", "difficulty": "intermediate", "topic_tags": ["age"] }
+      ],
+      "dialogues": [
+        {
+          "title": "At the market",
+          "lines": [
+            { "speaker": "Verkeefer", "lu": "Moien! Wéi vill Äppel wëllt Dir?", "en": "Good morning! How many apples would you like?" },
+            { "speaker": "Marc", "lu": "Moien! Ech hätt gär sechs Äppel.", "en": "Good morning! I would like six apples." },
+            { "speaker": "Verkeefer", "lu": "Sechs Äppel kaschtege véier Euro.", "en": "Six apples cost four euros." },
+            { "speaker": "Marc", "lu": "An wéi vill kascht eng Banann?", "en": "And how much does a banana cost?" },
+            { "speaker": "Verkeefer", "lu": "Eng Banann kascht drësseg Cent.", "en": "A banana costs thirty cents." },
+            { "speaker": "Marc", "lu": "Gutt, ech huelen dräi Banannen och. Dat sinn zesumme fënnef Euro zéng.", "en": "Good, I'll take three bananas too. That's five euros ten altogether." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_numbers_ordinal",
+      "title_en": "Ordinal Numbers",
+      "title_lu": "Ordinalzuelen",
+      "level": "A1",
+      "situation": "Talking about dates, floors, rankings, order",
+      "vocabulary": [
+        { "word_lu": "éischten / éischt", "meaning_en": "first", "pos": "ADJ", "notes": "éischten (masc), éischt (fem/neut); irregular form" },
+        { "word_lu": "zweeten / zweet", "meaning_en": "second", "pos": "ADJ", "notes": "" },
+        { "word_lu": "drëtten / drëtt", "meaning_en": "third", "pos": "ADJ", "notes": "Irregular" },
+        { "word_lu": "véierte / véiert", "meaning_en": "fourth", "pos": "ADJ", "notes": "" },
+        { "word_lu": "fënneften / fënneft", "meaning_en": "fifth", "pos": "ADJ", "notes": "" },
+        { "word_lu": "sechsten / sechst", "meaning_en": "sixth", "pos": "ADJ", "notes": "" },
+        { "word_lu": "siwwenten / siwwent", "meaning_en": "seventh", "pos": "ADJ", "notes": "" },
+        { "word_lu": "aachten / aacht", "meaning_en": "eighth", "pos": "ADJ", "notes": "" },
+        { "word_lu": "néngten / néngt", "meaning_en": "ninth", "pos": "ADJ", "notes": "" },
+        { "word_lu": "zéngten / zéngt", "meaning_en": "tenth", "pos": "ADJ", "notes": "" },
+        { "word_lu": "zwanzegsten / zwanzegst", "meaning_en": "twentieth", "pos": "ADJ", "notes": "Higher ordinals add -sten/-st to cardinal" },
+        { "word_lu": "leschten / lescht", "meaning_en": "last", "pos": "ADJ", "notes": "" },
+        { "word_lu": "De wéivielten ass haut?", "meaning_en": "What is today's date?", "pos": "PHRASE", "notes": "Literally 'The how-manyth is today?'" },
+        { "word_lu": "den éischten Januar", "meaning_en": "the first of January", "pos": "PHRASE", "notes": "Date format: den + ordinal + month" },
+        { "word_lu": "de Parterre", "meaning_en": "the ground floor", "pos": "NOUN", "notes": "" },
+        { "word_lu": "den éischten Etage", "meaning_en": "the first floor", "pos": "PHRASE", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "Haut ass den éischten Oktober.", "text_en": "Today is the first of October.", "difficulty": "simple", "topic_tags": ["date"] },
+        { "text_lu": "Claire ass déi Éischt an der Klass.", "text_en": "Claire is first in the class.", "difficulty": "simple", "topic_tags": ["ranking"] },
+        { "text_lu": "Ech wunnen am zweeten Etage.", "text_en": "I live on the second floor.", "difficulty": "simple", "topic_tags": ["residence"] },
+        { "text_lu": "Den éischten Dag vun der Schoul ass wichteg.", "text_en": "The first day of school is important.", "difficulty": "simple", "topic_tags": ["school"] },
+        { "text_lu": "De wéivielten ass haut?", "text_en": "What is today's date?", "difficulty": "simple", "topic_tags": ["date"] },
+        { "text_lu": "Haut ass den drëtten Mee.", "text_en": "Today is the third of May.", "difficulty": "simple", "topic_tags": ["date"] },
+        { "text_lu": "Paul ass de Zweeten an der Rennen.", "text_en": "Paul is second in the race.", "difficulty": "simple", "topic_tags": ["ranking"] },
+        { "text_lu": "Den Opzug fiert bis an den zéngten Etage.", "text_en": "The lift goes up to the tenth floor.", "difficulty": "simple", "topic_tags": ["building"] },
+        { "text_lu": "D'Schoul fänkt den néngte September un.", "text_en": "School starts on the ninth of September.", "difficulty": "intermediate", "topic_tags": ["date", "school"] },
+        { "text_lu": "Den zwanzegste Mäerz ass den éischten Dag vum Fréijoer.", "text_en": "The twentieth of March is the first day of spring.", "difficulty": "intermediate", "topic_tags": ["date", "season"] },
+        { "text_lu": "Marc ass den Éischten am Maths, awer de Zweeten am Franséisch.", "text_en": "Marc is first in maths, but second in French.", "difficulty": "intermediate", "topic_tags": ["school", "ranking"] }
+      ],
+      "dialogues": [
+        {
+          "title": "What is today's date?",
+          "lines": [
+            { "speaker": "Lena", "lu": "De wéivielten ass haut, Claire?", "en": "What is today's date, Claire?" },
+            { "speaker": "Claire", "lu": "Haut ass den fofzéngten November.", "en": "Today is the fifteenth of November." },
+            { "speaker": "Lena", "lu": "An wéi vill Deeg ass Chrëschtdag?", "en": "And in how many days is Christmas?" },
+            { "speaker": "Claire", "lu": "Den Chrëschtdag ass den fënnefanzwanzegsten Dezember. Dat sinn nach zéng Wochen!", "en": "Christmas is the twenty-fifth of December. That's still ten weeks!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_colors",
+      "title_en": "Colors",
+      "title_lu": "Faarwen",
+      "level": "A1",
+      "situation": "Describing objects, clothes, and surroundings",
+      "vocabulary": [
+        { "word_lu": "rout", "meaning_en": "red", "pos": "ADJ", "notes": "Attributive: roude (masc), rout (fem/neut)" },
+        { "word_lu": "blo", "meaning_en": "blue", "pos": "ADJ", "notes": "Attributive: blo stays blo in most contexts; blouën before noun" },
+        { "word_lu": "gréng", "meaning_en": "green", "pos": "ADJ", "notes": "Attributive: grénge (masc), gréng (fem/neut)" },
+        { "word_lu": "giel", "meaning_en": "yellow", "pos": "ADJ", "notes": "Attributive: giele (masc)" },
+        { "word_lu": "orange", "meaning_en": "orange", "pos": "ADJ", "notes": "Invariable — does not change form" },
+        { "word_lu": "lila", "meaning_en": "purple / violet", "pos": "ADJ", "notes": "Invariable" },
+        { "word_lu": "rosa", "meaning_en": "pink", "pos": "ADJ", "notes": "Invariable" },
+        { "word_lu": "wäiss", "meaning_en": "white", "pos": "ADJ", "notes": "Attributive: wäisse (masc)" },
+        { "word_lu": "schwaarz", "meaning_en": "black", "pos": "ADJ", "notes": "Attributive: schwaarze (masc)" },
+        { "word_lu": "grau", "meaning_en": "grey", "pos": "ADJ", "notes": "Invariable in predicate; graue attributive" },
+        { "word_lu": "brong", "meaning_en": "brown", "pos": "ADJ", "notes": "Attributive: bronge (masc)" },
+        { "word_lu": "hell", "meaning_en": "light (shade)", "pos": "ADJ", "notes": "hellblo = light blue" },
+        { "word_lu": "donkel", "meaning_en": "dark (shade)", "pos": "ADJ", "notes": "donkelrout = dark red" },
+        { "word_lu": "D'Faarf", "meaning_en": "the colour", "pos": "NOUN", "notes": "Feminine noun; plural: d'Faarwen" },
+        { "word_lu": "Wéi eng Faarf ass dat?", "meaning_en": "What colour is that?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Meng Léiflingsfarrf ass...", "meaning_en": "My favourite colour is...", "pos": "PHRASE", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "D'Himmel ass blo.", "text_en": "The sky is blue.", "difficulty": "simple", "topic_tags": ["nature"] },
+        { "text_lu": "D'Gras ass gréng.", "text_en": "The grass is green.", "difficulty": "simple", "topic_tags": ["nature"] },
+        { "text_lu": "D'Sonn ass giel.", "text_en": "The sun is yellow.", "difficulty": "simple", "topic_tags": ["nature"] },
+        { "text_lu": "Bello ass e brong an e wäiss Hond.", "text_en": "Bello is a brown and white dog.", "difficulty": "simple", "topic_tags": ["animals"] },
+        { "text_lu": "Meng Léiflingsfarrf ass blo.", "text_en": "My favourite colour is blue.", "difficulty": "simple", "topic_tags": ["preference"] },
+        { "text_lu": "Wéi eng Faarf ass dat?", "text_en": "What colour is that?", "difficulty": "simple", "topic_tags": ["question"] },
+        { "text_lu": "Den Apel ass rout.", "text_en": "The apple is red.", "difficulty": "simple", "topic_tags": ["food"] },
+        { "text_lu": "D'Kaart ass giel.", "text_en": "The card is yellow.", "difficulty": "simple", "topic_tags": ["objects"] },
+        { "text_lu": "Anna dreet e rouden Pullover an eng blo Jeans.", "text_en": "Anna is wearing a red pullover and blue jeans.", "difficulty": "intermediate", "topic_tags": ["clothing"] },
+        { "text_lu": "Natali huet eng rosa Jackett a schwaarz Schong.", "text_en": "Natali has a pink jacket and black shoes.", "difficulty": "intermediate", "topic_tags": ["clothing"] },
+        { "text_lu": "De Marc huet e bléiwen Auto — awer ech léiwer orange!", "text_en": "Marc has a blue car — but I prefer orange!", "difficulty": "intermediate", "topic_tags": ["preference", "transport"] },
+        { "text_lu": "D'Faarwen vun der Lëtzebuerger Fändel sinn rout, wäiss a hellblo.", "text_en": "The colours of the Luxembourg flag are red, white and light blue.", "difficulty": "intermediate", "topic_tags": ["culture"] },
+        { "text_lu": "Här Weiss dréit ëmmer e groen Kostüm an eng wäiss Krauatt.", "text_en": "Mr. Weiss always wears a grey suit and a white tie.", "difficulty": "intermediate", "topic_tags": ["clothing", "school"] }
+      ],
+      "dialogues": [
+        {
+          "title": "What colour is your bag?",
+          "lines": [
+            { "speaker": "Paul", "lu": "Lena, wéi eng Faarf huet deng Schoultas?", "en": "Lena, what colour is your school bag?" },
+            { "speaker": "Lena", "lu": "Meng Schoultas ass lila. A deng, Paul?", "en": "My school bag is purple. And yours, Paul?" },
+            { "speaker": "Paul", "lu": "Meng ass schwaarzmit engem blouën Stär.", "en": "Mine is black with a blue star." },
+            { "speaker": "Lena", "lu": "Cool! Meng Léiflingsfarrf ass lila. A deng?", "en": "Cool! My favourite colour is purple. And yours?" },
+            { "speaker": "Paul", "lu": "Ech hunn gär gréng. Et ass d'Faarf vum Gazon!", "en": "I like green. It's the colour of the grass!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_days",
+      "title_en": "Days of the Week",
+      "title_lu": "Deeg vun der Woch",
+      "level": "A1",
+      "situation": "Talking about schedules, plans, and routines",
+      "vocabulary": [
+        { "word_lu": "Méindeg", "meaning_en": "Monday", "pos": "NOUN", "notes": "Masc: de Méindeg" },
+        { "word_lu": "Dënschdeg", "meaning_en": "Tuesday", "pos": "NOUN", "notes": "Masc: de Dënschdeg" },
+        { "word_lu": "Mëttwoch", "meaning_en": "Wednesday", "pos": "NOUN", "notes": "Masc: de Mëttwoch" },
+        { "word_lu": "Donneschdeg", "meaning_en": "Thursday", "pos": "NOUN", "notes": "Masc: de Donneschdeg" },
+        { "word_lu": "Freideg", "meaning_en": "Friday", "pos": "NOUN", "notes": "Masc: de Freideg" },
+        { "word_lu": "Samschdeg", "meaning_en": "Saturday", "pos": "NOUN", "notes": "Masc: de Samschdeg" },
+        { "word_lu": "Sonndeg", "meaning_en": "Sunday", "pos": "NOUN", "notes": "Masc: de Sonndeg" },
+        { "word_lu": "haut", "meaning_en": "today", "pos": "ADV", "notes": "" },
+        { "word_lu": "muer", "meaning_en": "tomorrow", "pos": "ADV", "notes": "" },
+        { "word_lu": "gëschter", "meaning_en": "yesterday", "pos": "ADV", "notes": "" },
+        { "word_lu": "iwwermuer", "meaning_en": "the day after tomorrow", "pos": "ADV", "notes": "" },
+        { "word_lu": "virgescht", "meaning_en": "the day before yesterday", "pos": "ADV", "notes": "" },
+        { "word_lu": "d'Woch", "meaning_en": "the week", "pos": "NOUN", "notes": "Feminine" },
+        { "word_lu": "d'Wochend", "meaning_en": "the weekend", "pos": "NOUN", "notes": "Neuter" },
+        { "word_lu": "all Dag", "meaning_en": "every day", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Haut ass...", "meaning_en": "Today is...", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Muer ass...", "meaning_en": "Tomorrow is...", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Gëschter war...", "meaning_en": "Yesterday was...", "pos": "PHRASE", "notes": "Note past tense 'war'" },
+        { "word_lu": "Wéi en Dag ass haut?", "meaning_en": "What day is today?", "pos": "PHRASE", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "Haut ass Méindeg.", "text_en": "Today is Monday.", "difficulty": "simple", "topic_tags": ["day"] },
+        { "text_lu": "Muer ass Dënschdeg.", "text_en": "Tomorrow is Tuesday.", "difficulty": "simple", "topic_tags": ["day"] },
+        { "text_lu": "Gëschter war Sonndeg.", "text_en": "Yesterday was Sunday.", "difficulty": "simple", "topic_tags": ["day"] },
+        { "text_lu": "Wéi en Dag ass haut?", "text_en": "What day is today?", "difficulty": "simple", "topic_tags": ["question"] },
+        { "text_lu": "D'Schoul ass zou de Samschdeg an de Sonndeg.", "text_en": "School is closed on Saturday and Sunday.", "difficulty": "simple", "topic_tags": ["school", "routine"] },
+        { "text_lu": "Ech hunn all Méindeg Schwammstonn.", "text_en": "I have swimming class every Monday.", "difficulty": "simple", "topic_tags": ["sport", "routine"] },
+        { "text_lu": "De Freideg ass mäin Léiflingsdag!", "text_en": "Friday is my favourite day!", "difficulty": "simple", "topic_tags": ["preference"] },
+        { "text_lu": "Am Wochend schlofen ech laang.", "text_en": "At the weekend I sleep in.", "difficulty": "simple", "topic_tags": ["routine"] },
+        { "text_lu": "De Mëttwoch ginn ech mat Marc Fussball spillen.", "text_en": "On Wednesday I go to play football with Marc.", "difficulty": "intermediate", "topic_tags": ["sport", "plan"] },
+        { "text_lu": "Här Weiss gëtt iwwermuer kee Cours, well en e Rendez-vous huet.", "text_en": "Mr. Weiss has no class the day after tomorrow because he has an appointment.", "difficulty": "intermediate", "topic_tags": ["school"] },
+        { "text_lu": "Lena kënnt e Samschdeg bei eis spillen — mir sinn och doheem.", "text_en": "Lena is coming to play at our place on Saturday — we are at home too.", "difficulty": "intermediate", "topic_tags": ["plan"] },
+        { "text_lu": "D'Anna huet donneschdeg Fussball, freides Danzstonnden a samschdes Gitarstonnden.", "text_en": "Anna has football on Thursday, dance lessons on Friday and guitar on Saturday.", "difficulty": "intermediate", "topic_tags": ["hobby", "routine"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Making plans for the week",
+          "lines": [
+            { "speaker": "Claire", "lu": "Wéi en Dag ass haut, Paul?", "en": "What day is today, Paul?" },
+            { "speaker": "Paul", "lu": "Haut ass Dënschdeg. Muer ass Mëttwoch.", "en": "Today is Tuesday. Tomorrow is Wednesday." },
+            { "speaker": "Claire", "lu": "Super! Wëlls du e Mëttwoch mat mir Fussball spillen?", "en": "Great! Do you want to play football with me on Wednesday?" },
+            { "speaker": "Paul", "lu": "Jo, gär! A e Samschdeg? Wat méchs du da?", "en": "Yes, gladly! And on Saturday? What are you doing then?" },
+            { "speaker": "Claire", "lu": "E Samschdeg ginn ech mam Papp an de Supermarché. Awer e Sonndeg si mir fräi.", "en": "On Saturday I go to the supermarket with my dad. But on Sunday we are free." },
+            { "speaker": "Paul", "lu": "Perfekt, mir kënnen e Sonndeg och spillen!", "en": "Perfect, we can also play on Sunday!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_months_dates",
+      "title_en": "Months & Dates",
+      "title_lu": "Méint a Datumer",
+      "level": "A1",
+      "situation": "Stating and asking about dates, birthdays, appointments",
+      "vocabulary": [
+        { "word_lu": "Januar", "meaning_en": "January", "pos": "NOUN", "notes": "Masc: de Januar" },
+        { "word_lu": "Februar", "meaning_en": "February", "pos": "NOUN", "notes": "Masc: de Februar" },
+        { "word_lu": "Mäerz", "meaning_en": "March", "pos": "NOUN", "notes": "Masc: de Mäerz" },
+        { "word_lu": "Abrëll", "meaning_en": "April", "pos": "NOUN", "notes": "Masc: den Abrëll (n-rule: starts with vowel)" },
+        { "word_lu": "Mee", "meaning_en": "May", "pos": "NOUN", "notes": "Masc: de Mee" },
+        { "word_lu": "Juni", "meaning_en": "June", "pos": "NOUN", "notes": "Masc: de Juni" },
+        { "word_lu": "Juli", "meaning_en": "July", "pos": "NOUN", "notes": "Masc: de Juli" },
+        { "word_lu": "August", "meaning_en": "August", "pos": "NOUN", "notes": "Masc: den August (n-rule: starts with vowel)" },
+        { "word_lu": "September", "meaning_en": "September", "pos": "NOUN", "notes": "Masc: de September" },
+        { "word_lu": "Oktober", "meaning_en": "October", "pos": "NOUN", "notes": "Masc: den Oktober (n-rule)" },
+        { "word_lu": "November", "meaning_en": "November", "pos": "NOUN", "notes": "Masc: de November" },
+        { "word_lu": "Dezember", "meaning_en": "December", "pos": "NOUN", "notes": "Masc: de Dezember" },
+        { "word_lu": "d'Joer", "meaning_en": "the year", "pos": "NOUN", "notes": "Neuter" },
+        { "word_lu": "de Mount", "meaning_en": "the month", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "De wéivielten ass haut?", "meaning_en": "What is today's date?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Wéini ass deng Gebuertsdag?", "meaning_en": "When is your birthday?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Meng Gebuertsdag ass den...", "meaning_en": "My birthday is the...", "pos": "PHRASE", "notes": "Followed by ordinal + month" },
+        { "word_lu": "dëst Joer", "meaning_en": "this year", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "leschte Joer", "meaning_en": "last year", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "nächst Joer", "meaning_en": "next year", "pos": "PHRASE", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "De Mount Januar ass kal.", "text_en": "The month of January is cold.", "difficulty": "simple", "topic_tags": ["weather"] },
+        { "text_lu": "Meng Gebuertsdag ass de véierten Juli.", "text_en": "My birthday is the fourth of July.", "difficulty": "simple", "topic_tags": ["birthday"] },
+        { "text_lu": "Wéini ass deng Gebuertsdag?", "text_en": "When is your birthday?", "difficulty": "simple", "topic_tags": ["birthday", "question"] },
+        { "text_lu": "D'Schoul fänkt am September un.", "text_en": "School starts in September.", "difficulty": "simple", "topic_tags": ["school"] },
+        { "text_lu": "De wéivielten ass haut?", "text_en": "What is today's date?", "difficulty": "simple", "topic_tags": ["date"] },
+        { "text_lu": "Haut ass den zwanzegste Mee.", "text_en": "Today is the twentieth of May.", "difficulty": "simple", "topic_tags": ["date"] },
+        { "text_lu": "Am Dezember ass et Chrëschtdag.", "text_en": "In December it is Christmas.", "difficulty": "simple", "topic_tags": ["celebration"] },
+        { "text_lu": "Et gi zwielef Méint am Joer.", "text_en": "There are twelve months in a year.", "difficulty": "simple", "topic_tags": ["general"] },
+        { "text_lu": "Marc ass den aachten August gebuer — dat ass am Summer.", "text_en": "Marc was born on the eighth of August — that is in summer.", "difficulty": "intermediate", "topic_tags": ["birthday", "season"] },
+        { "text_lu": "Lena huet hiren Anniversaire den éischten Abrëll — all Joer maache mir eng Party!", "text_en": "Lena has her birthday on the first of April — every year we have a party!", "difficulty": "intermediate", "topic_tags": ["birthday", "celebration"] },
+        { "text_lu": "D'Vakanze fänken de fofzéngten Juli un a ginn bis den drëssegsten August.", "text_en": "The holidays start on the fifteenth of July and go until the thirtieth of August.", "difficulty": "intermediate", "topic_tags": ["holiday"] },
+        { "text_lu": "Nächst Joer am Februar goe mir Ski fueren an den Alpen.", "text_en": "Next year in February we are going skiing in the Alps.", "difficulty": "intermediate", "topic_tags": ["sport", "plan"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Birthday plans",
+          "lines": [
+            { "speaker": "Anna", "lu": "Wéini ass deng Gebuertsdag, Natali?", "en": "When is your birthday, Natali?" },
+            { "speaker": "Natali", "lu": "Meng Gebuertsdag ass den zweete Mäerz. A wéini ass déngen, Anna?", "en": "My birthday is the second of March. And when is yours, Anna?" },
+            { "speaker": "Anna", "lu": "Meng Gebuertsdag ass den fofzéngten Oktober. Ech ginn dëst Joer zwielef Joer.", "en": "My birthday is the fifteenth of October. I will be twelve years old this year." },
+            { "speaker": "Natali", "lu": "Mir feieren zesummen! Ech ginn de Mäerz sechs Joer.", "en": "We will celebrate together! I will be six years old in March." },
+            { "speaker": "Anna", "lu": "Super! Ech froen d'Mamm ob mir eng Gebuertsdeesparty maache kënnen.", "en": "Great! I will ask mum whether we can have a birthday party." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_seasons",
+      "title_en": "Seasons & Weather",
+      "title_lu": "Joreszäiten a Wieder",
+      "level": "A1",
+      "situation": "Talking about seasons, the weather forecast, and outdoor plans",
+      "vocabulary": [
+        { "word_lu": "de Fréijoer", "meaning_en": "spring", "pos": "NOUN", "notes": "Neuter: dat Fréijoer" },
+        { "word_lu": "de Summer", "meaning_en": "summer", "pos": "NOUN", "notes": "Masc: de Summer" },
+        { "word_lu": "den Hierscht", "meaning_en": "autumn / fall", "pos": "NOUN", "notes": "Masc: den Hierscht (n-rule: starts with H)" },
+        { "word_lu": "de Wanter", "meaning_en": "winter", "pos": "NOUN", "notes": "Masc: de Wanter" },
+        { "word_lu": "d'Wieder", "meaning_en": "the weather", "pos": "NOUN", "notes": "Neuter" },
+        { "word_lu": "Et reent.", "meaning_en": "It is raining.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "D'Sonn schéngt.", "meaning_en": "The sun is shining.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et schneit.", "meaning_en": "It is snowing.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et ass kal.", "meaning_en": "It is cold.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et ass waarm.", "meaning_en": "It is warm.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et ass schéi.", "meaning_en": "It is nice / beautiful (weather).", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et ass bewölkt.", "meaning_en": "It is cloudy.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "de Wand", "meaning_en": "the wind", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Reen", "meaning_en": "the rain", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Schnéi", "meaning_en": "the snow", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Sonn", "meaning_en": "the sun", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "d'Temperatur", "meaning_en": "the temperature", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "Grad", "meaning_en": "degrees", "pos": "NOUN", "notes": "Es sinn zwanzeg Grad = it is twenty degrees" },
+        { "word_lu": "Wéi ass d'Wieder haut?", "meaning_en": "What is the weather like today?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "am Summer / am Wanter", "meaning_en": "in summer / in winter", "pos": "PHRASE", "notes": "Preposition 'am' (an + dem) before seasons" }
+      ],
+      "sentences": [
+        { "text_lu": "Et reent haut.", "text_en": "It is raining today.", "difficulty": "simple", "topic_tags": ["weather"] },
+        { "text_lu": "D'Sonn schéngt am Summer.", "text_en": "The sun shines in summer.", "difficulty": "simple", "topic_tags": ["weather", "season"] },
+        { "text_lu": "Et schneit am Wanter.", "text_en": "It snows in winter.", "difficulty": "simple", "topic_tags": ["weather", "season"] },
+        { "text_lu": "Wéi ass d'Wieder haut?", "text_en": "What is the weather like today?", "difficulty": "simple", "topic_tags": ["question", "weather"] },
+        { "text_lu": "Et ass zéng Grad kal.", "text_en": "It is ten degrees cold.", "difficulty": "simple", "topic_tags": ["temperature"] },
+        { "text_lu": "Am Hierscht falen d'Blieder vun de Beem.", "text_en": "In autumn the leaves fall from the trees.", "difficulty": "simple", "topic_tags": ["nature", "season"] },
+        { "text_lu": "De Wand bléist staark haut.", "text_en": "The wind is blowing strongly today.", "difficulty": "simple", "topic_tags": ["weather"] },
+        { "text_lu": "Et ass schéi Wieder am Fréijoer.", "text_en": "The weather is nice in spring.", "difficulty": "simple", "topic_tags": ["weather", "season"] },
+        { "text_lu": "Haut ass et bewölkt a vläicht reent et nomëtteg.", "text_en": "Today it is cloudy and perhaps it will rain in the afternoon.", "difficulty": "intermediate", "topic_tags": ["weather", "forecast"] },
+        { "text_lu": "Am Summer gëtt et bis drësseg Grad waarm zu Lëtzebuerg.", "text_en": "In summer it gets up to thirty degrees warm in Luxembourg.", "difficulty": "intermediate", "topic_tags": ["temperature", "season"] },
+        { "text_lu": "Marc léiwer de Summer, well hie gär schwamme geet, awer Natali léiwer de Wanter wéinst dem Schnéi.", "text_en": "Marc prefers summer because he likes going swimming, but Natali prefers winter because of the snow.", "difficulty": "intermediate", "topic_tags": ["preference", "season"] },
+        { "text_lu": "Wann d'Sonn schéngt, goe mir an de Park; wann et reent, bleiwe mir doheem.", "text_en": "When the sun shines, we go to the park; when it rains, we stay at home.", "difficulty": "intermediate", "topic_tags": ["weather", "plan"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Talking about the weather",
+          "lines": [
+            { "speaker": "Lena", "lu": "Moien, Anna! Wéi ass d'Wieder haut?", "en": "Good morning, Anna! What is the weather like today?" },
+            { "speaker": "Anna", "lu": "Moien, Lena! Et ass kal a bewölkt. Et kéint souguer schneien!", "en": "Good morning, Lena! It is cold and cloudy. It could even snow!" },
+            { "speaker": "Lena", "lu": "Oh nee! Ech hunn keng Handsche matgeholl.", "en": "Oh no! I didn't bring any gloves." },
+            { "speaker": "Anna", "lu": "Ech hunn eng Extrapaor. Hei, huelt déi!", "en": "I have a spare pair. Here, take these!" },
+            { "speaker": "Lena", "lu": "Merci vill Mol! Wéi eng Temperatur ass et?", "en": "Thank you very much! What is the temperature?" },
+            { "speaker": "Anna", "lu": "Et sinn ongeféier dräi Grad. Am Summer ass et vill besser — drësseg Grad!", "en": "It is approximately three degrees. In summer it is much better — thirty degrees!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_time",
+      "title_en": "Telling the Time",
+      "title_lu": "D'Auer soen",
+      "level": "A1",
+      "situation": "Asking and telling the time, talking about schedules",
+      "vocabulary": [
+        { "word_lu": "Wéi vill Auer ass et?", "meaning_en": "What time is it?", "pos": "PHRASE", "notes": "The standard way to ask the time" },
+        { "word_lu": "Et ass ... Auer.", "meaning_en": "It is ... o'clock.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "hallwer", "meaning_en": "half past", "pos": "ADV", "notes": "hallwer dräi = half past two (literally 'half three')" },
+        { "word_lu": "Véiertel op", "meaning_en": "quarter past", "pos": "PHRASE", "notes": "Véiertel op dräi = quarter past three" },
+        { "word_lu": "Véiertel vir", "meaning_en": "quarter to", "pos": "PHRASE", "notes": "Véiertel vir dräi = quarter to three" },
+        { "word_lu": "... Minutten op", "meaning_en": "... minutes past", "pos": "PHRASE", "notes": "Zéng Minutten op véier = ten past four" },
+        { "word_lu": "... Minutten vir", "meaning_en": "... minutes to", "pos": "PHRASE", "notes": "Fënnef Minutten vir sechs = five to six" },
+        { "word_lu": "moies", "meaning_en": "in the morning (a.m.)", "pos": "ADV", "notes": "" },
+        { "word_lu": "mëtteg", "meaning_en": "at noon / midday", "pos": "ADV", "notes": "" },
+        { "word_lu": "nomëtteg", "meaning_en": "in the afternoon", "pos": "ADV", "notes": "" },
+        { "word_lu": "owends", "meaning_en": "in the evening", "pos": "ADV", "notes": "" },
+        { "word_lu": "nuets", "meaning_en": "at night", "pos": "ADV", "notes": "" },
+        { "word_lu": "pünktlech", "meaning_en": "punctual / on time", "pos": "ADJ", "notes": "" },
+        { "word_lu": "ze spéit", "meaning_en": "too late", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "ze fréi", "meaning_en": "too early", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "ëm ... Auer", "meaning_en": "at ... o'clock", "pos": "PHRASE", "notes": "Ëm néng Auer = at nine o'clock" }
+      ],
+      "sentences": [
+        { "text_lu": "Wéi vill Auer ass et?", "text_en": "What time is it?", "difficulty": "simple", "topic_tags": ["time"] },
+        { "text_lu": "Et ass zéng Auer.", "text_en": "It is ten o'clock.", "difficulty": "simple", "topic_tags": ["time"] },
+        { "text_lu": "Et ass hallwer aacht.", "text_en": "It is half past seven.", "difficulty": "simple", "topic_tags": ["time"] },
+        { "text_lu": "Et ass Véiertel op néng.", "text_en": "It is quarter past eight.", "difficulty": "simple", "topic_tags": ["time"] },
+        { "text_lu": "Et ass Véiertel vir zwielef.", "text_en": "It is quarter to twelve.", "difficulty": "simple", "topic_tags": ["time"] },
+        { "text_lu": "D'Schoul fänkt ëm aacht Auer un.", "text_en": "School starts at eight o'clock.", "difficulty": "simple", "topic_tags": ["school", "routine"] },
+        { "text_lu": "Ech iessen mëtteg ëm eelef Auer.", "text_en": "I eat lunch at eleven o'clock.", "difficulty": "simple", "topic_tags": ["food", "routine"] },
+        { "text_lu": "Den Zuch fiert ëm dräi Auer of.", "text_en": "The train departs at three o'clock.", "difficulty": "simple", "topic_tags": ["transport"] },
+        { "text_lu": "Et ass zéng Minutten op siwen moies — ech muss séier goen!", "text_en": "It is ten past seven in the morning — I have to go quickly!", "difficulty": "intermediate", "topic_tags": ["time", "routine"] },
+        { "text_lu": "De Film fänkt ëm hallwer néng owends un a geet bis zwielef Auer nuets.", "text_en": "The film starts at half past eight in the evening and goes until twelve o'clock at night.", "difficulty": "intermediate", "topic_tags": ["entertainment"] },
+        { "text_lu": "Här Weiss kommt ëmmer pünktlech ëm aacht Auer an d'Klass.", "text_en": "Mr. Weiss always arrives punctually at eight o'clock to the classroom.", "difficulty": "intermediate", "topic_tags": ["school", "routine"] },
+        { "text_lu": "Marc ass ze spéit komm — et war scho Véiertel op néng!", "text_en": "Marc arrived too late — it was already quarter past eight!", "difficulty": "intermediate", "topic_tags": ["school", "time"] }
+      ],
+      "dialogues": [
+        {
+          "title": "What time does the bus leave?",
+          "lines": [
+            { "speaker": "Paul", "lu": "Entschëllegt, wéi vill Auer ass et?", "en": "Excuse me, what time is it?" },
+            { "speaker": "Passant", "lu": "Et ass Véiertel vir siwen.", "en": "It is quarter to seven." },
+            { "speaker": "Paul", "lu": "Oh! Wéini fiert den nächste Bus of?", "en": "Oh! When does the next bus leave?" },
+            { "speaker": "Passant", "lu": "De Bus fiert ëm siwen Auer of — an zwielef Minutten.", "en": "The bus leaves at seven o'clock — in twelve minutes." },
+            { "speaker": "Paul", "lu": "Super, Merci! Ech sinn nach pünktlech!", "en": "Great, thank you! I am still on time!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_family",
+      "title_en": "Family",
+      "title_lu": "Famill",
+      "level": "A1",
+      "situation": "Describing your family members and relationships",
+      "vocabulary": [
+        { "word_lu": "d'Famill", "meaning_en": "the family", "pos": "NOUN", "notes": "Feminine" },
+        { "word_lu": "de Papp", "meaning_en": "the father / dad", "pos": "NOUN", "notes": "Masc; informal: de Papa" },
+        { "word_lu": "d'Mamm", "meaning_en": "the mother / mum", "pos": "NOUN", "notes": "Fem; informal: d'Mama" },
+        { "word_lu": "de Brudder", "meaning_en": "the brother", "pos": "NOUN", "notes": "Masc; plural: d'Bridder" },
+        { "word_lu": "d'Schwëster", "meaning_en": "the sister", "pos": "NOUN", "notes": "Fem; plural: d'Schwëstere" },
+        { "word_lu": "d'Groussmamm", "meaning_en": "the grandmother", "pos": "NOUN", "notes": "Fem; also: d'Bomi (informal)" },
+        { "word_lu": "de Grousspapp", "meaning_en": "the grandfather", "pos": "NOUN", "notes": "Masc; also: de Bopi (informal)" },
+        { "word_lu": "den Monni", "meaning_en": "the uncle", "pos": "NOUN", "notes": "Masc; n-rule applies" },
+        { "word_lu": "d'Tatta", "meaning_en": "the aunt", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Cousin", "meaning_en": "the (male) cousin", "pos": "NOUN", "notes": "Masc; pronounced French-style" },
+        { "word_lu": "d'Cousine", "meaning_en": "the (female) cousin", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "d'Kand", "meaning_en": "the child", "pos": "NOUN", "notes": "Neuter; plural: d'Kanner" },
+        { "word_lu": "de Mann", "meaning_en": "the husband / man", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Fra", "meaning_en": "the wife / woman", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "d'Geschwëster", "meaning_en": "siblings", "pos": "NOUN", "notes": "Plural only" },
+        { "word_lu": "meng Famill", "meaning_en": "my family", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Hues du Geschwëster?", "meaning_en": "Do you have siblings?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Ech hunn ... Bridder / Schwëstere.", "meaning_en": "I have ... brothers / sisters.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Ech sinn Eenzelkand.", "text_en": "I am an only child.", "pos": "PHRASE", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "Ech hunn eng Schwëster an e Brudder.", "text_en": "I have a sister and a brother.", "difficulty": "simple", "topic_tags": ["siblings"] },
+        { "text_lu": "Meng Mamm heescht Paula.", "text_en": "My mother's name is Paula.", "difficulty": "simple", "topic_tags": ["parent"] },
+        { "text_lu": "De Papp schafft zu Lëtzebuerg.", "text_en": "Dad works in Luxembourg.", "difficulty": "simple", "topic_tags": ["parent", "work"] },
+        { "text_lu": "Hues du Geschwëster?", "text_en": "Do you have siblings?", "difficulty": "simple", "topic_tags": ["siblings", "question"] },
+        { "text_lu": "Ech sinn Eenzelkand.", "text_en": "I am an only child.", "difficulty": "simple", "topic_tags": ["siblings"] },
+        { "text_lu": "D'Groussmamm wunnt bei eis.", "text_en": "Grandma lives with us.", "difficulty": "simple", "topic_tags": ["grandparent", "residence"] },
+        { "text_lu": "Meng Tatta huet zwee Kanner.", "text_en": "My aunt has two children.", "difficulty": "simple", "topic_tags": ["aunt", "children"] },
+        { "text_lu": "De Grousspapp spillt gär Schach.", "text_en": "Grandpa likes playing chess.", "difficulty": "simple", "topic_tags": ["grandparent", "hobby"] },
+        { "text_lu": "Anna a Paul sinn Geschwëster — si kommen aus Däitschland.", "text_en": "Anna and Paul are siblings — they come from Germany.", "difficulty": "intermediate", "topic_tags": ["siblings", "origin"] },
+        { "text_lu": "Meng Famill ass net grouss: meng Mamm, meng Papp, meng Schwëster a mech.", "text_en": "My family is not big: my mum, my dad, my sister and me.", "difficulty": "intermediate", "topic_tags": ["family"] },
+        { "text_lu": "De Marc säin Monni brécht ëmmer eng Kéis mat wann hien ze Besuch kënnt.", "text_en": "Marc's uncle always brings a cheese when he comes to visit.", "difficulty": "intermediate", "topic_tags": ["uncle", "food"] },
+        { "text_lu": "D'Groussmamm vum Marc geet all Sonndeg mat him an d'Kiirch.", "text_en": "Marc's grandmother goes to church with him every Sunday.", "difficulty": "intermediate", "topic_tags": ["grandparent", "routine"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Talking about your family",
+          "lines": [
+            { "speaker": "Claire", "lu": "Anna, hues du Geschwëster?", "en": "Anna, do you have siblings?" },
+            { "speaker": "Anna", "lu": "Jo, ech hunn ee Brudder. Hie heescht Paul a sinn zwielef Joer.", "en": "Yes, I have one brother. His name is Paul and he is twelve years old." },
+            { "speaker": "Claire", "lu": "Ech och! Meng Schwëster heescht Sophie. A wou wunnen Är Grousselleren?", "en": "Me too! My sister's name is Sophie. And where do your grandparents live?" },
+            { "speaker": "Anna", "lu": "D'Groussellere vum Papp wunnen nach zu Köln. D'Groussellere vun der Mamm wunnen hei zu Lëtzebuerg.", "en": "Dad's parents still live in Cologne. Mum's parents live here in Luxembourg." },
+            { "speaker": "Claire", "lu": "Kënns du deng Groussellere oft gesinn?", "en": "Do you get to see your grandparents often?" },
+            { "speaker": "Anna", "lu": "D'Bomi a de Bopi hei gesinn ech all Weekend. D'Groussellere zu Köln nëmmen an de Vakanze.", "en": "I see grandma and grandpa here every weekend. The grandparents in Cologne only during holidays." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_where_you_live",
+      "title_en": "Where You Live",
+      "title_lu": "Wou du wunns",
+      "level": "A1",
+      "situation": "Describing where you live — city, type of home, neighbourhood",
+      "vocabulary": [
+        { "word_lu": "wunnen", "meaning_en": "to live / reside", "pos": "VERB", "notes": "Ech wunnen, du wunns, hien/si wunnt" },
+        { "word_lu": "Wou wunns du?", "meaning_en": "Where do you live?", "pos": "PHRASE", "notes": "Informal" },
+        { "word_lu": "Ech wunnen zu...", "meaning_en": "I live in... (city)", "pos": "PHRASE", "notes": "'zu' is used before city names in Luxembourgish" },
+        { "word_lu": "zu Lëtzebuerg", "meaning_en": "in Luxembourg (city)", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "zu Esch-Uelzecht", "meaning_en": "in Esch-sur-Alzette", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "zu Déifferdeng", "meaning_en": "in Differdange", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "an enger Wunneng", "meaning_en": "in a flat / apartment", "pos": "PHRASE", "notes": "Fem noun: d'Wunneng" },
+        { "word_lu": "an engem Haus", "meaning_en": "in a house", "pos": "PHRASE", "notes": "Neuter noun: d'Haus" },
+        { "word_lu": "an enger Reiehaus", "meaning_en": "in a terraced house", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "d'Stroos", "meaning_en": "the street", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Quartier", "meaning_en": "the neighbourhood / district", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "a wéi engem Quartier?", "meaning_en": "in which neighbourhood?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "an der Stad", "meaning_en": "in the city centre", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "um Land", "meaning_en": "in the countryside", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "nieft", "meaning_en": "next to", "pos": "PREP", "notes": "nieft dem Supermarché" },
+        { "word_lu": "bei", "meaning_en": "near / at", "pos": "PREP", "notes": "bei der Schoul" },
+        { "word_lu": "ganz no", "meaning_en": "very close / nearby", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "wäit ewech", "meaning_en": "far away", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "d'Adress", "meaning_en": "the address", "pos": "NOUN", "notes": "Fem" }
+      ],
+      "sentences": [
+        { "text_lu": "Ech wunnen zu Lëtzebuerg.", "text_en": "I live in Luxembourg.", "difficulty": "simple", "topic_tags": ["residence"] },
+        { "text_lu": "Wou wunns du?", "text_en": "Where do you live?", "difficulty": "simple", "topic_tags": ["question", "residence"] },
+        { "text_lu": "Ech wunnen an enger Wunneng.", "text_en": "I live in a flat.", "difficulty": "simple", "topic_tags": ["home type"] },
+        { "text_lu": "Mir wunnen an engem grousse Haus um Land.", "text_en": "We live in a big house in the countryside.", "difficulty": "simple", "topic_tags": ["home type", "location"] },
+        { "text_lu": "D'Schoul ass ganz no bei eisem Haus.", "text_en": "The school is very close to our house.", "difficulty": "simple", "topic_tags": ["location"] },
+        { "text_lu": "Natali wunnt nieft Anna.", "text_en": "Natali lives next to Anna.", "difficulty": "simple", "topic_tags": ["residence", "neighbours"] },
+        { "text_lu": "A wéi engem Quartier wunns du?", "text_en": "In which neighbourhood do you live?", "difficulty": "simple", "topic_tags": ["neighbourhood"] },
+        { "text_lu": "Ech wunnen an der Stad, no beim Bahnhof.", "text_en": "I live in the city centre, near the train station.", "difficulty": "simple", "topic_tags": ["location"] },
+        { "text_lu": "Paul a seng Famill wunnen zu Esch-Uelzecht an enger grousser Wunneng am drëtten Etage.", "text_en": "Paul and his family live in Esch-sur-Alzette in a large flat on the third floor.", "difficulty": "intermediate", "topic_tags": ["residence", "floor"] },
+        { "text_lu": "Meng Adress ass: Buergertunnel 14, L-1247 Lëtzebuerg.", "text_en": "My address is: Buergertunnel 14, L-1247 Luxembourg.", "difficulty": "intermediate", "topic_tags": ["address"] },
+        { "text_lu": "D'Lena wunnt zu Déifferdeng, dat ass ongeféier zwanzeg Kilometer vun Lëtzebuerg Stad ewech.", "text_en": "Lena lives in Differdange, which is approximately twenty kilometres from Luxembourg City.", "difficulty": "intermediate", "topic_tags": ["residence", "distance"] },
+        { "text_lu": "Am Quartier wou ech wunnen, gëtt et en Epicerie, eng Bäckerei an e Park — alles ganz no!", "text_en": "In the neighbourhood where I live, there is a grocery shop, a bakery and a park — all very nearby!", "difficulty": "intermediate", "topic_tags": ["neighbourhood", "amenities"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Where do you live?",
+          "lines": [
+            { "speaker": "Här Weiss", "lu": "Paul, wou wunnt Dir zu Lëtzebuerg?", "en": "Paul, where do you live in Luxembourg?" },
+            { "speaker": "Paul", "lu": "Ech wunnen zu Esch-Uelzecht, Här Weiss.", "en": "I live in Esch-sur-Alzette, Mr. Weiss." },
+            { "speaker": "Här Weiss", "lu": "An wunnt Dir an engem Haus oder enger Wunneng?", "en": "And do you live in a house or a flat?" },
+            { "speaker": "Paul", "lu": "Mir wunnen an enger Wunneng am zweeten Etage. Mir hunn ee schéine Balkon.", "en": "We live in a flat on the second floor. We have a lovely balcony." },
+            { "speaker": "Här Weiss", "lu": "Ass d'Schoul wäit vun Ärem Haus?", "en": "Is the school far from your home?" },
+            { "speaker": "Paul", "lu": "Nee, si ass ganz no. Ech ginn all Dag ze Fouss.", "en": "No, it is very close. I walk every day." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_occupations",
+      "title_en": "Where You Work & Occupations",
+      "title_lu": "Wou dir schafft a Beruffer",
+      "level": "A1",
+      "situation": "Talking about professions and workplaces",
+      "vocabulary": [
+        { "word_lu": "schaffen", "meaning_en": "to work", "pos": "VERB", "notes": "Ech schaffen, du schaffs, hien/si schafft" },
+        { "word_lu": "Wou schafft Dir?", "meaning_en": "Where do you work? (formal)", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Ech schaffen...", "meaning_en": "I work...", "pos": "PHRASE", "notes": "Followed by location or profession" },
+        { "word_lu": "de Beruff", "meaning_en": "the occupation / profession", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Dokter / d'Doktesch", "meaning_en": "the doctor (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Léierer / d'Léiererin", "meaning_en": "the teacher (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "den Infirmier / d'Infirmière", "meaning_en": "the nurse (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "den Ingenieur / d'Ingenieurin", "meaning_en": "the engineer (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Bäcker / d'Bäckerin", "meaning_en": "the baker (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Coiffeur / d'Coiffeuse", "meaning_en": "the hairdresser (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Comptabel / d'Comptabele", "meaning_en": "the accountant (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Pompjee", "meaning_en": "the firefighter", "pos": "NOUN", "notes": "Masc; plural: d'Pompjeeën" },
+        { "word_lu": "de Polizist / d'Polizistin", "meaning_en": "the police officer (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Chauffeur", "meaning_en": "the driver", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Këch / d'Kächin", "meaning_en": "the cook / chef (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "de Journalist / d'Journalistin", "meaning_en": "the journalist (m/f)", "pos": "NOUN", "notes": "" },
+        { "word_lu": "Ech sinn...", "meaning_en": "I am (a)...", "pos": "PHRASE", "notes": "In Luxembourgish no article needed: Ech sinn Dokter" },
+        { "word_lu": "Wat bass du vu Beruff?", "meaning_en": "What is your profession?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Vollzäit / Deelzäit", "meaning_en": "full-time / part-time", "pos": "NOUN", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "Ech sinn Dokter.", "text_en": "I am a doctor.", "difficulty": "simple", "topic_tags": ["profession"] },
+        { "text_lu": "Meng Mamm ass Léiererin.", "text_en": "My mother is a teacher.", "difficulty": "simple", "topic_tags": ["profession", "family"] },
+        { "text_lu": "Wou schafft däi Papp?", "text_en": "Where does your father work?", "difficulty": "simple", "topic_tags": ["work", "question"] },
+        { "text_lu": "Hie schafft an engem Büro zu Lëtzebuerg.", "text_en": "He works in an office in Luxembourg.", "difficulty": "simple", "topic_tags": ["work", "location"] },
+        { "text_lu": "Wat bass du vu Beruff?", "text_en": "What is your profession?", "difficulty": "simple", "topic_tags": ["profession", "question"] },
+        { "text_lu": "Här Weiss ass Léierer an enger Schoul.", "text_en": "Mr. Weiss is a teacher at a school.", "difficulty": "simple", "topic_tags": ["profession", "school"] },
+        { "text_lu": "De Pompjee schafft de Nuecht.", "text_en": "The firefighter works at night.", "difficulty": "simple", "topic_tags": ["profession", "schedule"] },
+        { "text_lu": "D'Infirmière schafft am Spidol.", "text_en": "The nurse works in the hospital.", "difficulty": "simple", "topic_tags": ["profession", "location"] },
+        { "text_lu": "Meng Mamm schafft Deelzäit als Bäckerin — si fänkt all Dag ëm véier Auer moies un.", "text_en": "My mother works part-time as a baker — she starts every day at four in the morning.", "difficulty": "intermediate", "topic_tags": ["profession", "schedule"] },
+        { "text_lu": "De Papp vum Marc ass Ingenieur a schafft bei enger grousser Firma zu Lëtzebuerg.", "text_en": "Marc's father is an engineer and works at a large company in Luxembourg.", "difficulty": "intermediate", "topic_tags": ["profession", "location"] },
+        { "text_lu": "Wann ech grouss sinn, wëll ech Dokter ginn — ech hëllefen gär de Leit.", "text_en": "When I grow up, I want to become a doctor — I like helping people.", "difficulty": "intermediate", "topic_tags": ["future", "aspiration"] },
+        { "text_lu": "Zu Lëtzebuerg schaffe vill Leit an der Banquen- oder Finanzbranche.", "text_en": "In Luxembourg many people work in the banking or finance sector.", "difficulty": "intermediate", "topic_tags": ["Luxembourg", "economy"] }
+      ],
+      "dialogues": [
+        {
+          "title": "What do your parents do?",
+          "lines": [
+            { "speaker": "Lena", "lu": "Claire, wat mécht deng Mamm vu Beruff?", "en": "Claire, what does your mother do for a living?" },
+            { "speaker": "Claire", "lu": "Meng Mamm ass Doktesch. Si schafft am Spidol. A deng?", "en": "My mother is a doctor. She works in the hospital. And yours?" },
+            { "speaker": "Lena", "lu": "Meng Mamm ass Coiffeuse. Si huet hire Salon zu Déifferdeng.", "en": "My mother is a hairdresser. She has her salon in Differdange." },
+            { "speaker": "Claire", "lu": "Schéin! A wat mécht däi Papp?", "en": "Nice! And what does your father do?" },
+            { "speaker": "Lena", "lu": "De Papp ass Pompjee. Hie schafft och de Nuecht, dat ass spannend!", "en": "Dad is a firefighter. He also works at night — that is exciting!" },
+            { "speaker": "Claire", "lu": "Jo, wéi cool! Wann ech grouss sinn, wëll ech och Doktesch ginn.", "en": "Yes, how cool! When I grow up, I also want to become a doctor." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_directions",
+      "title_en": "Directions",
+      "title_lu": "Richtungsangaben",
+      "level": "A1",
+      "situation": "Asking for and giving directions in the city",
+      "vocabulary": [
+        { "word_lu": "lénks", "meaning_en": "left", "pos": "ADV", "notes": "No d' here — lénks is invariable" },
+        { "word_lu": "riets", "meaning_en": "right", "pos": "ADV", "notes": "" },
+        { "word_lu": "gerausaus", "meaning_en": "straight ahead", "pos": "ADV", "notes": "Also: gerausduerch" },
+        { "word_lu": "ëm d'Eck", "meaning_en": "around the corner", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "no bei", "meaning_en": "near / close to", "pos": "PREP", "notes": "" },
+        { "word_lu": "wäit ewech", "meaning_en": "far away", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "géintiwwer", "meaning_en": "opposite / across from", "pos": "PREP", "notes": "" },
+        { "word_lu": "hannert", "meaning_en": "behind", "pos": "PREP", "notes": "" },
+        { "word_lu": "virun", "meaning_en": "in front of", "pos": "PREP", "notes": "" },
+        { "word_lu": "tëscht", "meaning_en": "between", "pos": "PREP", "notes": "" },
+        { "word_lu": "d'Busstation", "meaning_en": "the bus stop", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Bahnhof", "meaning_en": "the train station", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Kierch", "meaning_en": "the church", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Supermarché", "meaning_en": "the supermarket", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Apothéik", "meaning_en": "the pharmacy", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Park", "meaning_en": "the park", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "Wou ass...?", "meaning_en": "Where is...?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Entschëllegt!", "meaning_en": "Excuse me!", "pos": "INTERJ", "notes": "Used to get attention before asking" },
+        { "word_lu": "Gitt Dir ... lénks / riets.", "meaning_en": "Go left / right.", "pos": "PHRASE", "notes": "Formal imperative" },
+        { "word_lu": "D'éischt Stroos lénks.", "meaning_en": "The first street on the left.", "pos": "PHRASE", "notes": "" }
+      ],
+      "sentences": [
+        { "text_lu": "Wou ass d'Busstation?", "text_en": "Where is the bus stop?", "difficulty": "simple", "topic_tags": ["direction", "transport"] },
+        { "text_lu": "Gitt riets.", "text_en": "Go right.", "difficulty": "simple", "topic_tags": ["direction"] },
+        { "text_lu": "D'Kierch ass lénks.", "text_en": "The church is on the left.", "difficulty": "simple", "topic_tags": ["direction", "landmark"] },
+        { "text_lu": "De Supermarché ass géintiwwer dem Bahnhof.", "text_en": "The supermarket is opposite the train station.", "difficulty": "simple", "topic_tags": ["location", "landmark"] },
+        { "text_lu": "Entschëllegt, wou ass d'Apothéik?", "text_en": "Excuse me, where is the pharmacy?", "difficulty": "simple", "topic_tags": ["direction", "question"] },
+        { "text_lu": "Gitt gerausaus bis zur Ampel.", "text_en": "Go straight ahead as far as the traffic lights.", "difficulty": "simple", "topic_tags": ["direction"] },
+        { "text_lu": "De Park ass hannert der Schoul.", "text_en": "The park is behind the school.", "difficulty": "simple", "topic_tags": ["location"] },
+        { "text_lu": "D'éischt Stroos lénks, dann ëm d'Eck.", "text_en": "The first street on the left, then around the corner.", "difficulty": "simple", "topic_tags": ["direction"] },
+        { "text_lu": "Entschëllegt! Wou ass de Bahnhof? — Gitt gerausaus, dann d'zweet Stroos riets, ganz no bei.", "text_en": "Excuse me! Where is the train station? — Go straight ahead, then the second street on the right, very nearby.", "difficulty": "intermediate", "topic_tags": ["direction", "transport"] },
+        { "text_lu": "D'Bäckerei ass tëscht dem Supermarché an der Apothéik.", "text_en": "The bakery is between the supermarket and the pharmacy.", "difficulty": "intermediate", "topic_tags": ["location", "landmark"] },
+        { "text_lu": "Marc weist Anna de Wee zur Schoul, well si déi nei Schülerin ass.", "text_en": "Marc shows Anna the way to school because she is the new pupil.", "difficulty": "intermediate", "topic_tags": ["school", "direction"] },
+        { "text_lu": "Wann Dir aus dem Bahnhof erauskënnt, gitt lénks, dann direkt riets — d'Post ass ëm d'Eck.", "text_en": "When you come out of the train station, go left, then immediately right — the post office is around the corner.", "difficulty": "intermediate", "topic_tags": ["direction", "landmark"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Asking for directions",
+          "lines": [
+            { "speaker": "Paul", "lu": "Entschëllegt, wou ass d'Busstation, w.e.g.?", "en": "Excuse me, where is the bus stop, please?" },
+            { "speaker": "Passant", "lu": "Kee Problem! Gitt gerausaus bis zur Ampel.", "en": "No problem! Go straight ahead as far as the traffic lights." },
+            { "speaker": "Paul", "lu": "D'éischt Stroos lénks oder riets?", "en": "The first street on the left or on the right?" },
+            { "speaker": "Passant", "lu": "Riets. Da siitt Dir d'Busstation direkt virun Iech.", "en": "On the right. Then you will see the bus stop directly in front of you." },
+            { "speaker": "Paul", "lu": "Ass et wäit ewech?", "en": "Is it far away?" },
+            { "speaker": "Passant", "lu": "Nee, ganz no — ongeféier fënnef Minutten ze Fouss.", "en": "No, very close — approximately five minutes on foot." },
+            { "speaker": "Paul", "lu": "Super, Merci vill Mol!", "en": "Great, thank you very much!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_transport",
+      "title_en": "Transport & Commuting",
+      "title_lu": "Transport a Pendelen",
+      "level": "A1",
+      "situation": "Getting around Luxembourg — public transport, tickets, asking about routes",
+      "vocabulary": [
+        { "word_lu": "de Bus", "meaning_en": "the bus", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Zuch", "meaning_en": "the train", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Tram", "meaning_en": "the tram", "pos": "NOUN", "notes": "Masc; Luxembourg City has a modern tram network" },
+        { "word_lu": "den Auto", "meaning_en": "the car", "pos": "NOUN", "notes": "Masc; n-rule: den Auto" },
+        { "word_lu": "de Vëlo", "meaning_en": "the bicycle", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Motorrad", "meaning_en": "the motorcycle", "pos": "NOUN", "notes": "Neuter" },
+        { "word_lu": "ze Fouss", "meaning_en": "on foot", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Wéi kënns du op d'Aarbecht?", "meaning_en": "How do you get to work?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Ech fueren mam Bus.", "text_en": "I travel by bus.", "pos": "PHRASE", "notes": "'mat' + dative: mam Bus, mam Zuch, mam Auto" },
+        { "word_lu": "d'Haltestell", "meaning_en": "the (bus/tram) stop", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Billet", "meaning_en": "the ticket", "pos": "NOUN", "notes": "Masc; free public transport in Luxembourg since 2020!" },
+        { "word_lu": "gratis", "meaning_en": "free (of charge)", "pos": "ADJ", "notes": "Public transport in Luxembourg is free!" },
+        { "word_lu": "de Quai", "meaning_en": "the platform", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "ofgoen / offahren", "meaning_en": "to depart / leave", "pos": "VERB", "notes": "Separable: Den Zuch geet ëm néng Auer of." },
+        { "word_lu": "ukommen", "meaning_en": "to arrive", "pos": "VERB", "notes": "Separable: Ech kommen ëm zéng Auer un." },
+        { "word_lu": "ëmsteigen", "meaning_en": "to change (transport)", "pos": "VERB", "notes": "Separable: Ech steige zu Miersch ëm." },
+        { "word_lu": "de Fahrplo", "meaning_en": "the timetable", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "Wéini fiert den nächste Bus of?", "meaning_en": "When does the next bus leave?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "de Stau", "meaning_en": "the traffic jam", "pos": "NOUN", "notes": "Masc; very common in Luxembourg!" }
+      ],
+      "sentences": [
+        { "text_lu": "Ech fueren mam Bus op d'Aarbecht.", "text_en": "I travel to work by bus.", "difficulty": "simple", "topic_tags": ["commute"] },
+        { "text_lu": "De Tram fiert duerch d'Stad.", "text_en": "The tram goes through the city.", "difficulty": "simple", "topic_tags": ["transport"] },
+        { "text_lu": "Ech ginn ze Fouss op d'Schoul.", "text_en": "I walk to school.", "difficulty": "simple", "topic_tags": ["commute"] },
+        { "text_lu": "Wéini fiert den nächste Zuch of?", "text_en": "When does the next train leave?", "difficulty": "simple", "topic_tags": ["question", "transport"] },
+        { "text_lu": "De Bus fiert ëm hallwer néng of.", "text_en": "The bus leaves at half past eight.", "difficulty": "simple", "topic_tags": ["transport", "time"] },
+        { "text_lu": "Zu Lëtzebuerg ass de public Transport gratis!", "text_en": "In Luxembourg public transport is free!", "difficulty": "simple", "topic_tags": ["Luxembourg", "transport"] },
+        { "text_lu": "Wéi kënns du op d'Aarbecht, mam Auto oder mam Zuch?", "text_en": "How do you get to work, by car or by train?", "difficulty": "simple", "topic_tags": ["commute", "question"] },
+        { "text_lu": "D'Haltestell ass just ëm d'Eck.", "text_en": "The stop is just around the corner.", "difficulty": "simple", "topic_tags": ["transport", "direction"] },
+        { "text_lu": "Anna a Paul fueren all Moien mam Schoulbus — hie kënnt ëm aacht Auer.", "text_en": "Anna and Paul take the school bus every morning — it arrives at eight o'clock.", "difficulty": "intermediate", "topic_tags": ["school", "transport"] },
+        { "text_lu": "Ech steige zu Miersch aus dem Zuch ëm an den Bus Richtung Diekirch.", "text_en": "I change at Mersch from the train to the bus towards Diekirch.", "difficulty": "intermediate", "topic_tags": ["transport", "route"] },
+        { "text_lu": "Wéinst dem Stau dauert d'Fuert mam Auto vun Esch bis an d'Stad eng Stonn.", "text_en": "Because of the traffic jam, the drive by car from Esch to the city takes one hour.", "difficulty": "intermediate", "topic_tags": ["commute", "traffic"] },
+        { "text_lu": "Mir kucken de Fahrplo: den nächste Zuch no Lëtzebuerg Gare fiert ëm Véiertel vir néng of.", "text_en": "We look at the timetable: the next train to Luxembourg station leaves at quarter to nine.", "difficulty": "intermediate", "topic_tags": ["transport", "time"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Planning the journey to school",
+          "lines": [
+            { "speaker": "Anna", "lu": "Paul, wéi gees du all Dag op d'Schoul?", "en": "Paul, how do you get to school every day?" },
+            { "speaker": "Paul", "lu": "Ech fueren mam Bus. Hie fiert ëm Véiertel op aacht of. A du?", "en": "I go by bus. It leaves at quarter past seven. And you?" },
+            { "speaker": "Anna", "lu": "Ech ginn ze Fouss — eis Schoul ass just fënnef Minutten ewech.", "en": "I walk — our school is just five minutes away." },
+            { "speaker": "Paul", "lu": "Schéin! Mäin Bus brauch fofzéng Minutten. Muer fuere mir zesummen?", "en": "Nice! My bus takes fifteen minutes. Shall we go together tomorrow?" },
+            { "speaker": "Anna", "lu": "Jo, gär! Ech kommen bei d'Haltestell ëm aacht Auer.", "en": "Yes, gladly! I will come to the stop at eight o'clock." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_cafe",
+      "title_en": "At the Café / Ordering",
+      "title_lu": "Am Café / Senger bestellen",
+      "level": "A1",
+      "situation": "Ordering food and drinks at a café or restaurant",
+      "vocabulary": [
+        { "word_lu": "de Kaffi", "meaning_en": "the coffee", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "den Téi", "meaning_en": "the tea", "pos": "NOUN", "notes": "Masc; n-rule: den Téi" },
+        { "word_lu": "d'Waasser", "meaning_en": "the water", "pos": "NOUN", "notes": "Neuter" },
+        { "word_lu": "de Jus", "meaning_en": "the juice", "pos": "NOUN", "notes": "Masc; de Jus d'orange" },
+        { "word_lu": "d'Limonade", "meaning_en": "the lemonade / soft drink", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Croissant", "meaning_en": "the croissant", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Kuch", "meaning_en": "the cake", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Tass", "meaning_en": "the cup", "pos": "NOUN", "notes": "Fem; eng Taass Kaffi = a cup of coffee" },
+        { "word_lu": "d'Fläsch", "meaning_en": "the bottle", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "Ech hätt gär...", "meaning_en": "I would like...", "pos": "PHRASE", "notes": "Polite way to order; 'hätt' is conditional of 'hunn'" },
+        { "word_lu": "Wat däerf et sinn?", "meaning_en": "What can I get you? / What would you like?", "pos": "PHRASE", "notes": "Said by waiter/server" },
+        { "word_lu": "D'Rechnung, w.e.g.", "meaning_en": "The bill, please.", "pos": "PHRASE", "notes": "w.e.g. = wann ech glift (please)" },
+        { "word_lu": "mat oder ouni Zocker?", "meaning_en": "with or without sugar?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "mat Mëllech", "meaning_en": "with milk", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Gutt iesse goen", "meaning_en": "to go out to eat", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "de Kellner / d'Kellnerin", "meaning_en": "the waiter / waitress", "pos": "NOUN", "notes": "" },
+        { "word_lu": "w.e.g.", "meaning_en": "please (wann ech glift)", "pos": "PHRASE", "notes": "Standard Luxembourgish abbreviation for 'please'" },
+        { "word_lu": "Merci!", "meaning_en": "Thank you!", "pos": "INTERJ", "notes": "Universal in Luxembourg — used in all contexts" }
+      ],
+      "sentences": [
+        { "text_lu": "Ech hätt gär eng Taass Kaffi.", "text_en": "I would like a cup of coffee.", "difficulty": "simple", "topic_tags": ["ordering", "drink"] },
+        { "text_lu": "Wat däerf et sinn?", "text_en": "What can I get you?", "difficulty": "simple", "topic_tags": ["ordering"] },
+        { "text_lu": "Ech hätt gär e Croissant, w.e.g.", "text_en": "I would like a croissant, please.", "difficulty": "simple", "topic_tags": ["ordering", "food"] },
+        { "text_lu": "D'Rechnung, w.e.g.!", "text_en": "The bill, please!", "difficulty": "simple", "topic_tags": ["payment"] },
+        { "text_lu": "Wéi vill kascht eng Taass Téi?", "text_en": "How much does a cup of tea cost?", "difficulty": "simple", "topic_tags": ["price", "drink"] },
+        { "text_lu": "Ech wëll de Jus d'orange ouni Äis.", "text_en": "I want the orange juice without ice.", "difficulty": "simple", "topic_tags": ["ordering", "drink"] },
+        { "text_lu": "Huet de Kaffi Mëllech?", "text_en": "Does the coffee have milk?", "difficulty": "simple", "topic_tags": ["ordering", "drink"] },
+        { "text_lu": "Mir hätte gär zwee Waasser a Croissanten, w.e.g.", "text_en": "We would like two waters and croissants, please.", "difficulty": "simple", "topic_tags": ["ordering"] },
+        { "text_lu": "Marc an Anna sëtze am Café a bestellen e Jus a Kuchen.", "text_en": "Marc and Anna are sitting in the café and ordering juice and cake.", "difficulty": "intermediate", "topic_tags": ["café", "ordering"] },
+        { "text_lu": "D'Kellnerin erkläert datt de Kuch vum Dag Äppelkuch ass — Marc bestellt een.", "text_en": "The waitress explains that today's cake is apple cake — Marc orders one.", "difficulty": "intermediate", "topic_tags": ["café", "food"] },
+        { "text_lu": "Ech hätt gär eng Taass Kaffi mat Mëllech awer ouni Zocker, w.e.g.", "text_en": "I would like a cup of coffee with milk but without sugar, please.", "difficulty": "intermediate", "topic_tags": ["ordering", "drink"] },
+        { "text_lu": "D'Rechnung, w.e.g. — kascht dat fënnef oder sechs Euro?", "text_en": "The bill, please — does that cost five or six euros?", "difficulty": "intermediate", "topic_tags": ["payment", "price"] }
+      ],
+      "dialogues": [
+        {
+          "title": "At the café after school",
+          "lines": [
+            { "speaker": "Kellnerin", "lu": "Gudde Mëtteg! Wat däerf et sinn?", "en": "Good afternoon! What can I get you?" },
+            { "speaker": "Claire", "lu": "Ech hätt gär eng Taass Téi mat Mëllech, w.e.g.", "en": "I would like a cup of tea with milk, please." },
+            { "speaker": "Lena", "lu": "A fir mech e Jus d'orange an e Croissant, Merci.", "en": "And for me an orange juice and a croissant, thank you." },
+            { "speaker": "Kellnerin", "lu": "De Croissant ass mat oder ouni Botter?", "en": "Is the croissant with or without butter?" },
+            { "speaker": "Lena", "lu": "Mat Botter, w.e.g.!", "en": "With butter, please!" },
+            { "speaker": "Kellnerin", "lu": "Gutt, ech bréngen alles direkt.", "en": "Good, I will bring everything right away." },
+            { "speaker": "Claire", "lu": "Merci vill Mol!", "en": "Thank you very much!" }
+          ]
+        },
+        {
+          "title": "Paying the bill",
+          "lines": [
+            { "speaker": "Marc", "lu": "Entschëllegt, d'Rechnung, w.e.g.!", "en": "Excuse me, the bill, please!" },
+            { "speaker": "Kellner", "lu": "Jo, natierlech. Dat sinn aacht Euro fofzeg.", "en": "Yes, of course. That is eight euros fifty." },
+            { "speaker": "Marc", "lu": "Kann ech mat Kaart bezuelen?", "en": "Can I pay by card?" },
+            { "speaker": "Kellner", "lu": "Jo, kee Problem. Hei ass den Terminal.", "en": "Yes, no problem. Here is the terminal." },
+            { "speaker": "Marc", "lu": "Merci! Den Kaffi war exzellent!", "en": "Thank you! The coffee was excellent!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_shopping",
+      "title_en": "Shopping & Prices",
+      "title_lu": "Akafe maachen a Präisser",
+      "level": "A1",
+      "situation": "Shopping in a store, asking prices, paying",
+      "vocabulary": [
+        { "word_lu": "de Supermarché", "meaning_en": "the supermarket", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Bäckerei", "meaning_en": "the bakery", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Buttek", "meaning_en": "the shop / store", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Akafslëscht", "meaning_en": "the shopping list", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "Wéi vill kascht dat?", "meaning_en": "How much does that cost?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Dat kascht...", "meaning_en": "That costs...", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Dat ass ze deier!", "meaning_en": "That is too expensive!", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Dat ass bëlleg.", "meaning_en": "That is cheap / affordable.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Kann ech mat Kaart bezuelen?", "meaning_en": "Can I pay by card?", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "bezuelen", "meaning_en": "to pay", "pos": "VERB", "notes": "" },
+        { "word_lu": "d'Keess", "meaning_en": "the cash register / checkout", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "de Rabatten", "meaning_en": "the discount", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "am Soldes", "meaning_en": "in the sales", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "eng Dosen", "meaning_en": "a dozen", "pos": "NOUN", "notes": "Fem: eng Dosen Eeër = a dozen eggs" },
+        { "word_lu": "e Kilo", "meaning_en": "a kilogram", "pos": "NOUN", "notes": "Neuter" },
+        { "word_lu": "eng Fläsch", "meaning_en": "a bottle", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "e Pak", "meaning_en": "a packet / pack", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "Ech sichen...", "meaning_en": "I am looking for...", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Hutt Dir...?", "meaning_en": "Do you have...?", "pos": "PHRASE", "notes": "Formal" }
+      ],
+      "sentences": [
+        { "text_lu": "Wéi vill kascht dat?", "text_en": "How much does that cost?", "difficulty": "simple", "topic_tags": ["price", "question"] },
+        { "text_lu": "Dat kascht dräi Euro fofzeg.", "text_en": "That costs three euros fifty.", "difficulty": "simple", "topic_tags": ["price"] },
+        { "text_lu": "Dat ass ze deier!", "text_en": "That is too expensive!", "difficulty": "simple", "topic_tags": ["price", "opinion"] },
+        { "text_lu": "Kann ech mat Kaart bezuelen?", "text_en": "Can I pay by card?", "difficulty": "simple", "topic_tags": ["payment"] },
+        { "text_lu": "Ech sichen en T-Shirt a grénger Faarf.", "text_en": "I am looking for a T-shirt in green.", "difficulty": "simple", "topic_tags": ["clothing", "shopping"] },
+        { "text_lu": "D'Äppel si bëlleg haut — zwee Kilo fir zwee Euro.", "text_en": "The apples are cheap today — two kilos for two euros.", "difficulty": "simple", "topic_tags": ["food", "price"] },
+        { "text_lu": "Hutt Dir dës Schong an enger grousse Pointure?", "text_en": "Do you have these shoes in a larger size?", "difficulty": "simple", "topic_tags": ["clothing", "question"] },
+        { "text_lu": "D'Akafslëscht vum Marc ass laang: Brout, Mëllech, Eeër a Käse.", "text_en": "Marc's shopping list is long: bread, milk, eggs and cheese.", "difficulty": "simple", "topic_tags": ["food", "shopping"] },
+        { "text_lu": "Am Soldes kascht dee Mantel nëmmen dräizeg Euro — fir gewinnen honnert Euro!", "text_en": "In the sales that coat costs only thirty euros — normally one hundred euros!", "difficulty": "intermediate", "topic_tags": ["shopping", "price"] },
+        { "text_lu": "Natali hëlleeft hirer Mamm am Supermarché — si kucken op der Akafslëscht wat nach feelt.", "text_en": "Natali helps her mother in the supermarket — they check the shopping list for what is still missing.", "difficulty": "intermediate", "topic_tags": ["shopping", "family"] },
+        { "text_lu": "Kann ech mat Kaart bezuelen oder brauch ech Baargeld?", "text_en": "Can I pay by card or do I need cash?", "difficulty": "intermediate", "topic_tags": ["payment"] },
+        { "text_lu": "Den Präis vum Brout ass gestigen — d'lescht Joer kascht et nëmmen ee Euro, elo kascht et ee fofzeg.", "text_en": "The price of bread has risen — last year it cost only one euro, now it costs one fifty.", "difficulty": "intermediate", "topic_tags": ["price", "food"] }
+      ],
+      "dialogues": [
+        {
+          "title": "At the bakery",
+          "lines": [
+            { "speaker": "Verkeefer", "lu": "Gudde Moien! Wat däerf et sinn?", "en": "Good morning! What can I get you?" },
+            { "speaker": "Paul", "lu": "Gudde Moien! Ech hätt gär eng Déck Botter a sechs Croissanten.", "en": "Good morning! I would like a large loaf and six croissants." },
+            { "speaker": "Verkeefer", "lu": "Natierlech. Wëllt Dir e Brout mam Kären oder ouni?", "en": "Of course. Do you want bread with seeds or without?" },
+            { "speaker": "Paul", "lu": "Mat Kären, w.e.g. Wéi vill kascht dat alles?", "en": "With seeds, please. How much does all that cost?" },
+            { "speaker": "Verkeefer", "lu": "Dat sinn zesumme fënnef Euro zwanzeg.", "en": "That is five euros twenty altogether." },
+            { "speaker": "Paul", "lu": "Hei sinn sechs Euro. Behalt de Rescht!", "en": "Here is six euros. Keep the change!" },
+            { "speaker": "Verkeefer", "lu": "Merci vill Mol! Schéine Dag nach!", "en": "Thank you very much! Have a lovely day!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "theme_weather_extended",
+      "title_en": "Weather (Extended)",
+      "title_lu": "Wieder (erweidert)",
+      "level": "A1",
+      "situation": "Discussing the weather in detail, forecasts, and weather-related plans",
+      "vocabulary": [
+        { "word_lu": "d'Wieder", "meaning_en": "the weather", "pos": "NOUN", "notes": "Neuter" },
+        { "word_lu": "de Wieder-Bericht", "meaning_en": "the weather report / forecast", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "Et reent.", "meaning_en": "It is raining.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et schneit.", "meaning_en": "It is snowing.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "D'Sonn schéngt.", "meaning_en": "The sun is shining.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et donnert.", "meaning_en": "It is thundering.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "Et blëtzt.", "meaning_en": "It is lightning.", "pos": "PHRASE", "notes": "" },
+        { "word_lu": "de Stuerm", "meaning_en": "the storm", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Brill", "meaning_en": "the fog", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Frascht", "meaning_en": "the frost", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "den Eegrëff", "meaning_en": "the hail", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "de Räifrouscht", "meaning_en": "the hoarfrost", "pos": "NOUN", "notes": "Masc" },
+        { "word_lu": "d'Temperatur", "meaning_en": "the temperature", "pos": "NOUN", "notes": "Fem" },
+        { "word_lu": "ënner null", "meaning_en": "below zero", "pos": "PHRASE", "notes": "Et sinn dräi Grad ënner null." },
+        { "word_lu": "Grad Celsius", "meaning_en": "degrees Celsius", "pos": "NOUN", "notes": "" },
+        { "word_lu": "waarm / kal", "meaning_en": "warm / cold", "pos": "ADJ", "notes": "" },
+        { "word_lu": "feucht", "meaning_en": "humid / damp", "pos": "ADJ", "notes": "" },
+        { "word_lu": "d'Wolleken", "meaning_en": "the clouds", "pos": "NOUN", "notes": "Fem plural; singular: d'Wollek" },
+        { "word_lu": "sëcherheetshalwer", "meaning_en": "to be safe / just in case", "pos": "ADV", "notes": "Huelt den Regenschirm sëcherheetshalwer mat." },
+        { "word_lu": "de Regenschirm", "meaning_en": "the umbrella", "pos": "NOUN", "notes": "Masc" }
+      ],
+      "sentences": [
+        { "text_lu": "Et reent haut, huel den Regenschirm mat!", "text_en": "It is raining today, take the umbrella!", "difficulty": "simple", "topic_tags": ["weather", "advice"] },
+        { "text_lu": "D'Sonn schéngt a muer gëtt et schéi.", "text_en": "The sun is shining and tomorrow it will be nice.", "difficulty": "simple", "topic_tags": ["weather", "forecast"] },
+        { "text_lu": "Et donnert a blëtzt — dat ass e Stuerm!", "text_en": "It is thundering and lightning — that is a storm!", "difficulty": "simple", "topic_tags": ["weather"] },
+        { "text_lu": "Et sinn fënnef Grad ënner null — et ass Frascht!", "text_en": "It is five degrees below zero — there is frost!", "difficulty": "simple", "topic_tags": ["temperature"] },
+        { "text_lu": "Wéi ass d'Wieder muer laut Wieder-Bericht?", "text_en": "What is the weather like tomorrow according to the forecast?", "difficulty": "simple", "topic_tags": ["forecast", "question"] },
+        { "text_lu": "D'Wolleken zéien op — vläicht reent et!", "text_en": "The clouds are gathering — maybe it will rain!", "difficulty": "simple", "topic_tags": ["weather"] },
+        { "text_lu": "Am Summer gëtt et zu Lëtzebuerg dacks feuchte Wieder.", "text_en": "In summer Luxembourg often has humid weather.", "difficulty": "simple", "topic_tags": ["weather", "season"] },
+        { "text_lu": "Den Hierscht zu Lëtzebuerg ass dacks grau a rénegend.", "text_en": "Autumn in Luxembourg is often grey and rainy.", "difficulty": "simple", "topic_tags": ["weather", "season"] },
+        { "text_lu": "Natali schwätzt mat hirem Papp iwwer d'Wieder: et gëtt nächst Woch Schnéi!", "text_en": "Natali talks with her dad about the weather: next week there will be snow!", "difficulty": "intermediate", "topic_tags": ["weather", "family"] },
+        { "text_lu": "De Wieder-Bericht seet, et kënnt e Stuerm muer — d'Schoul kann zou sinn.", "text_en": "The weather forecast says there is a storm coming tomorrow — school might be closed.", "difficulty": "intermediate", "topic_tags": ["forecast", "school"] },
+        { "text_lu": "Am Wanter zu Lëtzebuerg geet d'Temperatur selten ënner minus zéng Grad, mee et kann däischter an naass ginn.", "text_en": "In winter in Luxembourg the temperature rarely goes below minus ten degrees, but it can get dark and wet.", "difficulty": "intermediate", "topic_tags": ["temperature", "season"] },
+        { "text_lu": "Bello läit doheem well et ze kal fir spillen dobaussen ass — et reent a blëtzt!", "text_en": "Bello is staying indoors because it is too cold to play outside — it is raining and lightning!", "difficulty": "intermediate", "topic_tags": ["weather", "pet"] }
+      ],
+      "dialogues": [
+        {
+          "title": "Weather forecast discussion",
+          "lines": [
+            { "speaker": "Marc", "lu": "Moien, Natali! Bass du sécher, datt d'Wieder haut schéi gëtt?", "en": "Morning, Natali! Are you sure the weather will be nice today?" },
+            { "speaker": "Natali", "lu": "Moien! Laut Wieder-Bericht schéngt d'Sonn nomëtteg. Moies ass et awer bewölkt.", "en": "Morning! According to the forecast the sun will shine in the afternoon. In the morning it is cloudy though." },
+            { "speaker": "Marc", "lu": "Wéi vill Grad sinn et?", "en": "How many degrees is it?" },
+            { "speaker": "Natali", "lu": "Just dräizéng Grad moies, awer nomëtteg gëtt et zwanzeg Grad.", "en": "Only thirteen degrees in the morning, but in the afternoon it will reach twenty degrees." },
+            { "speaker": "Marc", "lu": "Super! Da kënne mir nomëtteg am Park spillen!", "en": "Great! Then we can play in the park in the afternoon!" },
+            { "speaker": "Natali", "lu": "Jo! Huel awer sëcherheetshalwer eng Jackett mat — et ka séier kal ginn!", "en": "Yes! But take a jacket just in case — it can get cold quickly!" }
+          ]
+        }
+      ]
+    }
+  ]
+}

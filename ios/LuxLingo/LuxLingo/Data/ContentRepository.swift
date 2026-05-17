@@ -518,6 +518,25 @@ final class ContentRepository: ObservableObject {
         return db.getAllLessonStatuses()
     }
 
+    // MARK: - Bulk maps for fast in-memory lookups (avoids per-item DB queries)
+
+    func getAllSensesMap() -> [String: SensesEntity] {
+        Dictionary(uniqueKeysWithValues: db.getAllSenses().map { ($0.senseId, $0) })
+    }
+
+    func getAllVocabMap() -> [String: VocabularyEntity] {
+        Dictionary(uniqueKeysWithValues: db.getAllVocabulary().map { ($0.surfaceId, $0) })
+    }
+
+    /// Returns senseId → mastery for all words the user has touched.
+    func getAllProgressMap() -> [String: Int] {
+        Dictionary(uniqueKeysWithValues: db.getAllUserProgress().map { ($0.senseId, $0.mastery) })
+    }
+
+    func getAllCurriculumRaw() -> [CurriculumEntity] {
+        db.getAllCurriculum()
+    }
+
     // MARK: - Vocabulary browser & Review mode
 
     /// All encountered words (mastery > 0) across the given lesson IDs, sorted A-Z.

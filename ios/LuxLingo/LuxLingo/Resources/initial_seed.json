@@ -1,5 +1,5 @@
 {
-  "version": 8.55,
+  "version": 8.57,
   "vocabulary": [
     {
       "surface_id": "w_an",
@@ -35092,9 +35092,9 @@
       "sense_ids": [
         "s_welt_1"
       ],
-      "text_en": "The dog runs in the world.",
-      "text_lu": "De Hond leeft an der Welt.",
-      "cloze_index": 5,
+      "text_en": "Marc wants to see the world.",
+      "text_lu": "De Marc wëll d'Welt gesinn.",
+      "cloze_index": 4,
       "audio_url": "",
       "difficulty": "simple",
       "cloze_confidence": "exact",
@@ -36613,7 +36613,7 @@
       "sense_ids": [
         "s_fra_1"
       ],
-      "text_en": "I have a woman.",
+      "text_en": "I have a wife.",
       "text_lu": "Ech hunn eng Fra.",
       "cloze_index": 3,
       "audio_url": "",

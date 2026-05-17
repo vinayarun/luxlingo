@@ -205,6 +205,7 @@ private struct LessonCompleteScreen: View {
                 // Generous bottom padding so the last word chip is never behind the footer
                 Spacer().frame(height: 100)
             }
+            .frame(maxWidth: .infinity)
         }
         .ignoresSafeArea(edges: .top)
         // Pinned footer — shadow on top edge, solid background, no gradient overlap
