@@ -123,19 +123,20 @@ final class WordLookupService {
         let pos = entryObj?["partOfSpeechLabel"] as? String
 
         var translations: [String] = []
-        if let microStructures = entryObj?["microStructures"] as? [[String: Any]],
-           let firstMicro = microStructures.first,
-           let gramUnits = firstMicro["grammaticalUnits"] as? [[String: Any]] {
-            for gramUnit in gramUnits {
-                guard let meanings = gramUnit["meanings"] as? [[String: Any]] else { continue }
-                for meaning in meanings {
-                    guard let targetLangs = meaning["targetLanguages"] as? [String: Any],
-                          let en = targetLangs["en"] as? [String: Any],
-                          let parts = en["parts"] as? [[String: Any]] else { continue }
-                    translations.append(contentsOf: parts.compactMap { p -> String? in
-                        guard (p["type"] as? String) == "translation" else { return nil }
-                        return p["content"] as? String
-                    })
+        if let microStructures = entryObj?["microStructures"] as? [[String: Any]] {
+            for micro in microStructures {
+                guard let gramUnits = micro["grammaticalUnits"] as? [[String: Any]] else { continue }
+                for gramUnit in gramUnits {
+                    guard let meanings = gramUnit["meanings"] as? [[String: Any]] else { continue }
+                    for meaning in meanings {
+                        guard let targetLangs = meaning["targetLanguages"] as? [String: Any],
+                              let en = targetLangs["en"] as? [String: Any],
+                              let parts = en["parts"] as? [[String: Any]] else { continue }
+                        translations.append(contentsOf: parts.compactMap { p -> String? in
+                            guard (p["type"] as? String) == "translation" else { return nil }
+                            return p["content"] as? String
+                        })
+                    }
                 }
             }
         }
@@ -160,20 +161,20 @@ final class WordLookupService {
         let pos = entryObj?["partOfSpeechLabel"] as? String
 
         var translations: [String] = []
-        if let microStructures = entryObj?["microStructures"] as? [[String: Any]],
-           let firstMicro = microStructures.first,
-           let gramUnits = firstMicro["grammaticalUnits"] as? [[String: Any]] {
-            for gramUnit in gramUnits {
-                guard let meanings = gramUnit["meanings"] as? [[String: Any]] else { continue }
-                for meaning in meanings {
-                    guard let targetLangs = meaning["targetLanguages"] as? [String: Any],
-                          let en = targetLangs["en"] as? [String: Any],
-                          let parts = en["parts"] as? [[String: Any]] else { continue }
-                    let t = parts.compactMap { p -> String? in
-                        guard (p["type"] as? String) == "translation" else { return nil }
-                        return p["content"] as? String
+        if let microStructures = entryObj?["microStructures"] as? [[String: Any]] {
+            for micro in microStructures {
+                guard let gramUnits = micro["grammaticalUnits"] as? [[String: Any]] else { continue }
+                for gramUnit in gramUnits {
+                    guard let meanings = gramUnit["meanings"] as? [[String: Any]] else { continue }
+                    for meaning in meanings {
+                        guard let targetLangs = meaning["targetLanguages"] as? [String: Any],
+                              let en = targetLangs["en"] as? [String: Any],
+                              let parts = en["parts"] as? [[String: Any]] else { continue }
+                        translations.append(contentsOf: parts.compactMap { p -> String? in
+                            guard (p["type"] as? String) == "translation" else { return nil }
+                            return p["content"] as? String
+                        })
                     }
-                    translations.append(contentsOf: t)
                 }
             }
         }

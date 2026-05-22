@@ -71,10 +71,11 @@ final class ContentRepository: ObservableObject {
                 senseId: s.senseId,
                 surfaceId: s.surfaceId,
                 translations: s.primaryEn,
-                tags: s.pos,
+                tags: s.pos,           // legacy: tags stores pos value
                 isGoldenKey: s.isGoldenKey ?? false,
                 isPicturable: s.isPicturable ?? false,
-                paradigm: paradigmJson
+                paradigm: paradigmJson,
+                pos: s.pos
             ))
         }
         db.save()
@@ -274,53 +275,126 @@ final class ContentRepository: ObservableObject {
         return "other"
     }
 
+    /// Returns the set of sense IDs the user has been exposed to in lessons 1…lessonNum.
+    /// Includes the current lesson so its own vocabulary is always available as distractors.
+    private func exposedSenseIds(upToLessonNum lessonNum: Int) -> Set<String> {
+        let allCurriculum = db.getAllCurriculum()
+        var ids = Set<String>()
+        for entry in allCurriculum {
+            let num = Int(entry.lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
+            guard num <= lessonNum else { continue }
+            for id in entry.coreSenses.split(separator: ",").map({ $0.trimmingCharacters(in: .whitespaces) }) {
+                ids.insert(id)
+            }
+        }
+        return ids
+    }
+
     /// Returns distractors from the same POS group as the target sense.
-    /// Falls back to random if the same-POS pool is too small.
-    func getSmartDistractorsLu(target: String, senseId: String, count: Int) -> [String] {
+    ///
+    /// Tiered selection strategy:
+    ///   1. Prefer words from senses the user has already been exposed to (lessons ≤ lessonNum),
+    ///      same POS group. If we can fill `count` slots this way, we use only those.
+    ///   2. If the exposed same-POS pool is too small (< count), fill remaining slots from the
+    ///      full database (same POS). This keeps options grammatically sensible even in early lessons.
+    ///   3. If no same-POS words exist at all, fall back to getRandomDistractorsLu.
+    ///
+    /// Pass lessonNum = 0 (or omit) to use the full database (legacy behaviour).
+    func getSmartDistractorsLu(target: String, senseId: String, count: Int, lessonNum: Int = 0) -> [String] {
         let allSenses = db.getAllSenses()
         let targetSense = allSenses.first { $0.senseId == senseId }
         let group = posGroup(targetSense?.tags ?? "other")
 
-        let sameGroup: [String] = allSenses.compactMap { sense -> String? in
+        // Build word lists split by whether the sense has been seen before
+        let exposed = lessonNum > 0 ? exposedSenseIds(upToLessonNum: lessonNum) : nil
+
+        var seenSameGroup:   [String] = []
+        var unseenSameGroup: [String] = []
+
+        for sense in allSenses {
             guard sense.senseId != senseId,
                   posGroup(sense.tags) == group,
                   let vocab = db.getVocabularyById(sense.surfaceId),
-                  vocab.wordText.lowercased() != target.lowercased() else { return nil }
-            return vocab.wordText
-        }
-
-        if sameGroup.count >= count {
-            return Array(sameGroup.shuffled().prefix(count))
-        }
-        // Fallback: any word that isn't the target
-        return getRandomDistractorsLu(target: target, count: count)
-    }
-
-    func getRandomDistractorsLu(target: String, count: Int) -> [String] {
-        let allSenses = db.getAllSenses()
-        let pool: [String] = allSenses.compactMap { (sense: SensesEntity) -> String? in
-            guard let vocab = db.getVocabularyById(sense.surfaceId) else { return nil }
-            return vocab.wordText
-        }
-        .filter { (word: String) -> Bool in
-            word.lowercased() != target.lowercased()
-        }
-
-        return Array(pool.shuffled().prefix(count))
-    }
-
-    func getRandomDistractorsEn(target: String, count: Int) -> [String] {
-        let allSenses = db.getAllSenses()
-        let lbChars = CharacterSet(charactersIn: "ëäüöéàâêîôûùèæœÿ")
-        let pool: [String] = allSenses
-            .map { sense -> String in sense.translations }
-            .filter { word in
-                word.lowercased() != target.lowercased()
-                && !word.contains(" ")   // exclude multi-word phrases — they split badly in jumbled exercises
-                && word.unicodeScalars.allSatisfy { !lbChars.contains($0) }
+                  vocab.wordText.lowercased() != target.lowercased() else { continue }
+            if let exposed = exposed {
+                if exposed.contains(sense.senseId) {
+                    seenSameGroup.append(vocab.wordText)
+                } else {
+                    unseenSameGroup.append(vocab.wordText)
+                }
+            } else {
+                seenSameGroup.append(vocab.wordText)
             }
+        }
 
-        return Array(pool.shuffled().prefix(count))
+        // Tier 1: enough seen same-POS words → use only those
+        if seenSameGroup.count >= count {
+            return Array(seenSameGroup.shuffled().prefix(count))
+        }
+
+        // Tier 2: blend seen + unseen same-POS words to reach `count`
+        let combined = seenSameGroup.shuffled() + unseenSameGroup.shuffled()
+        if combined.count >= count {
+            return Array(combined.prefix(count))
+        }
+
+        // Tier 3: no same-POS options at all → fall back to any random word
+        return getRandomDistractorsLu(target: target, count: count, lessonNum: lessonNum)
+    }
+
+    /// Returns random Luxembourgish distractors.
+    /// When lessonNum > 0, prefers words from exposed lessons; fills remaining from full DB.
+    func getRandomDistractorsLu(target: String, count: Int, lessonNum: Int = 0) -> [String] {
+        let allSenses = db.getAllSenses()
+        let exposed = lessonNum > 0 ? exposedSenseIds(upToLessonNum: lessonNum) : nil
+
+        var seenPool:   [String] = []
+        var unseenPool: [String] = []
+
+        for sense in allSenses {
+            guard let vocab = db.getVocabularyById(sense.surfaceId),
+                  vocab.wordText.lowercased() != target.lowercased() else { continue }
+            if let exposed = exposed {
+                if exposed.contains(sense.senseId) { seenPool.append(vocab.wordText) }
+                else { unseenPool.append(vocab.wordText) }
+            } else {
+                seenPool.append(vocab.wordText)
+            }
+        }
+
+        let combined = seenPool.shuffled() + unseenPool.shuffled()
+        return Array(combined.prefix(count))
+    }
+
+    /// Returns random English distractors.
+    /// When lessonNum > 0, prefers translations from exposed lessons; fills remaining from full DB.
+    func getRandomDistractorsEn(target: String, count: Int, lessonNum: Int = 0) -> [String] {
+        let allSenses = db.getAllSenses()
+        let exposed = lessonNum > 0 ? exposedSenseIds(upToLessonNum: lessonNum) : nil
+        let lbChars = CharacterSet(charactersIn: "ëäüöéàâêîôûùèæœÿ")
+
+        func isValid(_ word: String) -> Bool {
+            word.lowercased() != target.lowercased()
+            && !word.contains(" ")
+            && word.unicodeScalars.allSatisfy { !lbChars.contains($0) }
+        }
+
+        var seenPool:   [String] = []
+        var unseenPool: [String] = []
+
+        for sense in allSenses {
+            let word = sense.translations
+            guard isValid(word) else { continue }
+            if let exposed = exposed {
+                if exposed.contains(sense.senseId) { seenPool.append(word) }
+                else { unseenPool.append(word) }
+            } else {
+                seenPool.append(word)
+            }
+        }
+
+        let combined = seenPool.shuffled() + unseenPool.shuffled()
+        return Array(combined.prefix(count))
     }
 
     // MARK: - Sentence Selection (with Dynamic Buffer)

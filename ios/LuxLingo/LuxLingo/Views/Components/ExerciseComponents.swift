@@ -1165,30 +1165,55 @@ struct LessonProgressBar: View {
     private struct DotView: View {
         let state: DotState
         let color: Color
+        @State private var pulse = false
+
+        private var isActive: Bool {
+            if case .active = state { return true }
+            return false
+        }
 
         var body: some View {
             ZStack {
+                // Track
                 Circle().fill(Color(.systemGray5))
+
+                // Fill
                 Circle()
                     .fill(color)
-                    .scaleEffect(scale)
-                    .opacity(opacity)
+                    .scaleEffect(isActive ? 1.0 : fillScale)
+                    .opacity(isActive ? 1.0 : fillOpacity)
+
+                // Pulsing ring on the current dot — makes active position unmistakeable
+                if isActive {
+                    Circle()
+                        .stroke(color.opacity(0.35), lineWidth: 2)
+                        .scaleEffect(pulse ? 1.8 : 1.1)
+                        .opacity(pulse ? 0 : 0.7)
+                        .animation(
+                            .easeOut(duration: 1.2).repeatForever(autoreverses: false),
+                            value: pulse
+                        )
+                }
             }
-            .frame(width: 9, height: 9)
+            // Active dot slightly larger for extra emphasis
+            .frame(width: isActive ? 12 : 9, height: isActive ? 12 : 9)
+            .animation(.spring(response: 0.35, dampingFraction: 0.6), value: isActive)
+            .onAppear { if isActive { pulse = true } }
+            .onChange(of: isActive) { _, active in pulse = active }
         }
 
-        private var scale: Double {
-            switch state {
-            case .filled:          return 1.0
-            case .active(let f):   return 0.35 + 0.65 * f
-            case .empty:           return 0.0
-            }
-        }
-
-        private var opacity: Double {
+        private var fillScale: Double {
             switch state {
             case .filled:        return 1.0
-            case .active(let f): return 0.3 + 0.7 * f
+            case .active:        return 1.0
+            case .empty:         return 0.0
+            }
+        }
+
+        private var fillOpacity: Double {
+            switch state {
+            case .filled:        return 1.0
+            case .active:        return 1.0
             case .empty:         return 0.0
             }
         }
@@ -1201,6 +1226,7 @@ struct PronunciationExercise: View {
     let targetWord:    String
     let translation:   String
     let lodAudioUrl:   String?
+    var isVerb:        Bool = false  // verbs use TTS; lod.lu verb audio speaks compound entry titles
     let isForSentence: Bool     // true = 12s limit, false = 5s limit
     let onSkip:        () -> Void
     let onSubmit:      (URL) -> Void
@@ -1209,6 +1235,7 @@ struct PronunciationExercise: View {
     @State private var recordingURL: URL? = nil
     @State private var playbackPlayer: AVAudioPlayer? = nil
     @State private var isPlayingBack = false
+    @State private var showMicDeniedAlert = false
 
     private let service = PronunciationService.shared
 
@@ -1237,10 +1264,12 @@ struct PronunciationExercise: View {
             .background(Color.luxGreen.opacity(0.06))
             .cornerRadius(16)
 
-            // ── TTS reference (single speaker button, no duplicate icon) ─────
+            // ── Reference audio: lod.lu for non-verbs (more natural), TTS for verbs.
+            // lod.lu verb entries include the full title (e.g. "Hëllefsverb hunn, Participe passé gehat")
+            // so we fall back to sproochmaschinn.lu TTS which speaks exactly the word provided.
             Button {
                 Task {
-                    if let url = lodAudioUrl {
+                    if !isVerb, let url = lodAudioUrl {
                         await TTSService.shared.speakUrl(url, identifier: targetWord)
                     } else {
                         await TTSService.shared.speak(targetWord)
@@ -1301,6 +1330,27 @@ struct PronunciationExercise: View {
             if TTSService.shared.playState != .idle && phase == .listen {
                 Text("Wait for reference to finish…")
                     .font(.caption2).foregroundColor(.secondary)
+            }
+
+            // Microphone permission denied hint
+            if showMicDeniedAlert {
+                HStack(spacing: 8) {
+                    Image(systemName: "mic.slash.fill").foregroundColor(.luxRed)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Microphone access denied")
+                            .font(.caption).fontWeight(.semibold)
+                        Button("Open Settings to allow access") {
+                            if let url = URL(string: UIApplication.openSettingsURLString) {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                        .font(.caption)
+                        .foregroundColor(.accentColor)
+                    }
+                }
+                .padding(10)
+                .background(Color.luxRed.opacity(0.08))
+                .cornerRadius(10)
             }
 
             // ── Review controls (Redo + Playback only — Check button is the standard bottom bar) ──
@@ -1368,10 +1418,17 @@ struct PronunciationExercise: View {
     private func handleRecordTap() {
         switch phase {
         case .listen:
+            showMicDeniedAlert = false
             phase = .recording
             Task {
                 let ok = await service.startRecording(maxDuration: maxDuration)
-                if !ok { phase = .listen }   // permission denied
+                if !ok {
+                    phase = .listen
+                    // Show inline message if permission was denied
+                    if AVAudioApplication.shared.recordPermission == .denied {
+                        showMicDeniedAlert = true
+                    }
+                }
             }
         case .recording:
             if let url = service.stopRecording() {

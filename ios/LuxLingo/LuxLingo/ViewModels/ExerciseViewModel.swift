@@ -49,6 +49,7 @@ struct ExerciseUiState {
     var paradigm: [String]? = nil          // present tense rows, e.g. ["ech kann", ...]
     var sentenceClozeIndex: Int = 0        // word index in example sentence to highlight
     var targetLodAudioUrl: String? = nil   // lod.lu AAC URL for the target word
+    var targetWordIsVerb: Bool = false     // true → use TTS in pronunciation (lod.lu verb entries speak compound titles)
     var nRuleFormInSentence: String? = nil // e.g. "de" when targetWord is "den" (n-rule drop)
 
     // N-Rule fields
@@ -204,6 +205,9 @@ final class ExerciseViewModel {
         uiState.articleSentence = ""
         uiState.articleSentenceEn = ""
 
+        // Lesson number — used throughout to scope distractor pools to seen vocabulary
+        let lessonNum = Int(lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
+
         let coreSenses = repository.getLessonCoreSenses(lessonId: lessonId)
         if coreSenses.isEmpty {
             finishLesson()
@@ -349,7 +353,7 @@ final class ExerciseViewModel {
         case .jumbledLu:
             var baseTokens = cleanAndShuffleTokens(sentence.textLu)
             if baseTokens.count < 5 {
-                let distractors = repository.getRandomDistractorsLu(target: targetWord, count: 2)
+                let distractors = repository.getRandomDistractorsLu(target: targetWord, count: 2, lessonNum: lessonNum)
                     .filter { word in
                         // Heuristic: Avoid common English words in LU distractor pool
                         !["is", "the", "a", "and", "in", "to", "for", "with", "on", "he", "she", "it", "we", "they"].contains(word.lowercased())
@@ -360,7 +364,7 @@ final class ExerciseViewModel {
         case .jumbledEn:
             var baseTokens = cleanAndShuffleTokens(sentence.textEn)
             let sentenceWordsEn = Set(baseTokens.map { $0.lowercased() })
-            let distractorsEn = repository.getRandomDistractorsEn(target: translation, count: 3)
+            let distractorsEn = repository.getRandomDistractorsEn(target: translation, count: 3, lessonNum: lessonNum)
                 .filter { word in
                     let w = word.lowercased()
                     // Exclude words already in the sentence and common LB words leaked into EN pool
@@ -449,7 +453,7 @@ final class ExerciseViewModel {
             let answerIsCapitalised = answerOption.first?.isUppercase ?? false
 
             // POS-matched distractors; then match capitalisation to the answer option.
-            let rawDistractors = repository.getSmartDistractorsLu(target: answerOption, senseId: senseId, count: 3)
+            let rawDistractors = repository.getSmartDistractorsLu(target: answerOption, senseId: senseId, count: 3, lessonNum: lessonNum)
             let distractors = rawDistractors.map { word -> String in
                 answerIsCapitalised
                     ? word.prefix(1).uppercased() + word.dropFirst()
@@ -461,14 +465,14 @@ final class ExerciseViewModel {
 
         // Listening Comprehension options: correct EN translation + 2 distractor EN translations
         if type == .listeningComprehension {
-            let distractors = repository.getRandomDistractorsEn(target: translation, count: 2)
+            let distractors = repository.getRandomDistractorsEn(target: translation, count: 2, lessonNum: lessonNum)
             mcqOptions = (distractors + [translation]).shuffled()
         }
 
         // Conjugation Match options: correct lemma + 3 distractor lemmas
         var conjugationOptions: [String] = []
         if type == .conjugationMatch {
-            let distractors = repository.getRandomDistractorsLu(target: targetWord, count: 3)
+            let distractors = repository.getRandomDistractorsLu(target: targetWord, count: 3, lessonNum: lessonNum)
             conjugationOptions = (distractors + [targetWord]).shuffled()
         }
 
@@ -543,6 +547,7 @@ final class ExerciseViewModel {
         print("[LuxLingo] Flashcard: type=\(type), word=\(targetWord), lodAudio=\(vocab?.lodAudioUrl ?? "none"), paradigm=\(uiState.paradigm != nil)")
         uiState.sentenceClozeIndex = sentence.clozeIndex
         uiState.targetLodAudioUrl = vocab?.lodAudioUrl
+        uiState.targetWordIsVerb  = Self.isVerbPos(senseData?.tags)
 
         // N-rule chip: only show when the annotated form is the TARGET WORD with its trailing -n
         // dropped (e.g. iergendeen→iergendee). Suppress when the annotation refers to an article
@@ -583,7 +588,6 @@ final class ExerciseViewModel {
         
         // Conjugation: use cloze_index from seed (annotated by annotate_sentences.py).
         // The word at cloze_index is the actual form used in the sentence.
-        let lessonNum = Int(lessonId.components(separatedBy: "_").last ?? "") ?? 999
         let displayedTarget = targetWord
         if type == .flashcard || type == .reading {
             let words = sentence.textLu.split(separator: " ").map { String($0) }
@@ -622,7 +626,7 @@ final class ExerciseViewModel {
         if type == .zipfSpeedRun {
             uiState.isSpeedRunProposedCorrect = Bool.random()
             if !uiState.isSpeedRunProposedCorrect {
-                let distractors = repository.getRandomDistractorsEn(target: translation, count: 1)
+                let distractors = repository.getRandomDistractorsEn(target: translation, count: 1, lessonNum: lessonNum)
                 uiState.targetTranslation = distractors.first ?? "something else"
             }
             startCountdown()
@@ -1020,6 +1024,9 @@ final class ExerciseViewModel {
         guard let item = reviewItems.first else { finishLesson(); return }
         reviewItems.removeFirst()
 
+        // Scope distractor pools to senses the user has encountered up to this item's lesson
+        let lessonNum = Int(item.lessonId.replacingOccurrences(of: "lesson_", with: "")) ?? 0
+
         let done = uiState.totalSentences - reviewItems.count
         uiState.progress             = Float(done) / Float(max(uiState.totalSentences, 1))
         uiState.currentSentenceIndex += 1
@@ -1057,11 +1064,11 @@ final class ExerciseViewModel {
         if type == .jumbledLu {
             tokens = cleanAndShuffleTokens(sentence.textLu)
             if tokens.count < 5 {
-                tokens = (tokens + repository.getRandomDistractorsLu(target: targetWord, count: 2)).shuffled()
+                tokens = (tokens + repository.getRandomDistractorsLu(target: targetWord, count: 2, lessonNum: lessonNum)).shuffled()
             }
         } else if type == .jumbledEn {
             let base = cleanAndShuffleTokens(sentence.textEn)
-            let extras = repository.getRandomDistractorsEn(target: translation, count: 3)
+            let extras = repository.getRandomDistractorsEn(target: translation, count: 3, lessonNum: lessonNum)
                 .filter { !Set(base.map { $0.lowercased() }).contains($0.lowercased()) }.prefix(2)
             tokens = (base + extras).shuffled()
         }
@@ -1076,12 +1083,12 @@ final class ExerciseViewModel {
             let answer    = (safeIdx < words.count ? words[safeIdx] : "").trimmingCharacters(in: punctSet)
             sentenceBlank = words.enumerated().map { i, w in i == safeIdx ? "______" : w }.joined(separator: " ")
             let isCap     = answer.first?.isUppercase ?? false
-            let raw       = repository.getSmartDistractorsLu(target: answer, senseId: item.senseId, count: 3)
+            let raw       = repository.getSmartDistractorsLu(target: answer, senseId: item.senseId, count: 3, lessonNum: lessonNum)
             let dists     = raw.map { isCap ? $0.prefix(1).uppercased() + $0.dropFirst()
                                             : $0.prefix(1).lowercased() + $0.dropFirst() }
             mcqOptions    = (dists + [answer]).shuffled()
         } else if type == .listeningComprehension {
-            mcqOptions = (repository.getRandomDistractorsEn(target: translation, count: 2) + [translation]).shuffled()
+            mcqOptions = (repository.getRandomDistractorsEn(target: translation, count: 2, lessonNum: lessonNum) + [translation]).shuffled()
         }
 
         // Prompt text
@@ -1122,6 +1129,7 @@ final class ExerciseViewModel {
         uiState.shuffledTokens       = tokens
         uiState.sentenceClozeIndex   = sentence.clozeIndex
         uiState.targetLodAudioUrl    = vocab.lodAudioUrl
+        uiState.targetWordIsVerb     = Self.isVerbPos(senseData.tags)
         uiState.nRuleFormInSentence  = nRuleFormForTarget(sentence.nRuleForm, target: targetWord)
         uiState.exampleSentenceLu    = sentence.textLu
         uiState.exampleSentenceEn    = sentence.textEn
@@ -1353,6 +1361,15 @@ final class ExerciseViewModel {
             swap(&cost, &newCost)
         }
         return cost[len0 - 1]
+    }
+
+    /// Verb POS values: VRB, VRB+MOD, VRBPART, VERB.
+    /// lod.lu audio for verbs speaks the full entry title (e.g. "Hëllefsverb hunn, Participe passé gehat")
+    /// rather than just the word — so pronunciation exercises should use TTS for verbs.
+    /// NOTE: SensesEntity.tags stores the POS value (legacy naming); SensesEntity.pos mirrors it after seed v8.58.
+    static func isVerbPos(_ pos: String?) -> Bool {
+        guard let pos, !pos.isEmpty else { return false }
+        return pos.hasPrefix("VRB") || pos == "VERB" || pos == "VRBPART"
     }
 }
 

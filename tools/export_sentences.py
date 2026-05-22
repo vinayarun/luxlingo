@@ -55,15 +55,14 @@ def lesson_label(sense_ids: list[str]) -> str:
     mn, mx = min(nums), max(nums)
     return str(mn) if mn == mx else f"{mn}–{mx}"
 
-def target_word(sense_ids: list[str]) -> str:
-    words = []
-    for sid in sense_ids:
-        s = sense_map.get(sid, {})
-        surf = s.get("surface_id", "")
-        w = vocab_map.get(surf, "")
-        if w and w not in words:
-            words.append(w)
-    return ", ".join(words)
+STRIP_PUNCT = str.maketrans("", "", '.,?!:;"\'«»…()„“”')
+
+def surface_word(text_lu: str, cloze_index: int) -> str:
+    """Extract the actual inflected form used in the sentence via cloze_index."""
+    words = text_lu.split()
+    if 0 <= cloze_index < len(words):
+        return words[cloze_index].translate(STRIP_PUNCT)
+    return ""
 
 def target_meaning(sense_ids: list[str]) -> str:
     meanings = []
@@ -79,12 +78,12 @@ rows = []
 for sent in sentences:
     rows.append({
         "lesson":      lesson_label(sent["sense_ids"]),
-        "sentence_lu": sent["text_lu"],
-        "sentence_en": sent["text_en"],
-        "word_lu":     target_word(sent["sense_ids"]),
-        "meaning_en":  target_meaning(sent["sense_ids"]),
-        "difficulty":  sent.get("difficulty", ""),
         "sentence_id": sent["sentence_id"],
+        "word_lu":     surface_word(sent["text_lu"], sent.get("cloze_index", 0)),
+        "meaning_en":  target_meaning(sent["sense_ids"]),
+        "sentence_en": sent["text_en"],
+        "difficulty":  sent.get("difficulty", ""),
+        "sentence_lu": sent["text_lu"],
     })
 
 # Sort by lesson number (numeric), then difficulty order, then LU text
@@ -102,16 +101,14 @@ rows.sort(key=sort_key)
 # Add article exercises as extra rows at the bottom
 for ex in article_exs:
     s = sense_map.get(ex["sense_id"], {})
-    surf = s.get("surface_id", "")
-    w = vocab_map.get(surf, s.get("primary_en", ""))
     rows.append({
         "lesson":      "Article",
-        "sentence_lu": ex["text_lu"].replace("___", ex["correct"]),
-        "sentence_en": ex["text_en"],
-        "word_lu":     w,
-        "meaning_en":  s.get("primary_en", ""),
-        "difficulty":  ex.get("difficulty", ""),
         "sentence_id": ex["id"],
+        "word_lu":     ex["correct"],           # the article itself is the surface form
+        "meaning_en":  s.get("primary_en", ""),
+        "sentence_en": ex["text_en"],
+        "difficulty":  ex.get("difficulty", ""),
+        "sentence_lu": ex["text_lu"].replace("___", ex["correct"]),
     })
 
 # ── Write Excel ────────────────────────────────────────────────────────────────
@@ -150,16 +147,18 @@ alt_note_fmt = wb.add_format({
     "valign": "top", "bg_color": "#FFFFF8", "border": 1, "border_color": "#DDDDAA",
 })
 
-# Column widths
+# Column order matches user's layout:
+# Lesson | Sentence ID | Word (LU) | Meaning (EN) | English | Difficulty | Luxembourgish | Luxembourgish Corrected | Reviewer Notes
 COLS = [
-    ("Lesson",            6),
-    ("Luxembourgish",    48),
-    ("English",          38),
-    ("Word (LU)",        14),
-    ("Meaning (EN)",     16),
-    ("Difficulty",       10),
-    ("Reviewer Notes",   30),
-    ("Sentence ID",      24),
+    ("Lesson",                            6),
+    ("Sentence ID",                      28),
+    ("Word (LU)",                        12),
+    ("Meaning (EN)",                     16),
+    ("English",                          38),
+    ("Difficulty",                       10),
+    ("Luxembourgish",                    46),
+    ("Luxembourgish Corrected (if any error)", 38),
+    ("Reviewer Notes",                   28),
 ]
 for col_i, (title, width) in enumerate(COLS):
     ws.set_column(col_i, col_i, width)
@@ -177,13 +176,14 @@ for row_i, r in enumerate(rows, start=1):
     nf  = alt_note_fmt if alt else note_fmt
 
     ws.write(row_i, 0, r["lesson"],      mf)
-    ws.write(row_i, 1, r["sentence_lu"], lf)
-    ws.write(row_i, 2, r["sentence_en"], ef)
-    ws.write(row_i, 3, r["word_lu"],     mf)
-    ws.write(row_i, 4, r["meaning_en"],  mf)
+    ws.write(row_i, 1, r["sentence_id"], mf)
+    ws.write(row_i, 2, r["word_lu"],     mf)
+    ws.write(row_i, 3, r["meaning_en"],  mf)
+    ws.write(row_i, 4, r["sentence_en"], ef)
     ws.write(row_i, 5, r["difficulty"],  mf)
-    ws.write(row_i, 6, "",               nf)   # Reviewer Notes (blank)
-    ws.write(row_i, 7, r["sentence_id"], mf)
+    ws.write(row_i, 6, r["sentence_lu"], lf)
+    ws.write(row_i, 7, "",               nf)   # Luxembourgish Corrected (blank for reviewer)
+    ws.write(row_i, 8, "",               nf)   # Reviewer Notes (blank)
 
 ws.autofilter(0, 0, len(rows), len(COLS) - 1)
 

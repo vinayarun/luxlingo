@@ -62,7 +62,9 @@ private struct LessonCompleteScreen: View {
     }
 
     var body: some View {
-        ScrollView {
+        GeometryReader { geo in
+         let screenW = geo.size.width
+         ScrollView {
             VStack(spacing: 0) {
 
                 // ── Hero banner ──────────────────────────────────────────────
@@ -72,8 +74,7 @@ private struct LessonCompleteScreen: View {
                         Image(uiImage: img)
                             .resizable()
                             .scaledToFill()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 220)
+                            .frame(width: screenW, height: 220)
                             .clipped()
                             .overlay(
                                 LinearGradient(
@@ -205,7 +206,9 @@ private struct LessonCompleteScreen: View {
                 // Generous bottom padding so the last word chip is never behind the footer
                 Spacer().frame(height: 100)
             }
-            .frame(maxWidth: .infinity)
+            .frame(width: screenW)
+         }
+         .clipped()
         }
         .ignoresSafeArea(edges: .top)
         // Pinned footer — shadow on top edge, solid background, no gradient overlap

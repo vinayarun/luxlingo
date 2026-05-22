@@ -118,7 +118,7 @@ struct ExerciseScreen: View {
                             progress: viewModel.uiState.progress,
                             progressText: viewModel.uiState.currentExerciseType == .matching
                                 ? "Match the pairs"
-                                : "Mastery \(viewModel.uiState.currentMastery) / \(viewModel.uiState.maxMastery)",
+                                : "\(viewModel.uiState.phase)  ·  \(viewModel.uiState.currentSentenceIndex) of \(viewModel.uiState.totalSentences)",
                             phase: viewModel.uiState.phase,
                             sessionXP: viewModel.uiState.sessionXP,
                             masteryChange: viewModel.uiState.masteryChange,
@@ -244,7 +244,7 @@ struct ExerciseScreen: View {
 
                     }
                     .padding(16)
-                    .padding(.bottom, 100) // Space for the banner
+                    .padding(.bottom, 200) // Space for the feedback banner (~150pt) + safe area
                 }
 
                 Spacer()
@@ -326,7 +326,11 @@ struct ExerciseScreen: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: onBack) {
-                    Image(systemName: "chevron.left")
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("Lessons")
+                            .font(.subheadline)
+                    }
                 }
             }
         }
@@ -524,10 +528,13 @@ struct ExerciseScreen: View {
 
                 ForEach(viewModel.uiState.multipleChoiceOptions, id: \.self) { option in
                     let isSelected = viewModel.uiState.selectedOption == option
-                    let isCorrect = viewModel.uiState.correctOption == option
+                    let isCorrect  = viewModel.uiState.correctOption == option
                     let showFeedback = viewModel.uiState.isFeedbackVisible
-                    // Only reveal correct/wrong colors when we're also revealing the answer (2nd+ failure or correct)
+                    // Reveal correct/wrong colours only when showing the answer (2nd+ failure or correct)
                     let revealColors = showFeedback && (viewModel.uiState.failureCount >= 2 || !isWrongAnswer)
+                    // While feedback is visible but NOT revealing (i.e. first wrong attempt),
+                    // suppress the green selection tint so the selected wrong option doesn't glow green
+                    let showSelectionTint = isSelected && !showFeedback
 
                     Button {
                         if !showFeedback {
@@ -552,18 +559,19 @@ struct ExerciseScreen: View {
                         .background(
                             revealColors
                                 ? (isCorrect ? Color.luxGreen : (isSelected ? Color.luxRed : Color(.systemGray6)))
-                                : (isSelected ? Color.luxGreen.opacity(0.15) : Color(.systemGray6))
+                                : (showSelectionTint ? Color.luxGreen.opacity(0.15) : Color(.systemGray6))
                         )
                         .foregroundColor(revealColors && (isCorrect || isSelected) ? .white : .primary)
                         .cornerRadius(12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(isSelected && !showFeedback ? Color.luxGreen : Color.clear, lineWidth: 2)
+                                .stroke(showSelectionTint ? Color.luxGreen : Color.clear, lineWidth: 2)
                         )
                     }
                     .buttonStyle(.plain)
                     .disabled(showFeedback)
                     .animation(.luxQuick, value: isSelected)
+                    .animation(.luxQuick, value: showFeedback)
                 }
             }
 
@@ -586,6 +594,7 @@ struct ExerciseScreen: View {
                 targetWord:    viewModel.uiState.displayedTargetWord,
                 translation:   viewModel.uiState.targetTranslation,
                 lodAudioUrl:   viewModel.uiState.targetLodAudioUrl,
+                isVerb:        viewModel.uiState.targetWordIsVerb,
                 isForSentence: false,
                 onSkip: { viewModel.loadNextExercise() },
                 onSubmit: { _ in }   // unused — Check button handles submission
@@ -880,12 +889,7 @@ struct ExerciseHeader: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
 
-                if masteryChange != 0 && isFeedbackVisible {
-                    Text(masteryChange > 0 ? "  +\(masteryChange)" : "  \(masteryChange)")
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .foregroundColor(masteryChange > 0 ? .luxGreen : .red)
-                }
+                // mastery delta deliberately hidden — showing penalties harms learning confidence
 
                 Spacer(minLength: 8)
 

@@ -117,7 +117,7 @@ struct LessonProgressRing: View {
             Circle()
                 .trim(from: 0, to: fraction)
                 .stroke(
-                    lesson.isCompleted ? Color.luxGreen : Color.accentColor,
+                    lesson.isCompleted ? Color.luxGreen : Color.luxGreen.opacity(0.55),
                     style: StrokeStyle(lineWidth: 4, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))

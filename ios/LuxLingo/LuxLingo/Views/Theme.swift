@@ -71,7 +71,7 @@ struct FeedbackColors {
 
     static func message(for feedback: AnswerFeedback) -> String {
         switch feedback {
-        case .correct: return "Correct!"
+        case .correct: return ""
         case .wrong: return "Incorrect"
         case .typo: return "Close! Check your spelling."
         case .nRule: return "Right word, but check the N-Rule!"

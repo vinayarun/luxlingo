@@ -54,3 +54,11 @@ build_output.txt
 simulator_state*.png
 .claude/
 LuxMT/*.sb-*
+
+# ── Intermediate batch processing files ─────────────────────────────────────
+LuxMT/batch*.json
+LuxMT/deepl_cache.json.bak
+ios/LuxLingo/LuxLingo/Resources/*.bak
+
+# ── Office temp files ────────────────────────────────────────────────────────
+~$*

@@ -35,8 +35,9 @@ final class SensesEntity {
     var isPicturable: Bool
     var falseFriend: String?
     var paradigm: String?  // JSON: {"present": ["ech kann", "du kanns", ...]}
+    var pos: String = ""  // part-of-speech: VRB, VRB+MOD, SUBST+M, ADJ, etc.
 
-    init(senseId: String, surfaceId: String, translations: String, altEn: String? = nil, tags: String, isGoldenKey: Bool, isPicturable: Bool, falseFriend: String? = nil, paradigm: String? = nil) {
+    init(senseId: String, surfaceId: String, translations: String, altEn: String? = nil, tags: String, isGoldenKey: Bool, isPicturable: Bool, falseFriend: String? = nil, paradigm: String? = nil, pos: String = "") {
         self.senseId = senseId
         self.surfaceId = surfaceId
         self.translations = translations
@@ -46,6 +47,7 @@ final class SensesEntity {
         self.isPicturable = isPicturable
         self.falseFriend = falseFriend
         self.paradigm = paradigm
+        self.pos = pos
     }
 }
 
