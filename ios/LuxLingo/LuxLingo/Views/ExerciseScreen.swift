@@ -102,94 +102,138 @@ struct ExerciseScreen: View {
             }
     }
 
+    // ── CTA section (feedback banner or action button) ────────────────────────
     @ViewBuilder
+    private var ctaSection: some View {
+        if viewModel.uiState.isFeedbackVisible {
+            feedbackBanner
+        } else {
+            VStack(spacing: 0) {
+                let skipThreshold = viewModel.uiState.currentExerciseType == .audioDictation ? 1 : 3
+                if viewModel.uiState.failureCount >= skipThreshold {
+                    let isMatching = viewModel.uiState.currentExerciseType == .matching
+                    Button(isMatching ? "Skip" : "Skip / Reveal Answer") {
+                        viewModel.onSkipExercise()
+                    }
+                    .foregroundColor(.secondary)
+                    .padding(.bottom, 4)
+                }
+                if viewModel.uiState.currentExerciseType != .zipfSpeedRun &&
+                   viewModel.uiState.currentExerciseType != .matching {
+                    Button(action: {
+                        if viewModel.uiState.currentExerciseType == .reading {
+                            viewModel.onReadingContinue()
+                        } else if viewModel.uiState.currentExerciseType == .flashcard {
+                            AudioFeedbackService.shared.playCorrect()
+                            viewModel.onFlashcardContinue()
+                        } else if viewModel.uiState.currentExerciseType == .pronunciationPractice,
+                                  let url = pronService.recordingURL {
+                            pronService.submitForScoring(
+                                audioURL:   url,
+                                targetWord: viewModel.uiState.displayedTargetWord,
+                                senseId:    viewModel.uiState.lastSenseId
+                            )
+                            pronService.recordingURL = nil
+                            showScoringBanner = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                showScoringBanner = false
+                            }
+                            viewModel.onPronunciationSubmitted()
+                        } else {
+                            viewModel.checkAnswer()
+                        }
+                    }) {
+                        Text(buttonLabel)
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(isCheckEnabled ? Color.luxGreen : Color(.systemGray4))
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                    }
+                    .disabled(!isCheckEnabled)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 16)
+                }
+            }
+        }
+    }
+
     private var contentBody: some View {
-        VStack(spacing: 0) {
-            if viewModel.uiState.isLoading {
+        Group {
+        if viewModel.uiState.isLoading {
+            VStack {
                 Spacer()
-                ProgressView()
-                    .scaleEffect(1.5)
+                ProgressView().scaleEffect(1.5)
                 Spacer()
-            } else {
+            }
+        } else {
+            VStack(spacing: 0) {
+                // Header — pinned at top, outside scroll
+                ExerciseHeader(
+                    progress: viewModel.uiState.progress,
+                    progressText: viewModel.uiState.currentExerciseType == .matching
+                        ? "Match the pairs"
+                        : viewModel.uiState.totalSentences > 0
+                            ? "\(viewModel.uiState.phase)  ·  \(viewModel.uiState.currentSentenceIndex) of \(viewModel.uiState.totalSentences)"
+                            : "\(viewModel.uiState.phase)  ·  exercise \(viewModel.uiState.currentSentenceIndex)",
+                    phase: viewModel.uiState.phase,
+                    sessionXP: viewModel.uiState.sessionXP,
+                    masteryChange: viewModel.uiState.masteryChange,
+                    isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                    onFeedback: { showingFeedback = true }
+                )
+                .padding(.horizontal, 16)
+                .padding(.top, 8).padding(.bottom, 4)
+
+                // Exercise content
                 ScrollView {
                     VStack(spacing: 16) {
-                        // Header
-                        ExerciseHeader(
-                            progress: viewModel.uiState.progress,
-                            progressText: viewModel.uiState.currentExerciseType == .matching
-                                ? "Match the pairs"
-                                : "\(viewModel.uiState.phase)  ·  \(viewModel.uiState.currentSentenceIndex) of \(viewModel.uiState.totalSentences)",
-                            phase: viewModel.uiState.phase,
-                            sessionXP: viewModel.uiState.sessionXP,
-                            masteryChange: viewModel.uiState.masteryChange,
-                            isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
-                            onFeedback: { showingFeedback = true }
-                        )
+                        Spacer().frame(height: 16)
 
-                        Spacer().frame(height: 32)
-
-                        // Prompt Text — hidden for pronunciation (that view manages its own header)
+                        // Prompt subtitle
                         let isPronunciation = viewModel.uiState.currentExerciseType == .pronunciationPractice
                         if viewModel.uiState.currentExerciseType != .matching && !isPronunciation {
                             VStack(spacing: 8) {
-                                // Only show prompt if it's explicitly set and not just a fallback to textEn
                                 if !viewModel.uiState.promptText.isEmpty {
                                     Text(viewModel.uiState.promptText)
-                                        .font(.title2)
-                                        .fontWeight(.bold)
+                                        .font(.title2).fontWeight(.bold)
                                         .foregroundColor(.primary)
                                         .multilineTextAlignment(.center)
                                         .padding(.horizontal)
                                 }
-                                
                                 if !viewModel.uiState.promptSubtitle.isEmpty {
                                     HStack(spacing: 6) {
                                         if viewModel.uiState.currentExerciseType == .zipfSpeedRun {
-                                            Image(systemName: "bolt.fill")
-                                                .foregroundColor(.luxAmber)
+                                            Image(systemName: "bolt.fill").foregroundColor(.luxAmber)
                                         } else if viewModel.uiState.currentExerciseType == .nRuleHunter {
-                                            Image(systemName: "scope")
-                                                .foregroundColor(.luxPurple)
+                                            Image(systemName: "scope").foregroundColor(.luxPurple)
                                         }
-                                        
                                         Text(viewModel.uiState.promptSubtitle)
-                                            .font(.subheadline)
-                                            .foregroundColor(.secondary)
-                                            .bold()
+                                            .font(.subheadline).foregroundColor(.secondary).bold()
                                     }
                                     .multilineTextAlignment(.center)
                                 }
                             }
                         }
 
-                        Spacer().frame(height: 8)
-
-                        // Character avatars or vocab image thumbnail
+                        // Character avatars / vocab image
                         let exerciseType = viewModel.uiState.currentExerciseType
                         let avatars = characterAvatarAssets
                         let vocabImg = (exerciseType == .flashcard || exerciseType == .reading)
                             ? UIImage(named: vocabAssetName(for: viewModel.uiState.displayedTargetWord))
                             : nil
                         if let img = vocabImg, exerciseType == .reading {
-                            // Reading exercise: show small vocab image thumbnail instead of avatar
                             Image(uiImage: img)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 90)
-                                .background(Color.white)
-                                .cornerRadius(12)
+                                .resizable().scaledToFit().frame(height: 90)
+                                .background(Color.white).cornerRadius(12)
                                 .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
                                 .transition(.opacity.combined(with: .scale(scale: 0.85)))
-                        } else if !avatars.isEmpty,
-                           vocabImg == nil,
-                           exerciseType != .matching,
-                           exerciseType != .zipfSpeedRun,
-                           exerciseType != .listeningComprehension,
-                           exerciseType != .audioDictation {
+                        } else if !avatars.isEmpty, vocabImg == nil,
+                                  exerciseType != .matching, exerciseType != .zipfSpeedRun,
+                                  exerciseType != .listeningComprehension, exerciseType != .audioDictation {
                             HStack(spacing: 16) {
-                                ForEach(avatars, id: \.self) { asset in
-                                    CharacterAvatarView(assetName: asset)
-                                }
+                                ForEach(avatars, id: \.self) { CharacterAvatarView(assetName: $0) }
                             }
                             .frame(maxWidth: .infinity)
                             .transition(.opacity.combined(with: .scale(scale: 0.85)))
@@ -197,43 +241,33 @@ struct ExerciseScreen: View {
                             .animation(.luxSpring, value: avatars.joined())
                         }
 
-                        // Mismatch hint — sentence uses a different form/synonym of the taught word
-                        // (e.g. "ass" for "sinn", or "Buedzëmmer" for "Bad")
+                        // Mismatch hint
                         let sentForm  = viewModel.uiState.targetWord
                         let lemmaForm = viewModel.uiState.displayedTargetWord
-                        let exerciseTypeForHint = viewModel.uiState.currentExerciseType
                         if !sentForm.isEmpty, !lemmaForm.isEmpty,
                            sentForm.lowercased() != lemmaForm.lowercased(),
-                           exerciseTypeForHint != .matching,
-                           exerciseTypeForHint != .zipfSpeedRun,
-                           exerciseTypeForHint != .reading,   // reading already shows the conjugation chip
-                           exerciseTypeForHint != .flashcard {
+                           exerciseType != .matching, exerciseType != .zipfSpeedRun,
+                           exerciseType != .reading, exerciseType != .flashcard {
                             HStack(spacing: 5) {
-                                Image(systemName: "info.circle")
-                                    .font(.caption2)
-                                Text("'\(sentForm)' is a conjugated form of '\(lemmaForm)'")
-                                    .font(.caption)
+                                Image(systemName: "info.circle").font(.caption2)
+                                Text("'\(sentForm)' is a conjugated form of '\(lemmaForm)'").font(.caption)
                             }
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal, 16)
-                            .padding(.top, 2)
+                            .foregroundColor(.secondary).padding(.horizontal, 16)
                         }
 
-                        // "Checking pronunciation" banner — fades out after 4s
+                        // Pronunciation scoring banner
                         if showScoringBanner {
                             HStack(spacing: 6) {
-                                Image(systemName: "waveform.badge.clock")
-                                    .foregroundColor(.accentColor)
+                                Image(systemName: "waveform.badge.clock").foregroundColor(.accentColor)
                                 Text("Checking pronunciation in background…")
                                     .font(.caption).foregroundColor(.secondary)
                             }
                             .padding(.horizontal, 16).padding(.vertical, 8)
                             .background(Color.accentColor.opacity(0.08))
-                            .cornerRadius(10)
-                            .transition(.opacity)
+                            .cornerRadius(10).transition(.opacity)
                         }
 
-                        // Dynamic Exercise Content
+                        // Dynamic exercise body
                         exerciseBody
                             .transition(.asymmetric(
                                 insertion: .opacity.combined(with: .move(edge: .trailing)),
@@ -241,71 +275,18 @@ struct ExerciseScreen: View {
                             ))
                             .id(viewModel.uiState.currentSentenceIndex)
                             .animation(.luxSpring, value: viewModel.uiState.currentSentenceIndex)
-
                     }
-                    .padding(16)
-                    .padding(.bottom, 200) // Space for the feedback banner (~150pt) + safe area
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 16)
                 }
 
                 Spacer()
 
-                // Feedback Banner
-                if viewModel.uiState.isFeedbackVisible {
-                    feedbackBanner
-                } else {
-                    // Skip button — audio dictation shows after 1 failure (keyboard issues
-                    // on device could strand the user); all other types after 3 failures.
-                    let skipThreshold = viewModel.uiState.currentExerciseType == .audioDictation ? 1 : 3
-                    if viewModel.uiState.failureCount >= skipThreshold {
-                        let isMatching = viewModel.uiState.currentExerciseType == .matching
-                        Button(isMatching ? "Skip" : "Skip / Reveal Answer") {
-                            viewModel.onSkipExercise()
-                        }
-                        .foregroundColor(.secondary)
-                        .padding(.bottom, 4)
-                    }
-
-                    // Main action button
-                    if viewModel.uiState.currentExerciseType != .zipfSpeedRun && viewModel.uiState.currentExerciseType != .matching {
-                        Button(action: {
-                            if viewModel.uiState.currentExerciseType == .reading {
-                                viewModel.onReadingContinue()
-                            } else if viewModel.uiState.currentExerciseType == .flashcard {
-                                AudioFeedbackService.shared.playCorrect()
-                                viewModel.onFlashcardContinue()
-                            } else if viewModel.uiState.currentExerciseType == .pronunciationPractice,
-                                      let url = pronService.recordingURL {
-                                // Submit recording async, show immediate "submitted" feedback
-                                pronService.submitForScoring(
-                                    audioURL:   url,
-                                    targetWord: viewModel.uiState.displayedTargetWord,
-                                    senseId:    viewModel.uiState.lastSenseId
-                                )
-                                pronService.recordingURL = nil
-                                showScoringBanner = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                                    showScoringBanner = false
-                                }
-                                viewModel.onPronunciationSubmitted()
-                            } else {
-                                viewModel.checkAnswer()
-                            }
-                        }) {
-                            Text(buttonLabel)
-                                .font(.headline)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(isCheckEnabled ? Color.luxGreen : Color(.systemGray4))
-                                .foregroundColor(.white)
-                                .cornerRadius(12)
-                        }
-                        .disabled(!isCheckEnabled)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 16)
-                    }
-                }
+                // CTA
+                ctaSection
             }
-        }
+        } // else
+        } // Group
         .animation(.luxSpring, value: viewModel.uiState.isFeedbackVisible)
         .onChange(of: viewModel.uiState.isFeedbackVisible) {
             guard viewModel.uiState.isFeedbackVisible else { return }
