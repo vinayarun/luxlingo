@@ -921,6 +921,66 @@ struct ExerciseHeader: View {
     }
 }
 
+// MARK: - UIKit-backed text field for Cloze input
+// SwiftUI TextField is unreliable inside animated transitions on device:
+// keyboard may not appear, typed text may not bind, keyboard persists on navigation.
+// UITextField with explicit becomeFirstResponder/resignFirstResponder fixes all three.
+
+private struct ClozeTextField: UIViewRepresentable {
+    @Binding var text: String
+    let isDisabled: Bool
+    let onDone: () -> Void
+
+    func makeCoordinator() -> Coordinator { Coordinator(text: $text, onDone: onDone) }
+
+    func makeUIView(context: Context) -> UITextField {
+        let tf = UITextField()
+        tf.placeholder            = "type the missing word"
+        tf.textAlignment          = .center
+        tf.autocapitalizationType = .none
+        tf.autocorrectionType     = .no
+        tf.spellCheckingType      = .no
+        tf.smartDashesType        = .no
+        tf.smartQuotesType        = .no
+        tf.returnKeyType          = .done
+        tf.font                   = UIFont.systemFont(ofSize: 20, weight: .medium)
+        tf.backgroundColor        = .clear
+        tf.delegate               = context.coordinator
+        tf.addTarget(context.coordinator,
+                     action: #selector(Coordinator.textChanged(_:)),
+                     for: .editingChanged)
+        return tf
+    }
+
+    func updateUIView(_ tf: UITextField, context: Context) {
+        if tf.text != text { tf.text = text }
+        tf.isEnabled = !isDisabled
+        if !isDisabled {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if !tf.isFirstResponder { tf.becomeFirstResponder() }
+            }
+        } else if tf.isFirstResponder {
+            tf.resignFirstResponder()
+        }
+    }
+
+    // Called when the view is removed from the hierarchy (navigation back, lesson end).
+    // Ensures the keyboard is always dismissed cleanly.
+    static func dismantleUIView(_ tf: UITextField, coordinator: Coordinator) {
+        tf.resignFirstResponder()
+    }
+
+    class Coordinator: NSObject, UITextFieldDelegate {
+        @Binding var text: String
+        let onDone: () -> Void
+        init(text: Binding<String>, onDone: @escaping () -> Void) {
+            _text = text; self.onDone = onDone
+        }
+        @objc func textChanged(_ tf: UITextField) { text = tf.text ?? "" }
+        func textFieldShouldReturn(_ tf: UITextField) -> Bool { onDone(); return true }
+    }
+}
+
 // MARK: - Cloze Sentence Input
 struct ClozeSentenceInput: View {
     let parts: [String]
@@ -932,9 +992,8 @@ struct ClozeSentenceInput: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            // Full sentence with blank — wraps naturally, no one-line constraint
-            let before = parts.first ?? ""
-            let after  = parts.count > 1 ? parts[1] : ""
+            let before  = parts.first ?? ""
+            let after   = parts.count > 1 ? parts[1] : ""
             let blanked = (before.isEmpty ? "" : before + " ")
                         + "______"
                         + (after.isEmpty ? "" : " " + after)
@@ -946,16 +1005,14 @@ struct ClozeSentenceInput: View {
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 8)
 
-            // Input field sits below — clearly associated with the blank above
             VStack(spacing: 2) {
-                TextField("type the missing word", text: $userInput)
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .multilineTextAlignment(.center)
-                    .onSubmit { onDone() }
-                    .autocorrectionDisabled(true)
-                    .textInputAutocapitalization(.never)
-                    .padding(.horizontal, 24)
+                ClozeTextField(
+                    text:       $userInput,
+                    isDisabled: feedback != .none,
+                    onDone:     onDone
+                )
+                .frame(height: 36)
+                .padding(.horizontal, 24)
 
                 Rectangle()
                     .fill(feedbackColor)

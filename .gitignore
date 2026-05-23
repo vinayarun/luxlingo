@@ -62,3 +62,31 @@ ios/LuxLingo/LuxLingo/Resources/*.bak
 
 # ── Office temp files ────────────────────────────────────────────────────────
 ~$*
+
+# ── Old Android files (project migrated to iOS) ──────────────────────────────
+ExerciseScreen.kt
+build.gradle.kts
+gradlew
+gradlew.bat
+gradle.properties
+settings.gradle.kts
+Dockerfile
+docker-compose.yml
+app/
+gradle/
+.gradle/
+
+# ── Large binary/generated files not needed in repo ──────────────────────────
+*.pptx
+*.xlsx
+*.docx
+luxlingo_review.xlsx
+LuxMT/
+generate_scenes_drawthings.js
+generate_vocab_drawthings.js
+generate_vocab_test.js
+
+# ── Internal/stale docs ───────────────────────────────────────────────────────
+database_design.md
+project_status.md
+sentence_import_notes.md

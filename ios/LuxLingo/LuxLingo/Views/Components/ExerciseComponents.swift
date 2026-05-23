@@ -164,6 +164,10 @@ private struct DictationTextField: UIViewRepresentable {
         }
     }
 
+    static func dismantleUIView(_ tf: UITextField, coordinator: Coordinator) {
+        tf.resignFirstResponder()
+    }
+
     class Coordinator: NSObject, UITextFieldDelegate {
         @Binding var text: String
         init(text: Binding<String>) { _text = text }
