@@ -17,9 +17,11 @@ LuxLingo makes it genuinely easy to start learning Luxembourgish — built for b
 
 <table>
   <tr>
-    <td align="center"><img src="docs/screenshots/home.png" width="220"/><br/><sub>Home — daily goal, streak, lessons</sub></td>
-    <td align="center"><img src="docs/screenshots/exercise.png" width="220"/><br/><sub>Reading exercise — tap any word to look it up</sub></td>
-    <td align="center"><img src="docs/screenshots/lesson_complete.png" width="220"/><br/><sub>Lesson complete — XP, words practiced, Zipf coverage gain</sub></td>
+    <td align="center"><img src="docs/screenshots/onboarding_welcome.png" width="180"/><br/><sub>Welcome — first launch</sub></td>
+    <td align="center"><img src="docs/screenshots/onboarding_goal.png" width="180"/><br/><sub>Set your daily goal</sub></td>
+    <td align="center"><img src="docs/screenshots/home.png" width="180"/><br/><sub>Home — streak, units, lessons</sub></td>
+    <td align="center"><img src="docs/screenshots/exercise.png" width="180"/><br/><sub>Exercise — tap any word to look it up</sub></td>
+    <td align="center"><img src="docs/screenshots/lesson_complete.png" width="180"/><br/><sub>Lesson complete — XP and Zipf coverage gain</sub></td>
   </tr>
 </table>
 
