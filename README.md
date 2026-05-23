@@ -6,7 +6,7 @@
 
 LuxLingo makes it genuinely easy to start learning Luxembourgish — built for busy people who want to connect with Luxembourg's national language but don't have hours to spare.
 
-[![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
+[![License: AGPL + Commons Clause](https://img.shields.io/badge/Code-AGPL%20%2B%20Commons%20Clause-red.svg)](LICENSE)
 [![Content: CC BY-NC 4.0](https://img.shields.io/badge/Content-CC%20BY--NC%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Platform: iOS 17+](https://img.shields.io/badge/Platform-iOS%2017%2B-lightgrey.svg)](https://apple.com/ios)
 [![Swift 5.9](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
@@ -160,7 +160,7 @@ PRs are welcome. See [CLAUDE.md](CLAUDE.md) for full architecture documentation,
 
 ## Licence
 
-- **Code:** [MIT](LICENSE) — free to use, modify, and build on with attribution
+- **Code:** [AGPL-3.0 + Commons Clause](LICENSE) — source-available; forks must be open source; commercial use prohibited
 - **Content** (lessons, sentences, vocabulary data): [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) — free for non-commercial use with attribution
 
 ---
