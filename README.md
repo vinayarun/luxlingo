@@ -171,4 +171,4 @@ PRs are welcome. See [CLAUDE.md](CLAUDE.md) for full architecture documentation,
 
 [luxlingo.app@gmail.com](mailto:luxlingo.app@gmail.com)
 
-*LuxLingo is a volunteer project. If it's helped you learn Luxembourgish, you're welcome to [buy me a coffee ☕](https://ko-fi.com/vinayarun) — entirely optional, and the app will always be free regardless.*
+*LuxLingo is a volunteer project.*
