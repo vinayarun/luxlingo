@@ -96,14 +96,14 @@ All 7,662 example sentences follow eight recurring characters living in Luxembou
 
 <table>
   <tr>
-    <td align="center"><img src="docs/character_marc.png" width="72"/><br/><b>Marc</b><br/><sub>Age 8 · Mecher</sub></td>
-    <td align="center"><img src="docs/character_anna.png" width="72"/><br/><b>Anna</b><br/><sub>Age 11 · Germany</sub></td>
-    <td align="center"><img src="docs/character_paul.png" width="72"/><br/><b>Paul</b><br/><sub>Age 12 · Germany</sub></td>
-    <td align="center"><img src="docs/character_lena.png" width="72"/><br/><b>Lena</b><br/><sub>Age 11 · Belgium</sub></td>
-    <td align="center"><img src="docs/character_claire.png" width="72"/><br/><b>Claire</b><br/><sub>Age 11 · bookworm</sub></td>
-    <td align="center"><img src="docs/character_natali.png" width="72"/><br/><b>Natali</b><br/><sub>Age 5 · neighbour</sub></td>
-    <td align="center"><img src="docs/character_mr_weiss.png" width="72"/><br/><b>Här Weiss</b><br/><sub>Teacher</sub></td>
-    <td align="center"><img src="docs/character_bello.png" width="72"/><br/><b>Bello</b><br/><sub>Anna's dog</sub></td>
+    <td align="center"><img src="docs/character_marc.png" width="72"/><br/><b>Marc</b><br/><sub>Football fanatic</sub></td>
+    <td align="center"><img src="docs/character_anna.png" width="72"/><br/><b>Anna</b><br/><sub>Dog lover</sub></td>
+    <td align="center"><img src="docs/character_paul.png" width="72"/><br/><b>Paul</b><br/><sub>Adventure cyclist</sub></td>
+    <td align="center"><img src="docs/character_lena.png" width="72"/><br/><b>Lena</b><br/><sub>Warm-hearted helper</sub></td>
+    <td align="center"><img src="docs/character_claire.png" width="72"/><br/><b>Claire</b><br/><sub>Bookworm scholar</sub></td>
+    <td align="center"><img src="docs/character_natali.png" width="72"/><br/><b>Natali</b><br/><sub>Curious toddler</sub></td>
+    <td align="center"><img src="docs/character_mr_weiss.png" width="72"/><br/><b>Här Weiss</b><br/><sub>Patient teacher</sub></td>
+    <td align="center"><img src="docs/character_bello.png" width="72"/><br/><b>Bello</b><br/><sub>Loyal companion</sub></td>
   </tr>
 </table>
 
