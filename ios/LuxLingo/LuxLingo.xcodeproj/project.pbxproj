@@ -27,8 +27,10 @@
 		C6A5AA1937C362EFE96D3E28 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EED8A2ED0BAE0359DC140A /* ContentView.swift */; };
 		C9D0E1F2A3B4C5D6E7F8A9B0 /* SpeakerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C8D9E0F1A2B3C4D5E6F7A8 /* SpeakerButton.swift */; };
 		D2E4F6A8B0C3E5F719283A4B /* ZipfsLawInfoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D3E5F7A9B2C4D6E8F0192A /* ZipfsLawInfoScreen.swift */; };
+		E5F6A7B8C9D0E1F2A3B4C5D6 /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B0C1D2E3F4A5B6C7D8E9F0 /* OnboardingScreen.swift */; };
 		E3F4A5B6C7D8E9F0A1B2C3D4 /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A5B6C7D8E9F0A1B2C3D4E5 /* StatsScreen.swift */; };
 		E6F7A8B9C0D1E2F3A4B5C6D7 /* HowToUseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */; };
+		F2A3B4C5D6E7F8A9B0C1D2E3 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A7B8C9D0E1F2A3B4C5 /* SettingsScreen.swift */; };
 		G8H9I0J1K2L3M4N5O6P7Q8R9 /* AudioFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */; };
 		C9H8A7R6A5C4T3E2 /* CharacterIntroScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4H1A2R3A4C5T6E7 /* CharacterIntroScreen.swift */; };
 		F9E8E7D6B5A4C3K2 /* FeedbackSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E2E3D4B5A6C7K8 /* FeedbackSheet.swift */; };
@@ -60,6 +62,7 @@
 		B5EED8A2ED0BAE0359DC140A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B7C8D9E0F1A2B3C4D5E6F7A8 /* SpeakerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerButton.swift; sourceTree = "<group>"; };
 		BE12FBB63904D737EC2F4246 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		A9B0C1D2E3F4A5B6C7D8E9F0 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
 		C1D3E5F7A9B2C4D6E8F0192A /* ZipfsLawInfoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipfsLawInfoScreen.swift; sourceTree = "<group>"; };
 		C3D4E5F6A7B8C9D0E1F2A3B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C54E0AD116459A0CE0D54795 /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		F4A5B6C7D8E9F0A1B2C3D4E5 /* StatsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsScreen.swift; sourceTree = "<group>"; };
 		F5C3EAD94527E45EF7D763B0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToUseScreen.swift; sourceTree = "<group>"; };
+		D4E5F6A7B8C9D0E1F2A3B4C5 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		H9I0J1K2L3M4N5O6P7Q8R9S0 /* AudioFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioFeedbackService.swift"; sourceTree = "<group>"; };
 		C4H1A2R3A4C5T6E7 /* CharacterIntroScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterIntroScreen.swift"; sourceTree = "<group>"; };
 		F1E2E3D4B5A6C7K8 /* FeedbackSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedbackSheet.swift"; sourceTree = "<group>"; };
@@ -187,11 +191,13 @@
 				8547EC3E0397B2B492CD1816 /* ExerciseScreen.swift */,
 				423C5AD7075EE2277E4FBA8C /* HomeScreen.swift */,
 				D914ED424FE7538FA56DCA9A /* LessonSummaryScreen.swift */,
+				A9B0C1D2E3F4A5B6C7D8E9F0 /* OnboardingScreen.swift */,
 				AF6E73558DB1F5DF62F821D4 /* Theme.swift */,
 				C1D3E5F7A9B2C4D6E8F0192A /* ZipfsLawInfoScreen.swift */,
 				F4A5B6C7D8E9F0A1B2C3D4E5 /* StatsScreen.swift */,
 				B1A2C3D4E5F6A7B8C9D0E1F2 /* NRuleHunterView.swift */,
 				F7A8B9C0D1E2F3A4B5C6D7E8 /* HowToUseScreen.swift */,
+				D4E5F6A7B8C9D0E1F2A3B4C5 /* SettingsScreen.swift */,
 				D1E2F3A4B5C6D7E8F9A0B1C2 /* ZipfsSpeedRunView.swift */,
 				C4H1A2R3A4C5T6E7 /* CharacterIntroScreen.swift */,
 				F1E2E3D4B5A6C7K8 /* FeedbackSheet.swift */,
@@ -289,6 +295,7 @@
 				EACE51933D9EDAF6A6274F44 /* ExerciseScreen.swift in Sources */,
 				44125979146DFBB539E8447D /* HomeScreen.swift in Sources */,
 				0FDD1F239E8EBB31F22BA36C /* LessonSummaryScreen.swift in Sources */,
+				E5F6A7B8C9D0E1F2A3B4C5D6 /* OnboardingScreen.swift in Sources */,
 				1412D9F3A44CEAE0C7C724BE /* Theme.swift in Sources */,
 				D2E4F6A8B0C3E5F719283A4B /* ZipfsLawInfoScreen.swift in Sources */,
 				E3F4A5B6C7D8E9F0A1B2C3D4 /* StatsScreen.swift in Sources */,
@@ -299,6 +306,7 @@
 				A2B3C4D5E6F7A8B9C0D1E2F3 /* WordLookupService.swift in Sources */,
 				C4D5E6F7A8B9C0D1E2F3A4B5 /* TappableLuSentenceView.swift in Sources */,
 				E6F7A8B9C0D1E2F3A4B5C6D7 /* HowToUseScreen.swift in Sources */,
+				F2A3B4C5D6E7F8A9B0C1D2E3 /* SettingsScreen.swift in Sources */,
 				G8H9I0J1K2L3M4N5O6P7Q8R9 /* AudioFeedbackService.swift in Sources */,
 				C9H8A7R6A5C4T3E2 /* CharacterIntroScreen.swift in Sources */,
 				F9E8E7D6B5A4C3K2 /* FeedbackSheet.swift in Sources */,

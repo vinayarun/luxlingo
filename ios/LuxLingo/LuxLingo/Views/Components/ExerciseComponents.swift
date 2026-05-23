@@ -451,170 +451,214 @@ func vocabAssetName(for word: String) -> String {
 }
 
 // MARK: - Flashcard Exercise
+// Two-phase active-recall card:
+//   Front — LU word only; tap to flip and reveal meaning.
+//   Back  — translation, example sentence, conjugation chips.
 struct FlashcardExercise: View {
     let targetWord: String
     let translation: String
     let exampleSentenceLu: String
     let exampleSentenceEn: String
-    var sentenceTargetWord: String? = nil  // actual form in sentence (may differ from lemma)
+    var sentenceTargetWord: String? = nil
     var paradigm: [String]? = nil
     var lodAudioUrl: String? = nil
     var nRuleForm: String? = nil
+    @Binding var isRevealed: Bool
 
-    @State private var showConjugation = false
+    @State private var rotation: Double = 0
+    @State private var showBack: Bool   = false
+    @State private var showConjugation  = false
 
     private var vocabImage: UIImage? { UIImage(named: vocabAssetName(for: targetWord)) }
-    private var hasImage: Bool { vocabImage != nil }
+
+    // ── Card background shared by both faces ─────────────────────────────────
+    private var cardBackground: some View {
+        LinearGradient(
+            colors: [Color.luxGreen.opacity(0.04), Color.luxGreen.opacity(0.12)],
+            startPoint: .topLeading, endPoint: .bottomTrailing
+        )
+    }
+    private var cardBorder: some View {
+        RoundedRectangle(cornerRadius: 24).stroke(Color.luxGreen.opacity(0.2), lineWidth: 2)
+    }
 
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 16) {
+        ZStack {
+            if showBack { backFace } else { frontFace }
+        }
+        .rotation3DEffect(.degrees(rotation), axis: (x: 0, y: 1, z: 0), perspective: 0.45)
+        // Reset to front when the parent loads a new exercise
+        .onChange(of: isRevealed) { _, revealed in
+            if !revealed { showBack = false; rotation = 0 }
+        }
+    }
 
-                if let img = vocabImage {
-                    // ── Image-first layout ───────────────────────────────────
-                    VStack(spacing: 12) {
-                        // Illustration
-                        Image(uiImage: img)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 180, height: 180)
-                            .background(Color.white)
-                            .cornerRadius(18)
-                            .shadow(color: .black.opacity(0.10), radius: 8, y: 4)
+    // MARK: - Flip
 
-                        // Word centred; speaker floats at trailing edge without shifting the word
-                        Text(targetWord)
-                            .font(.system(size: 30, weight: .bold))
-                            .foregroundColor(.luxGreen)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.6)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .overlay(alignment: .trailing) {
-                                SpeakerButton(text: targetWord, audioUrl: lodAudioUrl)
-                                    .font(.title3)
-                                    .frame(width: 32, height: 32)
-                                    .background(Color.luxGreen.opacity(0.08))
-                                    .clipShape(Circle())
-                            }
+    private func flip() {
+        guard !showBack else { return }
+        withAnimation(.easeIn(duration: 0.18)) { rotation = 90 }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
+            showBack  = true
+            isRevealed = true
+            rotation  = -90
+            withAnimation(.easeOut(duration: 0.18)) { rotation = 0 }
+        }
+    }
 
-                        Text(translation)
-                            .font(.title3).fontWeight(.medium)
-                            .foregroundColor(.secondary)
-                    }
-                } else {
-                    // ── Text-first layout (no image) ─────────────────────────
-                    // Word centred on full width; speaker floats at the trailing edge
+    // MARK: - Front face (word only)
+
+    private var frontFace: some View {
+        VStack(spacing: 20) {
+            // Vocab image — small, above the word
+            if let img = vocabImage {
+                Image(uiImage: img)
+                    .resizable().scaledToFit()
+                    .frame(width: 110, height: 110)
+                    .background(Color.white).cornerRadius(16)
+                    .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
+            }
+
+            // The word — large serif, centred; speaker floats at trailing edge
+            Text(targetWord)
+                .font(.luxTargetWord(size: targetWord.count > 10 ? 38 : 52))
+                .foregroundColor(.luxGreen)
+                .shadow(color: .luxGreen.opacity(0.12), radius: 6, y: 3)
+                .lineLimit(1).minimumScaleFactor(0.5)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .overlay(alignment: .trailing) {
+                    SpeakerButton(text: targetWord, audioUrl: lodAudioUrl)
+                        .font(.title2)
+                        .frame(width: 32, height: 32)
+                        .background(Color.luxGreen.opacity(0.08))
+                        .clipShape(Circle())
+                }
+
+            // "Tap to reveal" hint
+            HStack(spacing: 5) {
+                Image(systemName: "hand.tap").font(.caption)
+                Text("Tap to reveal").font(.caption)
+            }
+            .foregroundColor(.luxGreen.opacity(0.5))
+        }
+        .padding(28)
+        .frame(maxWidth: .infinity, minHeight: 280)
+        .background(cardBackground)
+        .cornerRadius(24)
+        .overlay(cardBorder)
+        .contentShape(Rectangle())
+        .onTapGesture { flip() }
+    }
+
+    // MARK: - Back face (full content)
+
+    private var backFace: some View {
+        VStack(spacing: 16) {
+            if let img = vocabImage {
+                // ── Image-first layout ───────────────────────────────────────
+                VStack(spacing: 12) {
+                    Image(uiImage: img)
+                        .resizable().scaledToFit()
+                        .frame(width: 180, height: 180)
+                        .background(Color.white).cornerRadius(18)
+                        .shadow(color: .black.opacity(0.10), radius: 8, y: 4)
+
                     Text(targetWord)
-                        .font(.system(size: targetWord.count > 10 ? 34 : 46, weight: .bold))
+                        .font(.luxTargetWord(size: 30))
                         .foregroundColor(.luxGreen)
-                        .shadow(color: .luxGreen.opacity(0.15), radius: 6, y: 3)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
+                        .lineLimit(1).minimumScaleFactor(0.6)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .overlay(alignment: .trailing) {
                             SpeakerButton(text: targetWord, audioUrl: lodAudioUrl)
-                                .font(.title2)
+                                .font(.title3)
                                 .frame(width: 32, height: 32)
                                 .background(Color.luxGreen.opacity(0.08))
                                 .clipShape(Circle())
                         }
 
                     Text(translation)
-                        .font(.title3)
-                        .fontWeight(.medium)
-                        .foregroundColor(.secondary)
+                        .font(.title3).fontWeight(.medium).foregroundColor(.secondary)
                 }
+            } else {
+                // ── Text-first layout ────────────────────────────────────────
+                Text(targetWord)
+                    .font(.luxTargetWord(size: targetWord.count > 10 ? 34 : 46))
+                    .foregroundColor(.luxGreen)
+                    .shadow(color: .luxGreen.opacity(0.15), radius: 6, y: 3)
+                    .lineLimit(1).minimumScaleFactor(0.5)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .overlay(alignment: .trailing) {
+                        SpeakerButton(text: targetWord, audioUrl: lodAudioUrl)
+                            .font(.title2)
+                            .frame(width: 32, height: 32)
+                            .background(Color.luxGreen.opacity(0.08))
+                            .clipShape(Circle())
+                    }
 
-                // Hint chips: conjugation and/or n-rule
-                if paradigm != nil || nRuleForm != nil {
-                    HStack(spacing: 8) {
-                        if let p = paradigm {
-                            Button {
-                                showConjugation = true
-                            } label: {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "arrow.triangle.branch")
-                                        .font(.caption2)
-                                    let conjugatedForm = p.first(where: {
-                                        verbFormOnly($0).lowercased() != targetWord.lowercased()
-                                    }).map { verbFormOnly($0) } ?? ""
-                                    Text(conjugatedForm.isEmpty ? "Conjugations" : "\(targetWord) → \(conjugatedForm)")
-                                        .font(.caption)
-                                        .fontWeight(.semibold)
-                                    Image(systemName: "chevron.right")
-                                        .font(.caption2)
-                                }
-                                .foregroundColor(.luxAmber)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 5)
-                                .background(Color.luxAmber.opacity(0.12))
-                                .cornerRadius(8)
-                            }
-                            .buttonStyle(.plain)
-                        }
+                Text(translation)
+                    .font(.title3).fontWeight(.medium).foregroundColor(.secondary)
+            }
 
-                        if let nForm = nRuleForm {
+            // Conjugation / n-rule chips
+            if paradigm != nil || nRuleForm != nil {
+                HStack(spacing: 8) {
+                    if let p = paradigm {
+                        Button { showConjugation = true } label: {
                             HStack(spacing: 4) {
-                                Image(systemName: "n.circle")
-                                    .font(.caption2)
-                                Text("\(targetWord) → \(nForm)")
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                                Text("n-rule")
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
+                                Image(systemName: "arrow.triangle.branch").font(.caption2)
+                                let conjugatedForm = p.first(where: {
+                                    verbFormOnly($0).lowercased() != targetWord.lowercased()
+                                }).map { verbFormOnly($0) } ?? ""
+                                Text(conjugatedForm.isEmpty ? "Conjugations" : "\(targetWord) → \(conjugatedForm)")
+                                    .font(.caption).fontWeight(.semibold)
+                                Image(systemName: "chevron.right").font(.caption2)
                             }
-                            .foregroundColor(.luxPurple)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Color.luxPurple.opacity(0.10))
-                            .cornerRadius(8)
+                            .foregroundColor(.luxAmber)
+                            .padding(.horizontal, 10).padding(.vertical, 5)
+                            .background(Color.luxAmber.opacity(0.12)).cornerRadius(8)
+                        }.buttonStyle(.plain)
+                    }
+                    if let nForm = nRuleForm {
+                        HStack(spacing: 4) {
+                            Image(systemName: "n.circle").font(.caption2)
+                            Text("\(targetWord) → \(nForm)").font(.caption).fontWeight(.semibold)
+                            Text("n-rule").font(.caption2).foregroundColor(.secondary)
                         }
-                    }
-                }
-
-                Rectangle()
-                    .fill(Color.luxGreen.opacity(0.3))
-                    .frame(height: 1)
-                    .frame(maxWidth: 60)
-                    .padding(.vertical, 4)
-
-                VStack(spacing: 8) {
-                    if !exampleSentenceLu.isEmpty {
-                        TappableLuSentenceView(
-                            text: exampleSentenceLu,
-                            highlight: targetWord,
-                            actualForm: sentenceTargetWord,
-                            highlightMeaning: translation
-                        )
-                        .font(.title3)
-                    }
-
-                    if !exampleSentenceEn.isEmpty {
-                        Text(exampleSentenceEn)
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .italic()
-                            .multilineTextAlignment(.center)
+                        .foregroundColor(.luxPurple)
+                        .padding(.horizontal, 10).padding(.vertical, 5)
+                        .background(Color.luxPurple.opacity(0.10)).cornerRadius(8)
                     }
                 }
             }
-            .padding(24)
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: 280)
-            .background(
-                LinearGradient(
-                    colors: [Color.luxGreen.opacity(0.04), Color.luxGreen.opacity(0.12)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(24)
-            .overlay(
-                RoundedRectangle(cornerRadius: 24)
-                    .stroke(Color.luxGreen.opacity(0.2), lineWidth: 2)
-            )
+
+            Rectangle()
+                .fill(Color.luxGreen.opacity(0.3))
+                .frame(width: 60, height: 1)
+                .padding(.vertical, 4)
+
+            // Example sentence
+            VStack(spacing: 8) {
+                if !exampleSentenceLu.isEmpty {
+                    TappableLuSentenceView(
+                        text: exampleSentenceLu,
+                        highlight: targetWord,
+                        actualForm: sentenceTargetWord,
+                        highlightMeaning: translation
+                    )
+                    .font(.title3)
+                }
+                if !exampleSentenceEn.isEmpty {
+                    Text(exampleSentenceEn)
+                        .font(.body).foregroundColor(.secondary).italic()
+                        .multilineTextAlignment(.center)
+                }
+            }
         }
+        .padding(24)
+        .frame(maxWidth: .infinity, minHeight: 280)
+        .background(cardBackground)
+        .cornerRadius(24)
+        .overlay(cardBorder)
         .sheet(isPresented: $showConjugation) {
             if let p = paradigm {
                 ConjugationPanel(lemma: targetWord, translation: translation, rows: p,
@@ -773,13 +817,14 @@ struct MatchingExerciseView: View {
     let onComplete: () -> Void
     var onWrongMatch: (() -> Void)? = nil
 
-    @State private var selectedLU: String? = nil   // pair id selected on left
-    @State private var selectedEN: String? = nil   // pair id selected on right
+    @State private var selectedLU: String? = nil    // pair id selected on left
+    @State private var selectedEN: String? = nil    // pair id selected on right
     @State private var matchedPairIds: Set<String> = []
+    @State private var justMatchedIds: Set<String> = []  // flash state before removal
     @State private var wrongPairIds: Set<String> = []
     @State private var shakeOffset: CGFloat = 0
-    @State private var luOrder: [String] = []      // shuffled pair ids for LU column
-    @State private var enOrder: [String] = []      // shuffled pair ids for EN column
+    @State private var luOrder: [String] = []       // shuffled pair ids for LU column
+    @State private var enOrder: [String] = []       // shuffled pair ids for EN column
 
     var body: some View {
         VStack(spacing: 8) {
@@ -801,13 +846,19 @@ struct MatchingExerciseView: View {
                 // LU column (left)
                 VStack(spacing: 8) {
                     ForEach(luOrder, id: \.self) { pairId in
-                        if let pair = pairs.first(where: { $0.id == pairId }),
-                           !matchedPairIds.contains(pairId) {
+                        if let pair = pairs.first(where: { $0.id == pairId }) {
+                            let isMatched      = matchedPairIds.contains(pairId)
+                            let isJustMatched  = justMatchedIds.contains(pairId)
                             matchCard(
                                 text: pair.nativeText,
-                                isSelected: selectedLU == pairId,
-                                isWrong: wrongPairIds.contains(pairId + "_LU")
+                                isSelected: !isMatched && selectedLU == pairId,
+                                isWrong: !isMatched && wrongPairIds.contains(pairId + "_LU"),
+                                isJustMatched: isJustMatched
                             ) { handleTap(pairId: pairId, side: .lu) }
+                            // Keep slot in layout after match — fade to invisible so
+                            // the grid height stays constant and centering never drifts.
+                            .opacity(isMatched && !isJustMatched ? 0 : 1)
+                            .allowsHitTesting(!isMatched)
                         }
                     }
                 }
@@ -816,13 +867,17 @@ struct MatchingExerciseView: View {
                 // EN column (right)
                 VStack(spacing: 8) {
                     ForEach(enOrder, id: \.self) { pairId in
-                        if let pair = pairs.first(where: { $0.id == pairId }),
-                           !matchedPairIds.contains(pairId) {
+                        if let pair = pairs.first(where: { $0.id == pairId }) {
+                            let isMatched      = matchedPairIds.contains(pairId)
+                            let isJustMatched  = justMatchedIds.contains(pairId)
                             matchCard(
                                 text: pair.translatedText,
-                                isSelected: selectedEN == pairId,
-                                isWrong: wrongPairIds.contains(pairId + "_EN")
+                                isSelected: !isMatched && selectedEN == pairId,
+                                isWrong: !isMatched && wrongPairIds.contains(pairId + "_EN"),
+                                isJustMatched: isJustMatched
                             ) { handleTap(pairId: pairId, side: .en) }
+                            .opacity(isMatched && !isJustMatched ? 0 : 1)
+                            .allowsHitTesting(!isMatched)
                         }
                     }
                 }
@@ -830,6 +885,7 @@ struct MatchingExerciseView: View {
             }
         }
         .animation(.luxSpring, value: matchedPairIds)
+        .animation(.luxSpring, value: justMatchedIds)
         .animation(.luxSpring, value: wrongPairIds)
         .onChange(of: matchedPairIds) { _, newValue in
             if newValue.count == pairs.count && !pairs.isEmpty {
@@ -846,25 +902,42 @@ struct MatchingExerciseView: View {
     }
 
     @ViewBuilder
-    private func matchCard(text: String, isSelected: Bool, isWrong: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(text)
-                .font(.headline)
-                .fontWeight(.bold)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 12)
-                .frame(maxWidth: .infinity)
-                .background(
-                    isWrong    ? Color.luxRed.opacity(0.8)
-                    : isSelected ? Color.luxGreen
-                    : Color(.systemGray6)
-                )
-                .foregroundColor(isWrong || isSelected ? .white : .primary)
-                .cornerRadius(12)
+    private func matchCard(
+        text: String,
+        isSelected: Bool,
+        isWrong: Bool,
+        isJustMatched: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: isJustMatched ? {} : action) {
+            HStack {
+                Text(text)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                Spacer()
+                if isJustMatched {
+                    Image(systemName: "checkmark")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .transition(.scale.combined(with: .opacity))
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity)
+            .background(
+                isJustMatched ? Color.luxGreen
+                : isWrong     ? Color.luxRed.opacity(0.8)
+                : isSelected  ? Color.luxGreen
+                : Color(.systemGray6)
+            )
+            .foregroundColor(isJustMatched || isWrong || isSelected ? .white : .primary)
+            .cornerRadius(12)
+            .scaleEffect(isJustMatched ? 1.04 : 1.0)
         }
         .buttonStyle(.plain)
+        .disabled(isJustMatched)
         .offset(x: isWrong ? shakeOffset : 0)
-        .transition(.scale.combined(with: .opacity))
     }
 
     private enum Side { case lu, en }
@@ -880,9 +953,18 @@ struct MatchingExerciseView: View {
         guard let luId = selectedLU, let enId = selectedEN else { return }
 
         if luId == enId {
-            withAnimation(.luxSpring) { matchedPairIds.insert(luId) }
+            // Flash the matched pair green with checkmark, then fade out
             selectedLU = nil
             selectedEN = nil
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.6)) {
+                justMatchedIds.insert(luId)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
+                withAnimation(.luxSpring) {
+                    matchedPairIds.insert(luId)
+                    justMatchedIds.remove(luId)
+                }
+            }
         } else {
             onWrongMatch?()
             wrongPairIds = [luId + "_LU", enId + "_EN"]
@@ -1253,7 +1335,7 @@ struct PronunciationExercise: View {
             // ── Word card ────────────────────────────────────────────────────
             VStack(spacing: 8) {
                 Text(targetWord)
-                    .font(.system(size: targetWord.count > 10 ? 32 : 44, weight: .bold))
+                    .font(.luxTargetWord(size: targetWord.count > 10 ? 32 : 44))
                     .foregroundColor(.luxGreen)
                     .lineLimit(1).minimumScaleFactor(0.5)
                 Text(translation)

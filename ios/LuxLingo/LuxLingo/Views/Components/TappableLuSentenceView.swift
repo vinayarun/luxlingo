@@ -19,8 +19,8 @@ struct TappableLuSentenceView: View {
     }
 
     var body: some View {
-        VStack(alignment: .center, spacing: 10) {
-            CenteredWordFlow(spacing: 4, lineSpacing: 6) {
+        VStack(alignment: .center, spacing: 8) {
+            CenteredWordFlow(spacing: 3, lineSpacing: 7) {
                 ForEach(Array(words.enumerated()), id: \.offset) { _, word in
                     WordChip(
                         word: word,
@@ -41,6 +41,16 @@ struct TappableLuSentenceView: View {
                     isLessonWord: wordMatches(tapped, highlight) && highlightMeaning != nil
                 )
                 .transition(.opacity.combined(with: .move(edge: .top)))
+            } else {
+                // Discoverability hint — visible until the user taps their first word
+                HStack(spacing: 4) {
+                    Image(systemName: "hand.tap")
+                        .font(.caption2)
+                    Text("Tap any word to look it up")
+                        .font(.caption2)
+                }
+                .foregroundColor(.secondary.opacity(0.55))
+                .transition(.opacity)
             }
         }
         .animation(.luxSpring, value: tappedWord)
@@ -105,17 +115,26 @@ private struct WordChip: View {
                 .fontWeight(isLemma ? .bold : isForm ? .semibold : .regular)
                 .foregroundColor(foregroundColor)
                 .underline(isForm, color: .luxAmber)
-                .padding(.horizontal, 2)
-                .padding(.vertical, 1)
-                .background(isTapped ? Color.accentColor.opacity(0.12) : Color.clear)
-                .cornerRadius(4)
+                .padding(.horizontal, 4)
+                .padding(.vertical, 3)
+                .background(chipBackground)
+                .cornerRadius(5)
         }
         .buttonStyle(.plain)
+        .animation(.easeInOut(duration: 0.12), value: isTapped)
+    }
+
+    private var chipBackground: Color {
+        if isTapped  { return Color.accentColor.opacity(0.15) }
+        if isLemma   { return Color.luxGreen.opacity(0.12) }
+        if isForm    { return Color.luxAmber.opacity(0.12) }
+        // Subtle pill for all other words — signals "tappable" without drawing focus
+        return Color(.systemGray5).opacity(0.65)
     }
 
     private var foregroundColor: Color {
-        if isLemma { return .luxGreen }
-        if isForm { return .luxAmber }
+        if isLemma  { return .luxGreen }
+        if isForm   { return .luxAmber }
         if isTapped { return .accentColor }
         return .primary
     }
@@ -160,22 +179,35 @@ struct WordLookupCard: View {
                             .font(.caption).foregroundColor(.secondary)
                     }
                 } else if let translations = result?.translations, !translations.isEmpty {
-                    ScrollView(.vertical, showsIndicators: true) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            ForEach(Array(translations.enumerated()), id: \.offset) { i, t in
-                                HStack(alignment: .top, spacing: 6) {
-                                    Text("\(i + 1).")
-                                        .font(.caption).foregroundColor(.secondary)
-                                        .frame(minWidth: 16, alignment: .trailing)
-                                    Text(t)
-                                        .font(.subheadline).foregroundColor(.secondary)
-                                    Spacer(minLength: 0)
+                    ZStack(alignment: .bottom) {
+                        ScrollView(.vertical, showsIndicators: true) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                ForEach(Array(translations.enumerated()), id: \.offset) { i, t in
+                                    HStack(alignment: .top, spacing: 6) {
+                                        Text("\(i + 1).")
+                                            .font(.caption).foregroundColor(.secondary)
+                                            .frame(minWidth: 16, alignment: .trailing)
+                                        Text(t)
+                                            .font(.subheadline).foregroundColor(.secondary)
+                                        Spacer(minLength: 0)
+                                    }
                                 }
                             }
+                            .padding(.trailing, 6)
+                            .padding(.bottom, translations.count > 2 ? 14 : 0)
                         }
-                        .padding(.trailing, 6)
+                        .frame(maxWidth: .infinity, maxHeight: 96)
+
+                        // Fade hint — signals more content below when list is long
+                        if translations.count > 2 {
+                            LinearGradient(
+                                colors: [Color(.systemGray6).opacity(0), Color(.systemGray6)],
+                                startPoint: .top, endPoint: .bottom
+                            )
+                            .frame(height: 22)
+                            .allowsHitTesting(false)
+                        }
                     }
-                    .frame(maxWidth: .infinity, maxHeight: translations.count <= 3 ? nil : 100)
                 } else {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Not found in dictionary")

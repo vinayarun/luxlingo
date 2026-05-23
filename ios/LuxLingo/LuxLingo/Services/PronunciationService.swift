@@ -312,12 +312,29 @@ final class PronunciationService: NSObject {
     private func loadPersistedState() {
         if let d = UserDefaults.standard.data(forKey: jobsKey),
            let jobs = try? JSONDecoder().decode([PronunciationJob].self, from: d) {
-            pendingJobs = jobs
+            // Discard jobs older than 30 minutes — they belong to a previous session
+            // and will never be shown to the user in a meaningful context.
+            let cutoff = Date().addingTimeInterval(-30 * 60)
+            pendingJobs = jobs.filter { $0.submittedAt > cutoff }
+            if pendingJobs.count != jobs.count { persistState() }
         }
         if let d = UserDefaults.standard.data(forKey: resultsKey),
            let results = try? JSONDecoder().decode([PronunciationResult].self, from: d) {
             completedResults = results
         }
+    }
+
+    /// Called when the user exits an exercise session.
+    /// Discards any in-flight scoring jobs so stale results never surface in a future lesson.
+    /// Pronunciation feedback is real-time — if the result hasn't arrived before the user
+    /// leaves, it's no longer relevant to show it.
+    func clearOnExerciseExit() {
+        newResultAvailable = nil
+        recordingURL       = nil
+        pendingJobs        = []
+        pollTask?.cancel()
+        pollTask           = nil
+        persistState()
     }
 
     /// Mark all results as viewed (called after home-screen card is dismissed).

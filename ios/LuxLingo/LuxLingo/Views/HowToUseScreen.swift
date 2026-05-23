@@ -92,8 +92,8 @@ struct HowToUseScreen: View {
                            description: "Meet Marc, Anna, Lena, Paul, Bello, Claire and Mr. Weiss — their avatars appear when they feature in a sentence.")
                 Divider().padding(.leading, 44)
                 FeatureRow(icon: "book.pages", color: .luxPurple,
-                           name: "Grammar Tips",
-                           description: "Open the menu and tap Grammar Tips for quick-reference cards on the N-Rule, articles, verb conjugation, suppletive verbs and capitalisation. The n-rule and conjugation chips in exercises link directly to the relevant card.")
+                           name: "Grammar Guide",
+                           description: "Tap the More tab and select Grammar Guide for quick-reference cards on the N-Rule, articles, common words with multiple meanings, verb conjugation, suppletive verbs and capitalisation. The n-rule and conjugation chips in exercises link directly to the relevant card.")
             }
         }
     }

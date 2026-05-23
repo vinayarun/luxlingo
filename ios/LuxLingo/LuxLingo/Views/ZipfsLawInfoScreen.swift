@@ -32,7 +32,7 @@ struct ZipfsLawInfoScreen: View {
                         startPoint: .top,
                         endPoint: .bottom
                     )
-                    Text("The Science of Fluency")
+                    Text("Our Approach to Fluency")
                         .font(.title2).fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.horizontal, 16)
@@ -46,7 +46,7 @@ struct ZipfsLawInfoScreen: View {
                         .foregroundColor(.luxGreen)
                         .frame(maxWidth: .infinity)
                         .padding(.top, 16)
-                    Text("The Science of Fluency")
+                    Text("Our Approach to Fluency")
                         .font(.title2).fontWeight(.bold)
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
@@ -165,22 +165,37 @@ struct ZipfsLawInfoScreen: View {
 
     private var lessonRingsSection: some View {
         SectionCard(title: "Your Lesson Rings", icon: "circle.dotted", iconColor: .accentColor) {
-            HStack(alignment: .top, spacing: 16) {
-                ZStack {
-                    Circle().stroke(Color(.systemGray5), lineWidth: 4)
-                    Circle()
-                        .trim(from: 0, to: 0.57)
-                        .stroke(Color.luxGreen,
-                                style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                    VStack(spacing: 0) {
-                        Text("4").font(.system(size: 12, weight: .bold))
-                        Text("/7").font(.system(size: 9)).foregroundColor(.secondary)
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .top, spacing: 16) {
+                    // In-progress ring: shows words practiced / total
+                    ZStack {
+                        Circle().stroke(Color(.systemGray5), lineWidth: 4)
+                        Circle()
+                            .trim(from: 0, to: 0.57)
+                            .stroke(Color.luxGreen.opacity(0.55),
+                                    style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                            .rotationEffect(.degrees(-90))
+                        Text("4/7")
+                            .font(.system(size: 10, weight: .semibold))
                     }
-                }
-                .frame(width: 44, height: 44)
+                    .frame(width: 44, height: 44)
 
-                JustifiedText(text: "Each lesson card shows a progress ring — it fills as you practise the words in that lesson and turns fully green when complete. Tap **My Progress** to see your overall vocabulary coverage curve.")
+                    // Completed ring: full green with checkmark
+                    ZStack {
+                        Circle().stroke(Color(.systemGray5), lineWidth: 4)
+                        Circle()
+                            .trim(from: 0, to: 1)
+                            .stroke(Color.luxGreen,
+                                    style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                            .rotationEffect(.degrees(-90))
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(.luxGreen)
+                    }
+                    .frame(width: 44, height: 44)
+                }
+
+                JustifiedText(text: "Each lesson shows a progress ring. The number inside is words practiced / total. When all words in a lesson are mastered the ring fills solid green and shows a checkmark. Tap a unit header to expand or collapse its lessons. Tap **My Progress** to see your overall vocabulary coverage curve.")
             }
         }
     }
@@ -309,7 +324,7 @@ struct JustifiedText: UIViewRepresentable {
 // MARK: - Grammar Tips Section enum (used for deep-linking from exercises)
 
 enum GrammarGuideSection: String, CaseIterable {
-    case nRule, articles, conjugation, suppletive, capitalisation
+    case nRule, articles, multiMeaning, conjugation, suppletive, capitalisation
 }
 
 // MARK: - Grammar Tips Screen
@@ -322,8 +337,9 @@ struct LanguageGuideScreen: View {
             ScrollViewReader { proxy in
                 VStack(alignment: .leading, spacing: 20) {
                     heroSection
-                    nRuleSection   .id(GrammarGuideSection.nRule)
-                    articlesSection.id(GrammarGuideSection.articles)
+                    nRuleSection      .id(GrammarGuideSection.nRule)
+                    articlesSection   .id(GrammarGuideSection.articles)
+                    multiMeaningSection.id(GrammarGuideSection.multiMeaning)
                     conjugationSection.id(GrammarGuideSection.conjugation)
                     suppletiveSection .id(GrammarGuideSection.suppletive)
                     capitalisationSection.id(GrammarGuideSection.capitalisation)
@@ -456,10 +472,105 @@ struct LanguageGuideScreen: View {
                     GuideExampleRow(lu: "am Haus  =  an + dem Haus", en: "preposition + dem contracts to am")
                 }
 
-                Text("Names always take an article in Luxembourgish. \"De Marc\" and \"D'Anna\" is perfectly normal — unlike in English.")
-                    .font(.caption).foregroundColor(.secondary).italic()
+                // Names with articles callout
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "person.fill")
+                            .font(.caption).foregroundColor(.accentColor)
+                        Text("Names always take an article")
+                            .font(.caption).fontWeight(.semibold).foregroundColor(.accentColor)
+                    }
+                    JustifiedText(
+                        text: "Unlike English, Luxembourgish always puts an article before a person's name. This sounds strange at first but is completely normal.",
+                        uiFont: .preferredFont(forTextStyle: .caption1)
+                    )
+                    VStack(alignment: .leading, spacing: 4) {
+                        GuideExampleRow(lu: "De Marc spillt Fussball.", en: "Marc plays football. (masc → de)")
+                        GuideExampleRow(lu: "D'Anna lieft zu Lëtzebuerg.", en: "Anna lives in Luxembourg. (vowel → d')")
+                        GuideExampleRow(lu: "De Paul a seng Schwëster D'Claire", en: "Paul and his sister Claire")
+                        GuideExampleRow(lu: "Här Weiss ass de Professeur.", en: "Mr Weiss is the teacher. (title, no article)")
+                    }
+                }
+                .padding(12)
+                .background(Color.accentColor.opacity(0.07))
+                .cornerRadius(10)
+            }
+        }
+    }
+
+    // MARK: - Multi-meaning words
+
+    private var multiMeaningSection: some View {
+        GuideSectionCard(title: "Same Word, Different Jobs", icon: "arrow.triangle.branch", color: .luxAmber) {
+            VStack(alignment: .leading, spacing: 14) {
+                JustifiedText(text: "A handful of very common Luxembourgish words do double duty — they carry two completely different meanings depending on context. These are the ones that most often confuse beginners.")
+
+                multiMeaningRow(
+                    word: "an",
+                    meanings: ["in / to  (preposition)", "and  (conjunction)"],
+                    examples: [
+                        ("Si geet an d'Schoul.", "She goes to school.  (an = in/to)"),
+                        ("Marc an Anna spillen.", "Marc and Anna play.  (an = and)"),
+                    ],
+                    tip: "Context makes it clear: if \'an\' links two nouns or names it means \'and\'. If it is followed by a place or thing with an article it means \'in/to\'."
+                )
+
+                Divider()
+
+                multiMeaningRow(
+                    word: "de / d'",
+                    meanings: ["the  (definite article)", "of (in some phrases)"],
+                    examples: [
+                        ("De Mann lieft hei.", "The man lives here.  (article)"),
+                        ("D'Haus ass grouss.", "The house is big.  (article, vowel → d')"),
+                    ],
+                    tip: "You will mostly meet de / d\' as \'the\'. The \'of\' use is rare and appears mainly in fixed phrases."
+                )
+
+                Divider()
+
+                multiMeaningRow(
+                    word: "wéi",
+                    meanings: ["how", "as / like  (in comparisons)", "when  (in past-tense clauses)"],
+                    examples: [
+                        ("Wéi geet et dir?", "How are you?"),
+                        ("Hien ass grouss wéi säi Papp.", "He is as tall as his father."),
+                        ("Wéi ech jonk war…", "When I was young…"),
+                    ],
+                    tip: "Three meanings, but \'how\' is by far the most common when starting out. The others appear naturally as you advance."
+                )
+            }
+        }
+    }
+
+    private func multiMeaningRow(word: String, meanings: [String], examples: [(String, String)], tip: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text(word)
+                    .font(.title3).fontWeight(.bold)
+                    .foregroundColor(.luxAmber)
+                VStack(alignment: .leading, spacing: 2) {
+                    ForEach(meanings, id: \.self) { meaning in
+                        Text("· \(meaning)")
+                            .font(.caption).foregroundColor(.secondary)
+                    }
+                }
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(examples, id: \.0) { lu, en in
+                    GuideExampleRow(lu: lu, en: en)
+                }
+            }
+            HStack(alignment: .top, spacing: 6) {
+                Image(systemName: "lightbulb.fill")
+                    .font(.caption2).foregroundColor(.luxAmber)
+                Text(tip)
+                    .font(.caption).foregroundColor(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            .padding(8)
+            .background(Color.luxAmber.opacity(0.07))
+            .cornerRadius(8)
         }
     }
 
@@ -692,9 +803,9 @@ private struct ConjugationTable: View {
                         Text(row.0)
                             .font(.subheadline).foregroundColor(.secondary)
                             .frame(width: 90, alignment: .leading)
+                        Spacer()
                         Text(row.1)
                             .font(.subheadline).fontWeight(.semibold)
-                        Spacer()
                     }
                     .padding(.horizontal, 10).padding(.vertical, 5)
                     if idx < rows.count - 1 { Divider().padding(.leading, 10) }

@@ -85,3 +85,12 @@ extension Animation {
     static let luxSpring = Animation.spring(response: 0.35, dampingFraction: 0.7)
     static let luxQuick = Animation.easeInOut(duration: 0.2)
 }
+
+// MARK: - Typography
+extension Font {
+    /// Distinctive serif font for the Luxembourgish target word being studied.
+    /// Gives the vocabulary word a "dictionary / textbook" feel distinct from the UI chrome.
+    static func luxTargetWord(size: CGFloat) -> Font {
+        .system(size: size, weight: .bold, design: .serif)
+    }
+}

@@ -35,6 +35,9 @@ struct ExerciseScreen: View {
     @State private var showingPronunciationResult = false
     @State private var showScoringBanner = false
     @State private var showingFeedback = false
+    /// Tracks whether the flashcard has been flipped to reveal meaning.
+    /// Reset to false whenever a new exercise loads.
+    @State private var flashcardIsRevealed = false
     private let pronService = PronunciationService.shared
 
     var body: some View {
@@ -65,6 +68,12 @@ struct ExerciseScreen: View {
     @ViewBuilder
     private var exerciseContent: some View {
         contentBody
+            .onDisappear {
+                // Cancel any in-flight scoring jobs and clear results so they can't
+                // bleed into a future lesson. Jobs are persisted to UserDefaults, so
+                // without this they would resume polling after an app relaunch too.
+                pronService.clearOnExerciseExit()
+            }
             .sheet(isPresented: $showingFeedback) {
                 FeedbackSheet(
                     lessonId:     viewModel.uiState.lessonNumber > 0
@@ -120,6 +129,16 @@ struct ExerciseScreen: View {
                 }
                 if viewModel.uiState.currentExerciseType != .zipfSpeedRun &&
                    viewModel.uiState.currentExerciseType != .matching {
+                    // Pre-reveal flashcard state — no button yet, just a hint
+                    if viewModel.uiState.currentExerciseType == .flashcard && !flashcardIsRevealed {
+                        HStack(spacing: 6) {
+                            Image(systemName: "hand.tap").font(.subheadline)
+                            Text("Tap the card to reveal the meaning").font(.subheadline)
+                        }
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 22)
+                    } else {
                     Button(action: {
                         if viewModel.uiState.currentExerciseType == .reading {
                             viewModel.onReadingContinue()
@@ -154,7 +173,8 @@ struct ExerciseScreen: View {
                     .disabled(!isCheckEnabled)
                     .padding(.horizontal, 16)
                     .padding(.bottom, 16)
-                }
+                    } // else (flashcard revealed / non-flashcard)
+                } // if not zipfSpeedRun / matching
             }
         }
     }
@@ -186,101 +206,107 @@ struct ExerciseScreen: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 8).padding(.bottom, 4)
 
-                // Exercise content
-                ScrollView {
-                    VStack(spacing: 16) {
-                        Spacer().frame(height: 16)
+                // Exercise content — GeometryReader captures the concrete available height
+                // so the ScrollView can vertically centre short content while still
+                // allowing taller content (MCQ lists, jumble rows) to scroll normally.
+                GeometryReader { geo in
+                    ScrollView {
+                        VStack(spacing: 16) {
 
-                        // Prompt subtitle
-                        let isPronunciation = viewModel.uiState.currentExerciseType == .pronunciationPractice
-                        if viewModel.uiState.currentExerciseType != .matching && !isPronunciation {
-                            VStack(spacing: 8) {
-                                if !viewModel.uiState.promptText.isEmpty {
-                                    Text(viewModel.uiState.promptText)
-                                        .font(.title2).fontWeight(.bold)
-                                        .foregroundColor(.primary)
-                                        .multilineTextAlignment(.center)
-                                        .padding(.horizontal)
-                                }
-                                if !viewModel.uiState.promptSubtitle.isEmpty {
-                                    HStack(spacing: 6) {
-                                        if viewModel.uiState.currentExerciseType == .zipfSpeedRun {
-                                            Image(systemName: "bolt.fill").foregroundColor(.luxAmber)
-                                        } else if viewModel.uiState.currentExerciseType == .nRuleHunter {
-                                            Image(systemName: "scope").foregroundColor(.luxPurple)
-                                        }
-                                        Text(viewModel.uiState.promptSubtitle)
-                                            .font(.subheadline).foregroundColor(.secondary).bold()
+                            // Prompt subtitle
+                            let isPronunciation = viewModel.uiState.currentExerciseType == .pronunciationPractice
+                            if viewModel.uiState.currentExerciseType != .matching && !isPronunciation {
+                                VStack(spacing: 8) {
+                                    if !viewModel.uiState.promptText.isEmpty {
+                                        Text(viewModel.uiState.promptText)
+                                            .font(.title2).fontWeight(.bold)
+                                            .foregroundColor(.primary)
+                                            .multilineTextAlignment(.center)
+                                            .padding(.horizontal)
                                     }
-                                    .multilineTextAlignment(.center)
+                                    if !viewModel.uiState.promptSubtitle.isEmpty {
+                                        HStack(spacing: 6) {
+                                            if viewModel.uiState.currentExerciseType == .zipfSpeedRun {
+                                                Image(systemName: "bolt.fill").foregroundColor(.luxAmber)
+                                            } else if viewModel.uiState.currentExerciseType == .nRuleHunter {
+                                                Image(systemName: "scope").foregroundColor(.luxPurple)
+                                            }
+                                            Text(viewModel.uiState.promptSubtitle)
+                                                .font(.subheadline).foregroundColor(.secondary).bold()
+                                        }
+                                        .multilineTextAlignment(.center)
+                                    }
                                 }
                             }
-                        }
 
-                        // Character avatars / vocab image
-                        let exerciseType = viewModel.uiState.currentExerciseType
-                        let avatars = characterAvatarAssets
-                        let vocabImg = (exerciseType == .flashcard || exerciseType == .reading)
-                            ? UIImage(named: vocabAssetName(for: viewModel.uiState.displayedTargetWord))
-                            : nil
-                        if let img = vocabImg, exerciseType == .reading {
-                            Image(uiImage: img)
-                                .resizable().scaledToFit().frame(height: 90)
-                                .background(Color.white).cornerRadius(12)
-                                .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
+                            // Character avatars / vocab image
+                            let exerciseType = viewModel.uiState.currentExerciseType
+                            let avatars = characterAvatarAssets
+                            let vocabImg = (exerciseType == .flashcard || exerciseType == .reading)
+                                ? UIImage(named: vocabAssetName(for: viewModel.uiState.displayedTargetWord))
+                                : nil
+                            if let img = vocabImg, exerciseType == .reading {
+                                Image(uiImage: img)
+                                    .resizable().scaledToFit().frame(height: 90)
+                                    .background(Color.white).cornerRadius(12)
+                                    .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
+                                    .transition(.opacity.combined(with: .scale(scale: 0.85)))
+                            } else if !avatars.isEmpty, vocabImg == nil,
+                                      exerciseType != .matching, exerciseType != .zipfSpeedRun,
+                                      exerciseType != .listeningComprehension, exerciseType != .audioDictation {
+                                HStack(spacing: 16) {
+                                    ForEach(avatars, id: \.self) {
+                                        CharacterAvatarView(assetName: $0,
+                                                            feedback: viewModel.uiState.feedback)
+                                    }
+                                }
+                                .frame(maxWidth: .infinity)
                                 .transition(.opacity.combined(with: .scale(scale: 0.85)))
-                        } else if !avatars.isEmpty, vocabImg == nil,
-                                  exerciseType != .matching, exerciseType != .zipfSpeedRun,
-                                  exerciseType != .listeningComprehension, exerciseType != .audioDictation {
-                            HStack(spacing: 16) {
-                                ForEach(avatars, id: \.self) { CharacterAvatarView(assetName: $0) }
+                                .id("avatars_\(avatars.joined())")
+                                .animation(.luxSpring, value: avatars.joined())
                             }
-                            .frame(maxWidth: .infinity)
-                            .transition(.opacity.combined(with: .scale(scale: 0.85)))
-                            .id("avatars_\(avatars.joined())")
-                            .animation(.luxSpring, value: avatars.joined())
-                        }
 
-                        // Mismatch hint
-                        let sentForm  = viewModel.uiState.targetWord
-                        let lemmaForm = viewModel.uiState.displayedTargetWord
-                        if !sentForm.isEmpty, !lemmaForm.isEmpty,
-                           sentForm.lowercased() != lemmaForm.lowercased(),
-                           exerciseType != .matching, exerciseType != .zipfSpeedRun,
-                           exerciseType != .reading, exerciseType != .flashcard {
-                            HStack(spacing: 5) {
-                                Image(systemName: "info.circle").font(.caption2)
-                                Text("'\(sentForm)' is a conjugated form of '\(lemmaForm)'").font(.caption)
+                            // Mismatch hint
+                            let sentForm  = viewModel.uiState.targetWord
+                            let lemmaForm = viewModel.uiState.displayedTargetWord
+                            if !sentForm.isEmpty, !lemmaForm.isEmpty,
+                               sentForm.lowercased() != lemmaForm.lowercased(),
+                               exerciseType != .matching, exerciseType != .zipfSpeedRun,
+                               exerciseType != .reading, exerciseType != .flashcard {
+                                HStack(spacing: 5) {
+                                    Image(systemName: "info.circle").font(.caption2)
+                                    Text("'\(sentForm)' is a conjugated form of '\(lemmaForm)'").font(.caption)
+                                }
+                                .foregroundColor(.secondary).padding(.horizontal, 16)
                             }
-                            .foregroundColor(.secondary).padding(.horizontal, 16)
-                        }
 
-                        // Pronunciation scoring banner
-                        if showScoringBanner {
-                            HStack(spacing: 6) {
-                                Image(systemName: "waveform.badge.clock").foregroundColor(.accentColor)
-                                Text("Checking pronunciation in background…")
-                                    .font(.caption).foregroundColor(.secondary)
+                            // Pronunciation scoring banner
+                            if showScoringBanner {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "waveform.badge.clock").foregroundColor(.accentColor)
+                                    Text("Checking pronunciation in background…")
+                                        .font(.caption).foregroundColor(.secondary)
+                                }
+                                .padding(.horizontal, 16).padding(.vertical, 8)
+                                .background(Color.accentColor.opacity(0.08))
+                                .cornerRadius(10).transition(.opacity)
                             }
-                            .padding(.horizontal, 16).padding(.vertical, 8)
-                            .background(Color.accentColor.opacity(0.08))
-                            .cornerRadius(10).transition(.opacity)
-                        }
 
-                        // Dynamic exercise body
-                        exerciseBody
-                            .transition(.asymmetric(
-                                insertion: .opacity.combined(with: .move(edge: .trailing)),
-                                removal: .opacity
-                            ))
-                            .id(viewModel.uiState.currentSentenceIndex)
-                            .animation(.luxSpring, value: viewModel.uiState.currentSentenceIndex)
+                            // Dynamic exercise body
+                            exerciseBody
+                                .transition(.asymmetric(
+                                    insertion: .opacity.combined(with: .move(edge: .trailing)),
+                                    removal: .opacity
+                                ))
+                                .id(viewModel.uiState.currentSentenceIndex)
+                                .animation(.luxSpring, value: viewModel.uiState.currentSentenceIndex)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 20)
+                        // Centre short content in the viewport; scroll when taller.
+                        .frame(minHeight: geo.size.height, alignment: .center)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 16)
                 }
-
-                Spacer()
 
                 // CTA
                 ctaSection
@@ -288,6 +314,9 @@ struct ExerciseScreen: View {
         } // else
         } // Group
         .animation(.luxSpring, value: viewModel.uiState.isFeedbackVisible)
+        .onChange(of: viewModel.uiState.currentSentenceIndex) { _, _ in
+            flashcardIsRevealed = false
+        }
         .onChange(of: viewModel.uiState.isFeedbackVisible) {
             guard viewModel.uiState.isFeedbackVisible else { return }
             switch viewModel.uiState.feedback {
@@ -301,18 +330,6 @@ struct ExerciseScreen: View {
                 AudioFeedbackService.shared.playWrong()
             default:
                 break
-            }
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: onBack) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
-                        Text("Lessons")
-                            .font(.subheadline)
-                    }
-                }
             }
         }
     }
@@ -359,7 +376,8 @@ struct ExerciseScreen: View {
                 sentenceTargetWord: viewModel.uiState.targetWord,
                 paradigm: viewModel.uiState.paradigm,
                 lodAudioUrl: viewModel.uiState.targetLodAudioUrl,
-                nRuleForm: viewModel.uiState.nRuleFormInSentence
+                nRuleForm: viewModel.uiState.nRuleFormInSentence,
+                isRevealed: $flashcardIsRevealed
             )
 
         case .reading:
@@ -377,7 +395,7 @@ struct ExerciseScreen: View {
 
                         VStack(alignment: .leading, spacing: 2) {
                             Text(viewModel.uiState.displayedTargetWord)
-                                .font(.title3).fontWeight(.bold)
+                                .font(.luxTargetWord(size: 20))
                                 .foregroundColor(.luxGreen)
                             Text(viewModel.uiState.targetTranslation)
                                 .font(.caption).foregroundColor(.secondary)
@@ -473,8 +491,11 @@ struct ExerciseScreen: View {
                     )
                     .font(.title)
 
-                    SpeakerButton(text: viewModel.uiState.currentSentence?.textLu ?? "")
-                        .font(.title3)
+                    // Sentence audio — same visual weight as word audio so it's
+                    // clearly tappable, with a label so purpose is unambiguous.
+                    SentenceAudioButton(
+                        sentence: viewModel.uiState.currentSentence?.textLu ?? ""
+                    )
                 }
             }
 
@@ -639,13 +660,9 @@ struct ExerciseScreen: View {
             }
 
         case .matching:
-            VStack(spacing: 16) {
-                VStack(spacing: 4) {
-                    Text("Match the pairs")
-                        .font(.title2).fontWeight(.bold)
-                    Text("Tap a word, then tap its translation")
-                        .font(.subheadline).foregroundColor(.secondary)
-                }
+            VStack(spacing: 12) {
+                Text("Tap a word, then tap its translation")
+                    .font(.subheadline).foregroundColor(.secondary)
                 MatchingExerciseView(
                     pairs: viewModel.uiState.matchingPairs,
                     onComplete: {
@@ -807,7 +824,7 @@ struct ExerciseScreen: View {
                     if sentenceContextTypes.contains(exerciseType),
                        let sentence = viewModel.uiState.currentSentence {
                         Text(sentence.textEn)
-                            .font(.caption)
+                            .font(.subheadline)
                             .opacity(0.85)
                             .padding(.top, 2)
                     }
@@ -971,6 +988,11 @@ struct RoundedCorner: Shape {
 
 private struct CharacterAvatarView: View {
     let assetName: String
+    var feedback: AnswerFeedback = .none
+
+    @State private var yOffset: CGFloat = 0
+    @State private var rotation: Double = 0
+    @State private var scale: CGFloat  = 1.0
 
     var body: some View {
         Image(assetName)
@@ -980,6 +1002,33 @@ private struct CharacterAvatarView: View {
             .clipShape(Circle())
             .overlay(Circle().stroke(Color(.systemGray5), lineWidth: 1))
             .shadow(color: .black.opacity(0.10), radius: 4, y: 2)
+            .offset(y: yOffset)
+            .rotationEffect(.degrees(rotation))
+            .scaleEffect(scale)
+            .onChange(of: feedback) { _, newFeedback in
+                switch newFeedback {
+                case .correct, .nRule, .typo:
+                    // Happy bounce — jump up then settle
+                    withAnimation(.spring(response: 0.22, dampingFraction: 0.35)) {
+                        yOffset = -14; scale = 1.14
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22) {
+                        withAnimation(.spring(response: 0.5, dampingFraction: 0.55)) {
+                            yOffset = 0; scale = 1.0
+                        }
+                    }
+                case .wrong:
+                    // Sad head shake — 4 rapid side-to-side wiggles
+                    let timings: [(Double, Double)] = [(0, 7), (0.08, -7), (0.16, 7), (0.24, -7), (0.32, 0)]
+                    for (delay, angle) in timings {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                            withAnimation(.easeInOut(duration: 0.08)) { rotation = angle }
+                        }
+                    }
+                case .none:
+                    yOffset = 0; rotation = 0; scale = 1.0
+                }
+            }
     }
 }
 

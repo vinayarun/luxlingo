@@ -98,9 +98,9 @@ struct ExerciseUiState {
 final class ExerciseViewModel {
     var uiState = ExerciseUiState()
 
-    /// True for 350ms after each exercise loads — blocks tap bleed-through.
+    /// True for 200ms after each exercise loads — blocks tap bleed-through.
     var isInteractionReady: Bool {
-        Date().timeIntervalSince(uiState.exerciseLoadedAt) > 0.35
+        Date().timeIntervalSince(uiState.exerciseLoadedAt) > 0.20
     }
 
     private let lessonId: String
@@ -332,6 +332,13 @@ final class ExerciseViewModel {
                     type = .pronunciationPractice
                 }
             }
+        }
+
+        // 4d. Variety guard — avoid showing the same exercise type back-to-back.
+        // Below mastery 6, reading is the only appropriate exercise so we skip this check.
+        if mastery >= 6 && type == uiState.lastExerciseType {
+            let alternatives = variantTypes(for: mastery, excluding: type)
+            if let alt = alternatives.randomElement() { type = alt }
         }
 
         // 4b. Phase Detection (Update)
@@ -1207,6 +1214,19 @@ final class ExerciseViewModel {
 
     // MARK: - Innovations Logic
     
+    /// Returns alternative exercise types valid for `mastery`, used by the variety guard
+    /// to avoid showing the same type back-to-back.
+    private func variantTypes(for mastery: Int, excluding: ExerciseTypeNew) -> [ExerciseTypeNew] {
+        var pool: [ExerciseTypeNew] = []
+        if mastery >= 4  { pool.append(.listeningComprehension) }
+        if mastery >= 6  { pool.append(.multipleChoice) }
+        if mastery >= 8  { pool.append(.audioDictation) }
+        if mastery >= 10 { pool.append(.jumbledEn) }
+        if mastery >= 15 { pool.append(.jumbledLu) }
+        if mastery >= 20 { pool.append(.cloze) }
+        return pool.filter { $0 != excluding }
+    }
+
     private func findNRuleCandidate(in sentence: String) -> Int? {
         let words = sentence.split(separator: " ").map(String.init)
         if words.count < 2 { return nil }

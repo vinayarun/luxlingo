@@ -125,6 +125,10 @@ final class MainViewModel {
         repository.getEncounteredVocab(for: unit.lessons.map { $0.id })
     }
 
+    func allVocabForUnit(_ unit: CourseUnit) -> [VocabWord] {
+        repository.getAllVocabForUnit(lessonIds: unit.lessons.map { $0.id })
+    }
+
     func allVocabWords() -> [VocabWord] { cachedAllVocab }
 
     var reviewWordCount: Int { cachedReviewWordCount }

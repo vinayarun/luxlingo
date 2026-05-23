@@ -638,6 +638,34 @@ final class ContentRepository: ObservableObject {
         return result.sorted { $0.wordLu.localizedCaseInsensitiveCompare($1.wordLu) == .orderedAscending }
     }
 
+    /// All vocabulary in a unit, regardless of mastery — shown in the unit overview sheet.
+    /// Skips the expensive sentence-selection call for unseen words (mastery == 0).
+    func getAllVocabForUnit(lessonIds: [String]) -> [VocabWord] {
+        var seen   = Set<String>()
+        var result = [VocabWord]()
+        for lessonId in lessonIds {
+            for sense in getLessonCoreSenses(lessonId: lessonId) {
+                guard !seen.contains(sense.senseId) else { continue }
+                seen.insert(sense.senseId)
+                guard let vocab = getVocabularyById(id: sense.surfaceId) else { continue }
+                let mastery  = getSenseMastery(senseId: sense.senseId)
+                let sentence = mastery > 0
+                    ? getSentenceForLesson(lessonId: lessonId, targetSenseId: sense.senseId)
+                    : nil
+                result.append(VocabWord(
+                    senseId:     sense.senseId,
+                    wordLu:      vocab.wordText,
+                    primaryEn:   sense.translations,
+                    exampleLu:   sentence?.textLu ?? "",
+                    exampleEn:   sentence?.textEn ?? "",
+                    mastery:     mastery,
+                    lodAudioUrl: vocab.lodAudioUrl
+                ))
+            }
+        }
+        return result.sorted { $0.wordLu.localizedCaseInsensitiveCompare($1.wordLu) == .orderedAscending }
+    }
+
     /// Total encountered word count — shown on the home-screen Review card.
     func reviewableWordCount() -> Int {
         var seen = Set<String>(); var count = 0

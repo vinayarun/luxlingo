@@ -5,8 +5,6 @@ struct StatsScreen: View {
     let units:      [CourseUnit]
     let xp:         Int
     let streak:     Int
-    var allVocab:   [VocabWord] = []   // all encountered words across all lessons
-
     private var allLessons: [Lesson] { units.flatMap { $0.lessons } }
     private var totalWords: Int     { allLessons.reduce(0) { $0 + $1.totalWords } }
     private var practicedWords: Int { allLessons.reduce(0) { $0 + $1.practicedWords } }
@@ -51,7 +49,6 @@ struct StatsScreen: View {
                 chartSection
                 if let pos = currentPosition { coverageCallout(pos) }
                 statsGrid
-                if !allVocab.isEmpty { vocabularySection }
             }
             .padding(16)
         }
@@ -234,14 +231,6 @@ struct StatsScreen: View {
     }
 }
 
-// MARK: - Vocabulary section (embedded in My Progress)
-
-extension StatsScreen {
-    var vocabularySection: some View {
-        VocabularyListContent(title: "My Vocabulary", words: allVocab)
-    }
-}
-
 // MARK: - Vocabulary Sheet (presented as a sheet from UnitCard)
 
 struct VocabularySheet: View {
@@ -294,6 +283,8 @@ struct VocabularyListContent: View {
         case all = "All", inProgress = "In Progress", mastered = "Mastered"
     }
 
+    private var hasMastered: Bool { words.contains { $0.mastery >= 20 } }
+
     private var filtered: [VocabWord] {
         switch filter {
         case .all:        return words
@@ -311,13 +302,15 @@ struct VocabularyListContent: View {
             }
             .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 6)
 
-            Picker("Filter", selection: $filter) {
-                ForEach(VocabFilter.allCases, id: \.self) { f in
-                    Text(f.rawValue).tag(f)
+            if hasMastered {
+                Picker("Filter", selection: $filter) {
+                    ForEach(VocabFilter.allCases, id: \.self) { f in
+                        Text(f.rawValue).tag(f)
+                    }
                 }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 16).padding(.bottom, 10)
             }
-            .pickerStyle(.segmented)
-            .padding(.horizontal, 16).padding(.bottom, 10)
 
             if filtered.isEmpty {
                 Text(filter == .mastered ? "No mastered words yet." : "No words in progress.")

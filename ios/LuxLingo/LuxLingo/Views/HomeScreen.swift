@@ -15,32 +15,38 @@ struct HomeScreen: View {
     let units:             [CourseUnit]
     let xp:                Int
     let streak:            Int
+    let todayXp:           Int
     let onLessonSelected:  (String, String) -> Void
     var reviewWordCount:   Int = 0
     var onReviewTapped:    (() -> Void)? = nil
     var getVocabForUnit:   ((CourseUnit) -> [VocabWord])? = nil
-    var getAllVocab:        (() -> [VocabWord])? = nil
     var bonusLessons:      [BonusLessonInfo] = []
-    
-    @State private var showingInfo = false
-    @State private var menuSelectedTab = 0
 
-    private var overallCoverage: Int {
-        units.flatMap { $0.lessons }
-            .filter { $0.isCompleted }
-            .map { $0.coveragePercent }
-            .max() ?? 0
-    }
-
-    private func formatXP(_ value: Int) -> String {
-        if value >= 1_000_000 { return "\(value / 1_000_000)M" }
-        if value >= 1_000    { return String(format: "%.1fk", Double(value) / 1_000) }
-        return "\(value)"
+    /// First lesson that isn't yet completed — used by TodayCard's Continue button.
+    private var nextIncompleteLesson: (unitId: String, lessonId: String, title: String)? {
+        for unit in units {
+            for lesson in unit.lessons where !lesson.isCompleted {
+                return (unit.id, lesson.id, lesson.title)
+            }
+        }
+        return nil
     }
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
+
+                // ── Today card ─────────────────────────────────────────────
+                TodayCard(
+                    streak: streak,
+                    todayXp: todayXp,
+                    nextLessonTitle: nextIncompleteLesson?.title
+                ) {
+                    if let next = nextIncompleteLesson {
+                        onLessonSelected(next.unitId, next.lessonId)
+                    }
+                }
+
                 // Review card — shown when ≥ 5 words are in progress
                 if reviewWordCount >= 5 {
                     ReviewCard(wordCount: reviewWordCount, onTap: { onReviewTapped?() })
@@ -51,49 +57,121 @@ struct HomeScreen: View {
                         unit: unit,
                         vocabLoader: getVocabForUnit.map { loader in { loader(unit) } },
                         bonusLesson: bonusLessons.first { $0.unitIndex == unitIdx },
-                        onLessonSelected: onLessonSelected
+                        onLessonSelected: onLessonSelected,
+                        isActive: nextIncompleteLesson?.unitId == unit.id
                     )
                 }
             }
             .padding(16)
         }
         .navigationTitle("LuxLingo")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { menuSelectedTab = 0; showingInfo = true }) {
-                    Image(systemName: "line.3.horizontal")
-                        .font(.title3)
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { menuSelectedTab = 2; showingInfo = true }) {
-                    HStack(spacing: 10) {
-                        HStack(spacing: 3) {
-                            Image(systemName: "flame.fill").foregroundColor(.orange)
-                            Text("\(streak)")
-                        }
-                        HStack(spacing: 3) {
-                            Image(systemName: "star.fill").foregroundColor(.luxAmber)
-                            Text(formatXP(xp))
-                        }
-                        if overallCoverage > 0 {
-                            HStack(spacing: 3) {
-                                Image(systemName: "chart.line.uptrend.xyaxis")
-                                    .foregroundColor(.luxGreen)
-                                Text("\(overallCoverage)%")
-                            }
-                        }
+    }
+}
+
+// MARK: - Today Card
+
+struct TodayCard: View {
+    let streak:          Int
+    let todayXp:         Int
+    let nextLessonTitle: String?
+    let onContinue:      () -> Void
+
+    @AppStorage("luxlingo_daily_goal") private var goal: Int = 20
+    private var fraction: Double { min(1.0, Double(todayXp) / Double(goal)) }
+    private var goalMet:  Bool   { todayXp >= goal }
+    private var goalTimeLabel: String {
+        switch goal {
+        case 10: return "~5 min daily goal"
+        case 40: return "~15 min daily goal"
+        default:  return "~10 min daily goal"
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+
+            // ── Stats row ──────────────────────────────────────────────────
+            HStack(alignment: .top) {
+                // Streak
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 5) {
+                        Image(systemName: "flame.fill")
+                            .foregroundColor(.orange)
+                        Text(streak > 0 ? "\(streak)" : "0")
+                            .font(.title2).fontWeight(.bold)
                     }
-                    .font(.subheadline)
-                    .fontWeight(.bold)
+                    Text(streak > 0 ? "day streak" : "Start today!")
+                        .font(.caption2).foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                // Daily XP
+                VStack(alignment: .trailing, spacing: 2) {
+                    HStack(spacing: 5) {
+                        Text(goalMet ? "Goal reached!" : "\(todayXp) / \(goal) XP")
+                            .font(.subheadline).fontWeight(.semibold)
+                            .foregroundColor(goalMet ? .luxGreen : .primary)
+                        Image(systemName: goalMet ? "checkmark.circle.fill" : "star.fill")
+                            .foregroundColor(goalMet ? .luxGreen : .luxAmber)
+                    }
+                    Text(goalTimeLabel).font(.caption2).foregroundColor(.secondary)
+                }
+            }
+
+            // ── XP progress bar ────────────────────────────────────────────
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 6)
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(goalMet ? Color.luxGreen : Color.luxGreen.opacity(0.8))
+                        .frame(width: max(8, geo.size.width * fraction), height: 6)
+                        .animation(.easeOut(duration: 0.4), value: fraction)
+                }
+            }
+            .frame(height: 6)
+
+            // ── Continue CTA ───────────────────────────────────────────────
+            if let title = nextLessonTitle {
+                Button(action: onContinue) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "play.circle.fill")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("Continue").font(.caption).foregroundColor(.white.opacity(0.8))
+                            Text(title)
+                                .font(.subheadline).fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .lineLimit(1)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.subheadline)
+                            .foregroundColor(.white.opacity(0.65))
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 11)
+                    .background(Color.luxGreen)
+                    .cornerRadius(10)
+                }
+                .buttonStyle(.plain)
+            } else {
+                // All lessons done
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark.seal.fill").foregroundColor(.luxAmber)
+                    Text("All lessons complete — amazing!")
+                        .font(.subheadline).fontWeight(.medium)
+                    Spacer()
                 }
             }
         }
-        .sheet(isPresented: $showingInfo) {
-            MenuSheet(units: units, xp: xp, streak: streak,
-                      allVocab: getAllVocab?() ?? [],
-                      selectedTab: $menuSelectedTab)
-        }
+        .padding(16)
+        .background(Color(.systemBackground))
+        .cornerRadius(14)
+        .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
     }
 }
 
@@ -215,22 +293,42 @@ struct BonusLessonCard: View {
 // MARK: - Unit Card
 struct UnitCard: View {
     let unit:             CourseUnit
-    var vocabLoader:      (() -> [VocabWord])? = nil   // called lazily on first open
+    var vocabLoader:      (() -> [VocabWord])? = nil
     var bonusLesson:      BonusLessonInfo? = nil
     let onLessonSelected: (String, String) -> Void
+    var isActive:         Bool = false
 
-    @State private var showVocab    = false
-    @State private var loadedVocab: [VocabWord] = []
+    @State private var showOverview  = false
+    @State private var loadedVocab:  [VocabWord] = []
+    @State private var isExpanded:   Bool
 
-    // Count of words the user has meaningfully practiced in this unit.
-    // Used for the badge before vocab is loaded — avoids an eager DB call.
+    init(unit: CourseUnit,
+         vocabLoader: (() -> [VocabWord])? = nil,
+         bonusLesson: BonusLessonInfo? = nil,
+         onLessonSelected: @escaping (String, String) -> Void,
+         isActive: Bool = false) {
+        self.unit             = unit
+        self.vocabLoader      = vocabLoader
+        self.bonusLesson      = bonusLesson
+        self.onLessonSelected = onLessonSelected
+        self.isActive         = isActive
+        _isExpanded           = State(initialValue: isActive)
+    }
+
+    private var expandLabel: String {
+        let completed = unit.lessons.filter { $0.isCompleted }.count
+        let total     = unit.lessons.count
+        if total == 0               { return "No lessons" }
+        if completed == total       { return "All \(total) lessons complete" }
+        if completed == 0           { return "\(total) lessons" }
+        return "\(completed) of \(total) lessons complete"
+    }
+
     private var encounteredCount: Int {
         unit.lessons.reduce(0) { $0 + $1.practicedWords }
     }
 
-    // Scene images assigned to units in order; cycles for units beyond the list.
-    // UIImage(named:) returns nil silently for any scenes not yet in the asset catalog.
-    private static let sceneNames: [String] = [
+    static let sceneNames: [String] = [
         "scene_classroom",          // Unit 1
         "scene_cycling_path",       // Unit 2
         "scene_village_entry",      // Unit 3
@@ -258,16 +356,16 @@ struct UnitCard: View {
         Int(unit.id.replacingOccurrences(of: "module_", with: "")) ?? 1
     }
 
-    private var sceneImage: UIImage? {
-        guard !Self.sceneNames.isEmpty else { return nil }
-        let name = Self.sceneNames[(unitIndex - 1) % Self.sceneNames.count]
-        return UIImage(named: name)
+    private var sceneName: String {
+        Self.sceneNames[(unitIndex - 1) % Self.sceneNames.count]
     }
+
+    private var sceneImage: UIImage? { UIImage(named: sceneName) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
 
-            // Scene banner — only shown when the asset exists; tap to browse unit vocab
+            // Scene banner — always tappable; opens unit overview sheet
             if let img = sceneImage {
                 ZStack(alignment: .bottomLeading) {
                     Image(uiImage: img)
@@ -290,7 +388,7 @@ struct UnitCard: View {
                         .padding(.horizontal, 16)
                         .padding(.bottom, 12)
 
-                    // Vocab hint badge (top-right) — visible only when words are encountered
+                    // Word-count badge — top-right, only when words are encountered
                     if encounteredCount > 0 {
                         HStack(spacing: 4) {
                             Image(systemName: "text.book.closed.fill")
@@ -305,68 +403,91 @@ struct UnitCard: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     }
                 }
+                .contentShape(Rectangle())
                 .onTapGesture {
-                    guard encounteredCount > 0 else { return }
                     if loadedVocab.isEmpty { loadedVocab = vocabLoader?() ?? [] }
-                    showVocab = true
+                    showOverview = true
                 }
-                .sheet(isPresented: $showVocab) {
-                    VocabularySheet(
-                        title:     unit.title,
-                        sceneName: Self.sceneNames[(unitIndex - 1) % Self.sceneNames.count],
-                        words:     loadedVocab
+                .sheet(isPresented: $showOverview) {
+                    UnitOverviewSheet(
+                        unit:           unit,
+                        sceneName:      sceneName,
+                        words:          loadedVocab,
+                        onStartLesson:  onLessonSelected
                     )
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
                 }
             }
 
-            // Lesson list
-            VStack(alignment: .leading, spacing: 8) {
+            // Expand/collapse row + lesson list
+            VStack(alignment: .leading, spacing: 0) {
                 if sceneImage == nil {
                     Text(unit.title)
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(.title2).fontWeight(.bold)
+                        .padding(.bottom, 8)
                 }
 
-                ForEach(Array(unit.lessons.enumerated()), id: \.element.id) { index, lesson in
-                    Button {
-                        onLessonSelected(unit.id, lesson.id)
-                    } label: {
-                        HStack(spacing: 16) {
-                            LessonProgressRing(lesson: lesson)
+                // Toggle row
+                Button {
+                    withAnimation(.luxSpring) { isExpanded.toggle() }
+                } label: {
+                    HStack {
+                        Text(expandLabel)
+                            .font(.caption).foregroundColor(.secondary)
+                        Spacer()
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                            .font(.caption2).foregroundColor(Color(.systemGray3))
+                    }
+                }
+                .buttonStyle(.plain)
+                .padding(.vertical, 10)
 
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(lesson.title)
-                                    .font(.callout).fontWeight(.semibold)
-                                    .foregroundColor(.primary)
-                                    .lineLimit(1)
-                                Text(lesson.objective)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(1)
-                                    .truncationMode(.tail)
+                if isExpanded {
+                    Divider()
+
+                    VStack(spacing: 0) {
+                        ForEach(Array(unit.lessons.enumerated()), id: \.element.id) { index, lesson in
+                            Button {
+                                onLessonSelected(unit.id, lesson.id)
+                            } label: {
+                                HStack(spacing: 16) {
+                                    LessonProgressRing(lesson: lesson)
+
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(lesson.title)
+                                            .font(.callout).fontWeight(.semibold)
+                                            .foregroundColor(.primary)
+                                            .lineLimit(1)
+                                        let objectiveText = (!lesson.isCompleted && lesson.practicedWords == 0)
+                                            ? "\(lesson.objective) · ~\(max(3, lesson.totalWords)) min"
+                                            : lesson.objective
+                                        Text(objectiveText)
+                                            .font(.caption).foregroundColor(.secondary)
+                                            .lineLimit(1).truncationMode(.tail)
+                                    }
+
+                                    Spacer()
+
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.vertical, 8)
                             }
 
-                            Spacer()
-
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.secondary)
+                            if index < unit.lessons.count - 1 {
+                                Divider().padding(.leading, 56)
+                            }
                         }
-                        .padding(.vertical, 8)
-                    }
 
-                    if index < unit.lessons.count - 1 {
-                        Divider()
-                            .padding(.leading, 56)
+                        if let bonus = bonusLesson {
+                            Divider().padding(.leading, 0)
+                            BonusLessonCard(bonus: bonus) {
+                                onLessonSelected(unit.id, bonus.id)
+                            }
+                        }
                     }
-                }
-
-                // Bonus lesson card — shown at the bottom of each unit
-                if let bonus = bonusLesson {
-                    Divider()
-                        .padding(.leading, 0)
-                    BonusLessonCard(bonus: bonus) {
-                        onLessonSelected(unit.id, bonus.id)
-                    }
+                    .padding(.top, 4)
                 }
             }
             .padding(16)
@@ -422,7 +543,6 @@ struct MenuSheet: View {
     let units:    [CourseUnit]
     let xp:       Int
     let streak:   Int
-    var allVocab: [VocabWord] = []
     @Binding var selectedTab: Int
 
     @Environment(\.dismiss) private var dismiss
@@ -497,7 +617,7 @@ struct MenuSheet: View {
     @ViewBuilder private var tabContent: some View {
         switch selectedTab {
         case 1: ZipfsLawInfoScreen()
-        case 2: StatsScreen(units: units, xp: xp, streak: streak, allVocab: allVocab)
+        case 2: StatsScreen(units: units, xp: xp, streak: streak)
         case 3: LanguageGuideScreen()
         case 4: CharacterIntroScreen()
         default: HowToUseScreen()
@@ -547,5 +667,330 @@ struct PronunciationResultsHomeCard: View {
         .background(scoreColor.opacity(0.07))
         .cornerRadius(14)
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(scoreColor.opacity(0.2), lineWidth: 1))
+    }
+}
+
+// MARK: - Unit Overview Sheet
+
+struct UnitOverviewSheet: View {
+    let unit:          CourseUnit
+    let sceneName:     String
+    let words:         [VocabWord]
+    let onStartLesson: (String, String) -> Void
+
+    @Environment(\.dismiss) private var dismiss
+    @State private var vocabFilter: VocabFilter = .all
+
+    enum VocabFilter: String, CaseIterable {
+        case all = "All", inProgress = "In Progress", mastered = "Mastered"
+    }
+
+    // MARK: Computed
+
+    private var unitNumber: Int {
+        Int(unit.id.replacingOccurrences(of: "module_", with: "")) ?? 1
+    }
+    private var completedCount: Int { unit.lessons.filter { $0.isCompleted }.count }
+    private var nextLesson: Lesson? { unit.lessons.first { !$0.isCompleted } }
+
+    private var filteredWords: [VocabWord] {
+        switch vocabFilter {
+        case .all:        return words
+        case .inProgress: return words.filter { $0.mastery > 0 && $0.mastery < 20 }
+        case .mastered:   return words.filter { $0.mastery >= 20 }
+        }
+    }
+
+    // Detect which story characters appear in practiced sentences for this unit.
+    private var detectedCharacters: [(name: String, asset: String)] {
+        let allText = words.flatMap { [$0.exampleLu, $0.exampleEn] }.joined(separator: " ")
+        let cast: [(String, String)] = [
+            ("Marc",   "character_marc"),
+            ("Anna",   "character_anna"),
+            ("Paul",   "character_paul"),
+            ("Lena",   "character_lena"),
+            ("Claire", "character_claire"),
+            ("Natali", "character_natali"),
+            ("Weiss",  "character_mr_weiss"),
+            ("Bello",  "character_bello"),
+        ]
+        return cast.filter { name, _ in
+            allText.range(of: "\\b\(name)\\b", options: .regularExpression) != nil
+        }
+    }
+
+    // MARK: Body
+
+    var body: some View {
+        VStack(spacing: 0) {
+            sceneHeader
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    lessonsSection
+                    let chars = detectedCharacters
+                    if !chars.isEmpty {
+                        Divider().padding(.horizontal, 20)
+                        charactersSection(chars)
+                    }
+                    Divider().padding(.horizontal, 20)
+                    ctaSection
+                    Divider().padding(.horizontal, 20)
+                    vocabularySection
+                }
+                .padding(.bottom, 40)
+            }
+        }
+    }
+
+    // MARK: Scene header
+
+    private var sceneHeader: some View {
+        ZStack(alignment: .bottom) {
+            if let img = UIImage(named: sceneName) {
+                Image(uiImage: img)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 200)
+                    .clipped()
+            } else {
+                Rectangle()
+                    .fill(Color.luxGreen.opacity(0.15))
+                    .frame(height: 200)
+            }
+            LinearGradient(
+                colors: [.clear, .black.opacity(0.70)],
+                startPoint: .center, endPoint: .bottom
+            )
+            HStack(alignment: .bottom, spacing: 0) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Unit \(unitNumber)")
+                        .font(.caption).fontWeight(.semibold)
+                        .foregroundColor(.white.opacity(0.75))
+                        .padding(.horizontal, 8).padding(.vertical, 3)
+                        .background(Color.white.opacity(0.18))
+                        .cornerRadius(6)
+                    Text(unit.title)
+                        .font(.title2).fontWeight(.bold)
+                        .foregroundColor(.white)
+                }
+                Spacer()
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("\(completedCount)/\(unit.lessons.count)")
+                        .font(.title3).fontWeight(.bold).foregroundColor(.white)
+                    Text("lessons done")
+                        .font(.caption2).foregroundColor(.white.opacity(0.75))
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
+        }
+        .overlay(alignment: .topTrailing) {
+            Button { dismiss() } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(.white, Color.black.opacity(0.45))
+            }
+            .padding(12)
+        }
+    }
+
+    // MARK: Lessons section
+
+    private var lessonsSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Lessons")
+                .font(.headline)
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+                .padding(.bottom, 12)
+
+            ForEach(Array(unit.lessons.enumerated()), id: \.element.id) { idx, lesson in
+                Button {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                        onStartLesson(unit.id, lesson.id)
+                    }
+                } label: {
+                    HStack(spacing: 14) {
+                        ZStack {
+                            Circle()
+                                .fill(lesson.isCompleted
+                                      ? Color.luxGreen
+                                      : lesson.practicedWords > 0
+                                          ? Color.luxAmber.opacity(0.18)
+                                          : Color(.systemGray5))
+                                .frame(width: 34, height: 34)
+                            if lesson.isCompleted {
+                                Image(systemName: "checkmark")
+                                    .font(.caption).fontWeight(.bold)
+                                    .foregroundColor(.white)
+                            } else if lesson.practicedWords > 0 {
+                                Image(systemName: "arrow.right")
+                                    .font(.caption2).fontWeight(.semibold)
+                                    .foregroundColor(.luxAmber)
+                            } else {
+                                Text("\(idx + 1)")
+                                    .font(.caption2).fontWeight(.semibold)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(lesson.title)
+                                .font(.subheadline).fontWeight(.semibold)
+                                .foregroundColor(.primary)
+                                .lineLimit(1)
+                            Text(
+                                lesson.isCompleted      ? "Completed"
+                                : lesson.practicedWords > 0 ? "\(lesson.practicedWords) words in progress"
+                                : lesson.objective
+                            )
+                            .font(.caption)
+                            .foregroundColor(lesson.isCompleted ? .luxGreen : .secondary)
+                            .lineLimit(1)
+                        }
+                        Spacer()
+                        if !lesson.isCompleted {
+                            Image(systemName: "chevron.right")
+                                .font(.caption).foregroundColor(.secondary)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                }
+                .buttonStyle(.plain)
+
+                if idx < unit.lessons.count - 1 {
+                    Divider().padding(.leading, 68)
+                }
+            }
+            .padding(.bottom, 8)
+        }
+    }
+
+    // MARK: Characters section
+
+    private func charactersSection(_ chars: [(name: String, asset: String)]) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Characters in this unit")
+                .font(.headline)
+                .padding(.horizontal, 20)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    ForEach(chars, id: \.name) { name, asset in
+                        VStack(spacing: 6) {
+                            Group {
+                                if let img = UIImage(named: asset) {
+                                    Image(uiImage: img)
+                                        .resizable().scaledToFill()
+                                } else {
+                                    Color(.systemGray4)
+                                }
+                            }
+                            .frame(width: 56, height: 56)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color(.systemGray5), lineWidth: 1))
+                            .shadow(color: .black.opacity(0.08), radius: 3, y: 1)
+
+                            Text(name == "Weiss" ? "Här Weiss" : name)
+                                .font(.caption2).foregroundColor(.secondary)
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+        }
+        .padding(.vertical, 16)
+    }
+
+    // MARK: CTA
+
+    private var ctaSection: some View {
+        Group {
+            if completedCount == unit.lessons.count && !unit.lessons.isEmpty {
+                HStack(spacing: 10) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.title3).foregroundColor(.luxGreen)
+                    Text("Unit complete — keep practising below")
+                        .font(.subheadline).foregroundColor(.luxGreen)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(16)
+                .background(Color.luxGreen.opacity(0.08))
+                .cornerRadius(12)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+            } else if let lesson = nextLesson {
+                let inProgress = lesson.practicedWords > 0
+                Button {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                        onStartLesson(unit.id, lesson.id)
+                    }
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: inProgress ? "arrow.right.circle.fill" : "play.circle.fill")
+                        Text(inProgress ? "Continue: \(lesson.title)" : "Start: \(lesson.title)")
+                            .fontWeight(.semibold)
+                    }
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(14)
+                    .background(inProgress ? Color.luxAmber : Color.luxGreen)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+            }
+        }
+    }
+
+    // MARK: Vocabulary section
+
+    private var vocabularySection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(words.isEmpty ? "Vocabulary" : "\(words.count) words in this unit")
+                    .font(.headline)
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+            .padding(.bottom, 12)
+
+            if words.isEmpty {
+                Text("Start your first lesson to see vocabulary here.")
+                    .font(.subheadline).foregroundColor(.secondary)
+                    .padding(.horizontal, 20).padding(.vertical, 8)
+            } else {
+                Picker("Filter", selection: $vocabFilter) {
+                    ForEach(VocabFilter.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 12)
+
+                if filteredWords.isEmpty {
+                    Text(vocabFilter == .mastered ? "No mastered words yet." : "No words in progress yet.")
+                        .font(.subheadline).foregroundColor(.secondary)
+                        .padding(.horizontal, 20).padding(.vertical, 24)
+                } else {
+                    VStack(spacing: 0) {
+                        ForEach(filteredWords) { word in
+                            VocabWordRow(word: word)
+                            if word.id != filteredWords.last?.id {
+                                Divider().padding(.leading, 58)
+                            }
+                        }
+                    }
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+                    .padding(.horizontal, 16)
+                }
+            }
+        }
     }
 }

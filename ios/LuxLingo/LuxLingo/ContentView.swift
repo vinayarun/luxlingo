@@ -10,6 +10,7 @@ enum AppRoute: Hashable {
 // MARK: - Content View
 struct ContentView: View {
     @State private var navigationPath   = NavigationPath()
+    @State private var selectedTab      = 0
     @Environment(\.modelContext) private var modelContext
 
     @State private var repository:    ContentRepository?
@@ -22,55 +23,98 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            if !splashDone {
-                // Always show the splash for the full 2.5 s
+            if !userPreferences.hasCompletedOnboarding {
+                OnboardingScreen(preferences: userPreferences)
+            } else if !splashDone {
                 SplashScreen { splashDone = true }
             } else if let vm = mainViewModel, !vm.units.isEmpty {
-                NavigationStack(path: $navigationPath) {
-                    HomeScreen(
-                        units:  vm.units,
-                        xp:     userPreferences.xp,
-                        streak: userPreferences.streak,
-                        onLessonSelected: { _, lessonId in
-                            navigationPath.append(AppRoute.exercise(lessonId: lessonId))
-                        },
-                        reviewWordCount: vm.reviewWordCount,
-                        onReviewTapped:  { navigationPath.append(AppRoute.review) },
-                        getVocabForUnit: { unit in vm.vocabWords(for: unit) },
-                        getAllVocab:      { vm.allVocabWords() },
-                        bonusLessons:    vm.bonusLessonInfos
-                    )
-                    .navigationDestination(for: AppRoute.self) { route in
-                        switch route {
-                        case .exercise(let lessonId):
-                            if let repo = repository {
-                                ExerciseScreenHost(
-                                    lessonId: lessonId,
-                                    repository: repo,
-                                    onBack: {
-                                        navigationPath.removeLast()
-                                        Task { @MainActor in mainViewModel?.loadUnits() }
-                                    },
-                                    onLessonComplete: { sessionXP in
-                                        userPreferences.addXp(sessionXP)
-                                        userPreferences.updateStreak()
-                                    }
-                                )
-                            }
-                        case .review:
-                            if let repo = repository {
-                                ExerciseScreenHost(
-                                    lessonId: "review_session",
-                                    repository: repo,
-                                    onBack: {
-                                        navigationPath.removeLast()
-                                        Task { @MainActor in mainViewModel?.loadUnits() }
-                                    },
-                                    isReviewSession: true
-                                )
+                TabView(selection: $selectedTab) {
+
+                    // ── Tab 1: Learn ──────────────────────────────────────
+                    NavigationStack(path: $navigationPath) {
+                        HomeScreen(
+                            units:    vm.units,
+                            xp:       userPreferences.xp,
+                            streak:   userPreferences.streak,
+                            todayXp:  userPreferences.todayXp,
+                            onLessonSelected: { _, lessonId in
+                                navigationPath.append(AppRoute.exercise(lessonId: lessonId))
+                            },
+                            reviewWordCount: vm.reviewWordCount,
+                            onReviewTapped:  { navigationPath.append(AppRoute.review) },
+                            getVocabForUnit: { unit in vm.allVocabForUnit(unit) },
+                            bonusLessons:    vm.bonusLessonInfos
+                        )
+                        .navigationDestination(for: AppRoute.self) { route in
+                            switch route {
+                            case .exercise(let lessonId):
+                                if let repo = repository {
+                                    ExerciseScreenHost(
+                                        lessonId: lessonId,
+                                        repository: repo,
+                                        onBack: {
+                                            navigationPath.removeLast()
+                                            Task { @MainActor in mainViewModel?.loadUnits() }
+                                        },
+                                        onLessonComplete: { sessionXP in
+                                            userPreferences.addXp(sessionXP)
+                                            userPreferences.updateStreak()
+                                        }
+                                    )
+                                    .toolbar(.hidden, for: .tabBar)
+                                }
+                            case .review:
+                                if let repo = repository {
+                                    ExerciseScreenHost(
+                                        lessonId: "review_session",
+                                        repository: repo,
+                                        onBack: {
+                                            navigationPath.removeLast()
+                                            Task { @MainActor in mainViewModel?.loadUnits() }
+                                        },
+                                        isReviewSession: true
+                                    )
+                                    .toolbar(.hidden, for: .tabBar)
+                                }
                             }
                         }
                     }
+                    .tabItem { Label("Learn", systemImage: "house.fill") }
+                    .tag(0)
+
+                    // ── Tab 2: Progress ───────────────────────────────────
+                    NavigationStack {
+                        StatsScreen(
+                            units:   vm.units,
+                            xp:      userPreferences.xp,
+                            streak:  userPreferences.streak
+                        )
+                        .navigationTitle("My Progress")
+                        .navigationBarTitleDisplayMode(.large)
+                    }
+                    .tabItem { Label("Progress", systemImage: "chart.bar.fill") }
+                    .tag(1)
+
+                    // ── Tab 3: Vocabulary ─────────────────────────────────
+                    NavigationStack {
+                        ScrollView {
+                            VocabularyListContent(
+                                title: "My Vocabulary",
+                                words: vm.cachedAllVocab
+                            )
+                        }
+                        .navigationTitle("Vocabulary")
+                        .navigationBarTitleDisplayMode(.large)
+                    }
+                    .tabItem { Label("Vocabulary", systemImage: "text.book.closed.fill") }
+                    .tag(2)
+
+                    // ── Tab 4: More ───────────────────────────────────────
+                    NavigationStack {
+                        MoreScreen()
+                    }
+                    .tabItem { Label("More", systemImage: "ellipsis.circle.fill") }
+                    .tag(3)
                 }
             } else {
                 // Seeding still running after splash ends (first install only)
@@ -94,6 +138,54 @@ struct ContentView: View {
     }
 }
 
+// MARK: - More Screen
+// Replaces the hamburger menu sheet — navigation to auxiliary screens.
+
+struct MoreScreen: View {
+    var body: some View {
+        List {
+            NavigationLink {
+                SettingsScreen()
+            } label: {
+                Label("Settings", systemImage: "gearshape.fill")
+            }
+
+            NavigationLink {
+                HowToUseScreen()
+                    .navigationTitle("How to Use")
+                    .navigationBarTitleDisplayMode(.inline)
+            } label: {
+                Label("How to Use", systemImage: "hand.tap.fill")
+            }
+
+            NavigationLink {
+                ZipfsLawInfoScreen()
+                    .navigationTitle("Our Method")
+                    .navigationBarTitleDisplayMode(.inline)
+            } label: {
+                Label("Our Method", systemImage: "atom")
+            }
+
+            NavigationLink {
+                LanguageGuideScreen()
+                    .navigationTitle("Grammar Guide")
+                    .navigationBarTitleDisplayMode(.inline)
+            } label: {
+                Label("Grammar Guide", systemImage: "book.pages")
+            }
+
+            NavigationLink {
+                CharacterIntroScreen()
+                    .navigationTitle("Characters")
+                    .navigationBarTitleDisplayMode(.inline)
+            } label: {
+                Label("Characters", systemImage: "person.3.fill")
+            }
+        }
+        .navigationTitle("More")
+    }
+}
+
 // MARK: - Splash Screen
 // Runs a 2.5 s Ken Burns animation over the aerial village scene.
 // Tap anywhere to skip to a plain spinner (seeding continues in background).
@@ -106,9 +198,9 @@ struct SplashScreen: View {
     @State private var xOffset:  CGFloat
     private let panEnd:          CGFloat
 
-    private static let duration: Double = 2.5
-    private static let fadeIn:   Double = 0.45
-    private static let fadeOut:  Double = 0.45
+    private static let duration: Double = 1.8
+    private static let fadeIn:   Double = 0.35
+    private static let fadeOut:  Double = 0.35
 
     init(onComplete: @escaping () -> Void) {
         self.onComplete = onComplete
@@ -166,6 +258,12 @@ struct SplashScreen: View {
                     .font(.subheadline)
                     .foregroundColor(showScene ? .white.opacity(0.85) : .secondary)
                 Spacer()
+                if showScene {
+                    Text("Tap to skip")
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.4))
+                        .padding(.bottom, 8)
+                }
             }
         }
         .opacity(opacity)
@@ -297,6 +395,24 @@ struct ExerciseScreenHost: View {
                 )
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    if let vm = viewModel, vm.uiState.isLessonFinished && !didFireCompletion {
+                        didFireCompletion = true
+                        onLessonComplete?(vm.uiState.sessionXP)
+                    }
+                    onBack()
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("Lessons")
+                            .font(.subheadline)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -334,7 +450,16 @@ struct LessonIntroOverlay: View {
                     Color(.systemBackground)
                 }
                 Color.black.opacity(0.22)
+
+                VStack {
+                    Spacer()
+                    Text("Tap to skip")
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.45))
+                        .padding(.bottom, 12)
+                }
             }
+            .onTapGesture { onDone() }
             .opacity(opacity)
             .onAppear {
                 // Compute overflow from the real rendered frame — eliminates overshoot
@@ -378,7 +503,6 @@ struct LessonIntroOverlay: View {
             }
         }
         .ignoresSafeArea()
-        .allowsHitTesting(false)
     }
 }
 
