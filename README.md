@@ -15,7 +15,13 @@ LuxLingo makes it genuinely easy to start learning Luxembourgish — built for b
 
 ## Screenshots
 
-> _Add iPhone screenshots here — onboarding, home screen, an exercise, and the grammar guide._
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/home.png" width="220"/><br/><sub>Home — daily goal, streak, lessons</sub></td>
+    <td align="center"><img src="docs/screenshots/exercise.png" width="220"/><br/><sub>Reading exercise — tap any word to look it up</sub></td>
+    <td align="center"><img src="docs/screenshots/lesson_complete.png" width="220"/><br/><sub>Lesson complete — XP, words practiced, Zipf coverage gain</sub></td>
+  </tr>
+</table>
 
 ---
 
