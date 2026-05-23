@@ -172,7 +172,7 @@ The full pipeline for adding new sentences:
 | `translate_batches.py` | Calls LuxMT API to translate English sentences → Luxembourgish and injects them into the seed. Manages batch state in `LuxMT/translate_batches_state.json`. |
 | `import_sentences.py` | Imports LLM-generated English sentences, translates via LuxMT, validates, and injects into seed. Entry point for adding new sentence batches. |
 | `reimport_sentences.py` | Re-translates rows from `luxlingo_review.xlsx` where the English was manually corrected. Patches seed in place. |
-| `tools/export_sentences.py` | Exports seed → `luxlingo_review.xlsx` for native speaker review. Sheet 1 uses `cloze_index` to show the actual inflected word used in each sentence. |
+| `scripts/export_sentences.py` | Exports seed → `luxlingo_review.xlsx` for native speaker review. Sheet 1 uses `cloze_index` to show the actual inflected word used in each sentence. |
 
 **Quality / verification:**
 
@@ -207,7 +207,7 @@ These were used in earlier pipeline iterations and are kept for reference:
 
 ```bash
 cd /Users/nv/Projects/luxlingo
-python3 tools/export_sentences.py
+python3 scripts/export_sentences.py
 # Regenerates luxlingo_review.xlsx
 # Sheet 1: all 7,687 app sentences (lesson sentences + article exercises)
 #   Columns: Lesson | Sentence ID | Word (LU) | Meaning (EN) | English |
@@ -227,7 +227,7 @@ Word (LU) shows the **actual inflected form** from the sentence (e.g. "ass", "hu
 ### Exporting sentences for native speaker review
 ```bash
 cd /Users/nv/Projects/luxlingo
-python3 tools/export_sentences.py
+python3 scripts/export_sentences.py
 # Output: luxlingo_review.xlsx (Sheet 1: app sentences, Sheet 2: thematic content)
 ```
 
