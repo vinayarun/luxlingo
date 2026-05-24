@@ -110,7 +110,7 @@ All 7,662 example sentences follow eight recurring characters living in Luxembou
     <td align="center"><img src="docs/character_lena.png" width="72"/><br/><b>Lena</b><br/><sub>Warm-hearted helper</sub></td>
     <td align="center"><img src="docs/character_claire.png" width="72"/><br/><b>Claire</b><br/><sub>Bookworm scholar</sub></td>
     <td align="center"><img src="docs/character_natali.png" width="72"/><br/><b>Natali</b><br/><sub>Curious toddler</sub></td>
-    <td align="center"><img src="docs/character_mr_weiss.png" width="72"/><br/><b>Här Weiss</b><br/><sub>Patient teacher</sub></td>
+    <td align="center"><img src="docs/character_mr_weiss.png" width="72"/><br/><b>Här Weiss</b><br/><sub>Teacher</sub></td>
     <td align="center"><img src="docs/character_bello.png" width="72"/><br/><b>Bello</b><br/><sub>Loyal companion</sub></td>
   </tr>
 </table>
