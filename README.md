@@ -29,9 +29,9 @@ LuxLingo makes it genuinely easy to start learning Luxembourgish — built for b
 
 ## Why LuxLingo?
 
-Luxembourg is home to over 680,000 residents — a large share of whom are international professionals who want to connect with the local language but can't find a practical way in. Existing resources assume you're a student with hours to spare. Textbooks are expensive. Classes have fixed schedules.
+Luxembourg is home to over 680,000 residents — a large share of whom are international professionals who want to connect with the local language but can't find a practical way in. Existing resources assume you're a student with hours to spare. Private tutors are expensive. Classes have fixed schedules.
 
-LuxLingo is different. **5 minutes a day is enough to start.** Sessions are short, adaptive, and designed around a full working day. Pick it up on the train, at lunch, anywhere.
+LuxLingo is different. **5 minutes a day is enough to start.** Sessions are short, adaptive, and designed around a full working day. Pick it up on the train, at lunch, anywhere. 0 barriers to start learning Luxembourgish.
 
 And it will always be completely free — no ads, no paywalls, no premium tier.
 
@@ -111,7 +111,7 @@ All 7,662 example sentences follow eight recurring characters living in Luxembou
 
 ## Scenes
 
-Lessons are set across 21 illustrated locations in and around a Luxembourgish village — from the classroom and café to the train station and the river in winter.
+Lessons are set across 21 illustrated locations in and around a Luxembourgish village — from the classroom and café to the train station and the river.
 
 <table>
   <tr>
@@ -167,7 +167,7 @@ PRs are welcome. See [CLAUDE.md](CLAUDE.md) for full architecture documentation,
 
 ## Created by
 
-**Vinay Arun** — Product Manager · volunteer developer
+**Vinay Arun** — Product Manager · Volunteer Developer
 
 [luxlingo.app@gmail.com](mailto:luxlingo.app@gmail.com)
 
