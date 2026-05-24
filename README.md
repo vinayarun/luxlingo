@@ -17,9 +17,9 @@ LuxLingo makes it genuinely easy to start learning Luxembourgish — built for b
 
 <table>
   <tr>
-    <td align="center" width="20%"><img src="docs/screenshots/onboarding_welcome.png" height="380" style="object-fit:cover"/><br/><sub>Welcome — first launch screen</sub></td>
-    <td align="center" width="20%"><img src="docs/screenshots/onboarding_goal.png" height="380" style="object-fit:cover"/><br/><sub>Set your daily goal</sub></td>
-    <td align="center" width="20%"><img src="docs/screenshots/home.png" height="380" style="object-fit:cover"/><br/><sub>Home — streak, units, lessons</sub></td>
+    <td align="center" width="20%"><img src="docs/screenshots/onboarding_welcome.png" height="380" style="object-fit:cover"/><br/><sub>Welcome — screen for first launch of app</sub></td>
+    <td align="center" width="20%"><img src="docs/screenshots/onboarding_goal.png" height="380" style="object-fit:cover"/><br/><sub>Set your daily goal based on your time</sub></td>
+    <td align="center" width="20%"><img src="docs/screenshots/home.png" height="380" style="object-fit:cover"/><br/><sub>Home screen — streak, units, lessons</sub></td>
     <td align="center" width="20%"><img src="docs/screenshots/exercise.png" height="380" style="object-fit:cover"/><br/><sub>Exercise — tap any word to look it up</sub></td>
     <td align="center" width="20%"><img src="docs/screenshots/lesson_complete.png" height="380" style="object-fit:cover"/><br/><sub>Lesson complete — XP and Zipf coverage gain</sub></td>
   </tr>
