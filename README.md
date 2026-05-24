@@ -35,6 +35,14 @@ LuxLingo is different. **5 minutes a day is enough to start.** Sessions are shor
 
 And it will always be completely free — no ads, no paywalls, no premium tier.
 
+LuxLingo is not a replacement for classes, a tutor, or the irreplaceable experience of living and working among Luxembourgish speakers. It's a companion — something to keep the language alive between lessons, or a genuine starting point for people who can't yet access formal classes at INL or elsewhere.
+
+---
+
+## Get the app
+
+LuxLingo is not yet on the App Store — a public release is the near-term goal. If you'd like to try it before that happens, email [luxlingo.app@gmail.com](mailto:luxlingo.app@gmail.com) and I can walk you through installing it directly via Xcode (free, requires a Mac, takes around 10 minutes).
+
 ---
 
 ## Built on Zipf's Law
@@ -142,6 +150,27 @@ initial_seed.json  →  SwiftData (on-device)  →  ExerciseViewModel  →  Swif
 - [Sproochmaschinn.lu](https://sproochmaschinn.lu) — Luxembourgish text-to-speech
 - [LuxASR](https://clarin.uni.lu/luxasr) — Pronunciation scoring (University of Luxembourg)
 - [LuxMT](https://clarin.uni.lu/luxmt) — Machine translation (University of Luxembourg)
+
+---
+
+## Roadmap
+
+| Priority | What |
+|---|---|
+| 🔜 App Store release | Waiting on Apple developer account — the main blocker before a public launch |
+| 🔜 Native speaker sentence review | 7,662 machine-translated sentences need correction by Luxembourgish speakers — this is the top content priority |
+| 📋 16 thematic A1 lessons | Greetings, numbers, colours, family, food... already written, not yet integrated into the app |
+| 📋 Vocabulary expansion | The current 468 words are a strong core; extending toward 700–1,000 is the next content milestone |
+| 💭 Android version | Exploratory — no timeline yet |
+
+---
+
+## Known limitations
+
+- **iOS only** — no Android or web version currently
+- **Audio requires internet** — TTS (Sproochmaschinn.lu), dictionary audio (LOD.lu), and pronunciation scoring (LuxASR) are all live API calls; the app does not work offline for audio-based exercises
+- **Machine-translated sentences** — the 7,662 example sentences were generated via LuxMT and have not all been reviewed by a native speaker; some may sound unnatural or contain errors
+- **Local progress only** — no account, no sync across devices; uninstalling the app loses progress
 
 ---
 
