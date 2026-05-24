@@ -126,6 +126,25 @@ Lessons are set across 21 illustrated locations in and around a Luxembourgish vi
     <td><img src="docs/scene_classroom.png" width="220"/></td>
     <td><img src="docs/scene_cafe_bakery.png" width="220"/></td>
     <td><img src="docs/scene_train_station.png" width="220"/></td>
+    <td><img src="docs/scene_village_river.png" width="220"/></td>
+    <td><img src="docs/scene_village_entry.png" width="220"/></td>
+  </tr>
+</table>
+
+---
+
+## Vocabulary illustrations
+
+Each core vocabulary word has an accompanying illustration — making new words easier to recognise and remember.
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/vocab_haus.png" width="100"/><br/><sub>Haus</sub></td>
+    <td align="center"><img src="docs/vocab_velo.png" width="100"/><br/><sub>Vëlo</sub></td>
+    <td align="center"><img src="docs/vocab_kaffi.png" width="100"/><br/><sub>Kaffi</sub></td>
+    <td align="center"><img src="docs/vocab_fleesch.png" width="100"/><br/><sub>Fleesch</sub></td>
+    <td align="center"><img src="docs/vocab_bam.png" width="100"/><br/><sub>Bam</sub></td>
+    <td align="center"><img src="docs/vocab_auto.png" width="100"/><br/><sub>Auto</sub></td>
   </tr>
 </table>
 
