@@ -10,11 +10,37 @@ struct InitialSeedData: Codable {
     let curriculum: [SeedLesson]
     let articleExercises: [ArticleExerciseSeed]?
     let bonusLessons: [BonusSeedLesson]?
+    let dialogues: [SeedDialogue]?
 
     enum CodingKeys: String, CodingKey {
         case version, vocabulary, senses, sentences, curriculum
         case articleExercises = "article_exercises"
         case bonusLessons = "bonus_lessons"
+        case dialogues
+    }
+}
+
+struct SeedDialogueLine: Codable {
+    let speaker: String
+    let textLu: String
+    let textEn: String
+
+    enum CodingKeys: String, CodingKey {
+        case speaker
+        case textLu = "text_lu"
+        case textEn = "text_en"
+    }
+}
+
+struct SeedDialogue: Codable {
+    let id: String
+    let titleEn: String
+    let lines: [SeedDialogueLine]
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case titleEn = "title_en"
+        case lines
     }
 }
 

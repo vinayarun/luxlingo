@@ -1652,3 +1652,71 @@ struct PronunciationResultCard: View {
         .background(Color.black.opacity(0.4).ignoresSafeArea())
     }
 }
+
+// MARK: - Dialogue Completion Exercise
+
+struct DialogueCompletionExercise: View {
+    let lines:             [SeedDialogueLine]
+    let hiddenIndex:       Int
+    let options:           [String]
+    let selectedOption:    String?
+    let correctOption:     String?
+    let isFeedbackVisible: Bool
+    let isWrongAnswer:     Bool
+    let onSelect:          (String) -> Void
+
+    var body: some View {
+        VStack(spacing: 16) {
+            // Dialogue bubble list
+            VStack(spacing: 8) {
+                ForEach(lines.indices, id: \.self) { i in
+                    let line = lines[i]
+                    let isHidden = i == hiddenIndex
+                    HStack(alignment: .top, spacing: 8) {
+                        Text(line.speaker)
+                            .font(.caption).fontWeight(.semibold)
+                            .foregroundColor(.secondary)
+                            .frame(width: 72, alignment: .trailing)
+                        if isHidden {
+                            Text("___________")
+                                .font(.body).fontWeight(.semibold)
+                                .foregroundColor(.accentColor)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 6).padding(.horizontal, 10)
+                                .background(Color.accentColor.opacity(0.08))
+                                .cornerRadius(8)
+                        } else {
+                            Text(line.textLu)
+                                .font(.body)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 6).padding(.horizontal, 10)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                        }
+                    }
+                }
+            }
+            .padding(12)
+            .background(Color(.systemBackground))
+            .cornerRadius(14)
+            .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+
+            // MCQ options
+            VStack(spacing: 10) {
+                ForEach(options, id: \.self) { opt in
+                    let isSelected = selectedOption == opt
+                    let isCorrect  = opt == correctOption
+                    let revealColors = isFeedbackVisible && !isWrongAnswer
+                    MCQOptionButton(
+                        option: opt,
+                        isSelected: isSelected,
+                        isCorrect: isCorrect,
+                        showFeedback: isFeedbackVisible,
+                        revealColors: revealColors,
+                        onTap: { if !isFeedbackVisible { onSelect(opt) } }
+                    )
+                }
+            }
+        }
+    }
+}

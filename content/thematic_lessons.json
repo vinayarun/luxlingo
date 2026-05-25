@@ -56,11 +56,11 @@
           "title": "First day at school",
           "lines": [
             { "speaker": "Claire", "lu": "Moien! Ech heeschen Claire. Wéi heeschs du?", "en": "Hello! My name is Claire. What is your name?" },
-            { "speaker": "Anna", "lu": "Moien! Ech heeschen Anna. Frou ze treffen!", "en": "Hello! My name is Anna. Nice to meet you!" },
+            { "speaker": "Anna",   "lu": "Moien! Ech heeschen Anna. Frou ze treffen!", "en": "Hello! My name is Anna. Nice to meet you!" },
             { "speaker": "Claire", "lu": "Wou kënns du hier, Anna?", "en": "Where are you from, Anna?" },
-            { "speaker": "Anna", "lu": "Ech kommen aus Däitschland. A du?", "en": "I come from Germany. And you?" },
-            { "speaker": "Claire", "lu": "Ech kommen aus Lëtzebuerg. Wéi al bass du?", "en": "I come from Luxembourg. How old are you?" },
-            { "speaker": "Anna", "lu": "Ech sinn eelef Joer al. A du?", "en": "I am eleven years old. And you?" },
+            { "speaker": "Anna",   "lu": "Ech kommen aus Däitschland. A du?", "en": "I come from Germany. And you?" },
+            { "speaker": "Claire", "lu": "Ech kommen aus Frankräich. Wéi al bass du?", "en": "I come from France. How old are you?" },
+            { "speaker": "Anna",   "lu": "Ech sinn eelef Joer al. A du?", "en": "I am eleven years old. And you?" },
             { "speaker": "Claire", "lu": "Ech sinn och eelef. Äddi, Anna!", "en": "I am also eleven. Goodbye, Anna!" }
           ]
         },
@@ -68,14 +68,88 @@
           "title": "Formal greeting with teacher",
           "lines": [
             { "speaker": "Här Weiss", "lu": "Gudde Moien! Wéi heescht Dir?", "en": "Good morning! What is your name?" },
-            { "speaker": "Paul", "lu": "Gudde Moien, Här Weiss. Ech heeschen Paul.", "en": "Good morning, Mr. Weiss. My name is Paul." },
+            { "speaker": "Paul",      "lu": "Gudde Moien, Här Weiss. Ech heeschen Paul.", "en": "Good morning, Mr. Weiss. My name is Paul." },
             { "speaker": "Här Weiss", "lu": "Wéi al sidd Dir, Paul?", "en": "How old are you, Paul?" },
-            { "speaker": "Paul", "lu": "Ech sinn zwielef Joer al.", "en": "I am twelve years old." },
+            { "speaker": "Paul",      "lu": "Ech sinn zwielef Joer al.", "en": "I am twelve years old." },
             { "speaker": "Här Weiss", "lu": "Frou ze treffen, Paul. Wou kommt Dir hier?", "en": "Nice to meet you, Paul. Where do you come from?" },
-            { "speaker": "Paul", "lu": "Ech kommen aus Däitschland, Här Weiss.", "en": "I come from Germany, Mr. Weiss." }
+            { "speaker": "Paul",      "lu": "Ech kommen aus Däitschland, vun Tréier, Här Weiss.", "en": "I come from Germany, from Trier, Mr. Weiss." }
+          ]
+        },
+        {
+          "title": "Formal name exchange",
+          "lines": [
+            { "speaker": "Här Weiss", "lu": "Gudde Mëtteg. Ech sinn de Här Weiss. Wéi ass Ären Numm, wann ech gelift?", "en": "Good afternoon. I am Mr. Weiss. What is your name, please?" },
+            { "speaker": "Lena",      "lu": "Mäin Numm ass Lena Bastogne.", "en": "My name is Lena Bastogne." }
+          ]
+        },
+        {
+          "title": "Et freet mech",
+          "lines": [
+            { "speaker": "Claire", "lu": "Moien, ech sinn d'Claire. A wéi heescht Dir?", "en": "Hello, I'm Claire. And what is your name?" },
+            { "speaker": "Anna",   "lu": "Ech heesche Anna.", "en": "My name is Anna." },
+            { "speaker": "Claire", "lu": "Et freet mech.", "en": "Nice to meet you." },
+            { "speaker": "Anna",   "lu": "Mech och.", "en": "Likewise." }
+          ]
+        },
+        {
+          "title": "Goodnight",
+          "lines": [
+            { "speaker": "Natalis Papp", "lu": "Gutt Nuecht! Schlof gutt!", "en": "Good night! Sleep well!" },
+            { "speaker": "Natali",       "lu": "Gutt Nuecht!", "en": "Good night!" }
+          ]
+        },
+        {
+          "title": "Goodbye at school",
+          "lines": [
+            { "speaker": "Här Weiss", "lu": "Addi, bis muer.", "en": "Goodbye, see you tomorrow." },
+            { "speaker": "Natali",    "lu": "Addi, nach e schéinen Owend.", "en": "Goodbye, have a nice evening." }
+          ]
+        },
+        {
+          "title": "Where is Natali from?",
+          "lines": [
+            { "speaker": "Anna", "lu": "Kënnt d'Natali aus Däitschland?", "en": "Is Natali from Germany?" },
+            { "speaker": "Paul", "lu": "Nee, hatt kënnt net aus Däitschland. Hatt kënnt aus Indien.", "en": "No, she is not from Germany. She comes from India." }
+          ]
+        },
+        {
+          "title": "Where do you come from?",
+          "lines": [
+            { "speaker": "Anna",   "lu": "Vu wou kënns du?", "en": "Where are you from?" },
+            { "speaker": "Claire", "lu": "Ech kommen aus Frankräich. Kënns du aus der Belsch?", "en": "I come from France. Are you from Belgium?" },
+            { "speaker": "Anna",   "lu": "Nee, ech kommen aus Däitschland.", "en": "No, I come from Germany." }
+          ]
+        },
+        {
+          "title": "Formal: where do you come from?",
+          "lines": [
+            { "speaker": "Natali",    "lu": "Kommt Dir aus Däitschland?", "en": "Do you come from Germany?" },
+            { "speaker": "Här Weiss", "lu": "Nee, ech kommen vu Lëtzebuerg. Kommt Dir aus Indien?", "en": "No, I come from Luxembourg. Do you come from India?" },
+            { "speaker": "Natali",    "lu": "Jo, ech kommen aus Indien, vu Bangalore.", "en": "Yes, I come from India, from Bangalore." }
           ]
         }
-      ]
+      ],
+      "nationalities": {
+        "note": "Character nationalities established in handwritten content (2026-05-25)",
+        "characters": [
+          { "name": "Marc",      "nationality_lu": "Fransous",      "nationality_en": "French (male)",        "origin": "Frankräich, vu Metz" },
+          { "name": "Claire",    "nationality_lu": "Franséisin",    "nationality_en": "French (female)",      "origin": "Frankräich, vu Metz" },
+          { "name": "Paul",      "nationality_lu": "Däitschen",     "nationality_en": "German (male)",        "origin": "Däitschland, vun Tréier" },
+          { "name": "Anna",      "nationality_lu": "Däitschin",     "nationality_en": "German (female)",      "origin": "Däitschland, vun Tréier" },
+          { "name": "Lena",      "nationality_lu": "Belsch",        "nationality_en": "Belgian",              "origin": "der Belsch, vun Arel" },
+          { "name": "Natali",    "nationality_lu": "Indesch",       "nationality_en": "Indian",               "origin": "Indien, vu Bangalore" },
+          { "name": "Här Weiss", "nationality_lu": "Lëtzebuergesch","nationality_en": "Luxembourgish",        "origin": "Lëtzebuerg, vu Mäercher" }
+        ],
+        "languages": [
+          { "name": "Marc",      "languages_lu": "Franséisch, Lëtzebuergesch an e bëssen Englesch" },
+          { "name": "Claire",    "languages_lu": "Franséisch, Lëtzebuergesch an e bëssen Englesch" },
+          { "name": "Paul",      "languages_lu": "Däitsch, Lëtzebuergesch an e bëssen Englesch" },
+          { "name": "Anna",      "languages_lu": "Däitsch, Lëtzebuergesch an e bëssen Englesch" },
+          { "name": "Lena",      "languages_lu": "Franséisch, Lëtzebuergesch an e bësse Spuenesch" },
+          { "name": "Natali",    "languages_lu": "Englesch, Lëtzebuergesch an e bëssen Däitsch. Mir schwätze Englesch doheem." },
+          { "name": "Här Weiss", "languages_lu": "Franséisch, Lëtzebuergesch, Däitsch, Englesch a Portugisesch" }
+        ]
+      }
     },
     {
       "id": "theme_numbers_cardinal",

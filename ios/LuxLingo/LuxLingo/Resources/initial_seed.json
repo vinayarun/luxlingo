@@ -1,5 +1,5 @@
 {
-  "version": 8.57,
+  "version": 8.58,
   "vocabulary": [
     {
       "surface_id": "w_an",
@@ -109899,6 +109899,332 @@
         "s_gesondheet_1",
         "s_kopp_1",
         "s_blutt_1"
+      ]
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "dlg_greeting_1",
+      "title_en": "Morning greeting",
+      "lines": [
+        {
+          "speaker": "Marc",
+          "text_lu": "Moie Paul!",
+          "text_en": "Morning Paul!"
+        },
+        {
+          "speaker": "Paul",
+          "text_lu": "Hallo!",
+          "text_en": "Hi!"
+        }
+      ]
+    },
+    {
+      "id": "dlg_greeting_2",
+      "title_en": "Friends meeting",
+      "lines": [
+        {
+          "speaker": "Anna",
+          "text_lu": "Salut Lena!",
+          "text_en": "Hi Lena!"
+        },
+        {
+          "speaker": "Lena",
+          "text_lu": "Moien Anna!",
+          "text_en": "Hello Anna!"
+        }
+      ]
+    },
+    {
+      "id": "dlg_greeting_3",
+      "title_en": "Formal midday greeting",
+      "lines": [
+        {
+          "speaker": "Claire",
+          "text_lu": "Gudde Mëtteg, Här Weiss!",
+          "text_en": "Good afternoon, Mr Weiss!"
+        },
+        {
+          "speaker": "Här Weiss",
+          "text_lu": "Gudde Mëtteg Claire!",
+          "text_en": "Good afternoon Claire!"
+        }
+      ]
+    },
+    {
+      "id": "dlg_greeting_4",
+      "title_en": "Good morning at school",
+      "lines": [
+        {
+          "speaker": "Här Weiss",
+          "text_lu": "Gudde Moien, Natali!",
+          "text_en": "Good morning, Natali!"
+        },
+        {
+          "speaker": "Natali",
+          "text_lu": "Moien Här Weiss!",
+          "text_en": "Morning Mr Weiss!"
+        }
+      ]
+    },
+    {
+      "id": "dlg_greeting_5",
+      "title_en": "Good evening",
+      "lines": [
+        {
+          "speaker": "Anna",
+          "text_lu": "Gudden Owend, Här Weiss!",
+          "text_en": "Good evening, Mr Weiss!"
+        },
+        {
+          "speaker": "Här Weiss",
+          "text_lu": "Gudden Owend, Anna!",
+          "text_en": "Good evening, Anna!"
+        }
+      ]
+    },
+    {
+      "id": "dlg_greeting_6",
+      "title_en": "Goodnight",
+      "lines": [
+        {
+          "speaker": "Natalis Papp",
+          "text_lu": "Gutt Nuecht! Schlof gutt!",
+          "text_en": "Good night! Sleep well!"
+        },
+        {
+          "speaker": "Natali",
+          "text_lu": "Gutt Nuecht!",
+          "text_en": "Good night!"
+        }
+      ]
+    },
+    {
+      "id": "dlg_farewell_1",
+      "title_en": "Goodbye at school",
+      "lines": [
+        {
+          "speaker": "Här Weiss",
+          "text_lu": "Addi, bis muer.",
+          "text_en": "Goodbye, see you tomorrow."
+        },
+        {
+          "speaker": "Natali",
+          "text_lu": "Addi, nach e schéinen Owend.",
+          "text_en": "Goodbye, have a nice evening."
+        }
+      ]
+    },
+    {
+      "id": "dlg_intro_1",
+      "title_en": "Introducing yourself",
+      "lines": [
+        {
+          "speaker": "Claire",
+          "text_lu": "Moien, ech sinn d'Claire. A wéi heescht Dir?",
+          "text_en": "Hello, I'm Claire. And what's your name?"
+        },
+        {
+          "speaker": "Anna",
+          "text_lu": "Ech heesche Anna.",
+          "text_en": "My name is Anna."
+        },
+        {
+          "speaker": "Claire",
+          "text_lu": "Et freet mech.",
+          "text_en": "Nice to meet you."
+        },
+        {
+          "speaker": "Anna",
+          "text_lu": "Mech och.",
+          "text_en": "Likewise."
+        }
+      ]
+    },
+    {
+      "id": "dlg_intro_2",
+      "title_en": "Formal introduction",
+      "lines": [
+        {
+          "speaker": "Här Weiss",
+          "text_lu": "Gudde Mëtteg. Ech sinn de Här Weiss. Wéi ass Ären Numm, wann ech gelift?",
+          "text_en": "Good afternoon. I am Mr Weiss. What is your name, please?"
+        },
+        {
+          "speaker": "Lena",
+          "text_lu": "Mäin Numm ass Lena Bastogne.",
+          "text_en": "My name is Lena Bastogne."
+        }
+      ]
+    },
+    {
+      "id": "dlg_intro_3",
+      "title_en": "Informal introduction",
+      "lines": [
+        {
+          "speaker": "Lena",
+          "text_lu": "Moien, ech heeschen Lena. A wéi heeschs du?",
+          "text_en": "Hello, my name is Lena. And what's your name?"
+        },
+        {
+          "speaker": "Natali",
+          "text_lu": "Ech heeschen Natali.",
+          "text_en": "My name is Natali."
+        }
+      ]
+    },
+    {
+      "id": "dlg_origin_1",
+      "title_en": "Asking about someone",
+      "lines": [
+        {
+          "speaker": "Claire",
+          "text_lu": "Wien ass dat?",
+          "text_en": "Who is that?"
+        },
+        {
+          "speaker": "Marc",
+          "text_lu": "Dat ass d'Lena.",
+          "text_en": "That is Lena."
+        }
+      ]
+    },
+    {
+      "id": "dlg_origin_2",
+      "title_en": "Where is Lena from?",
+      "lines": [
+        {
+          "speaker": "Claire",
+          "text_lu": "Kënnt d'Lena aus der Belsch?",
+          "text_en": "Is Lena from Belgium?"
+        },
+        {
+          "speaker": "Marc",
+          "text_lu": "Jo, hatt kënnt aus der Belsch.",
+          "text_en": "Yes, she comes from Belgium."
+        }
+      ]
+    },
+    {
+      "id": "dlg_origin_3",
+      "title_en": "Where is Natali from?",
+      "lines": [
+        {
+          "speaker": "Anna",
+          "text_lu": "Kënnt d'Natali aus Däitschland?",
+          "text_en": "Is Natali from Germany?"
+        },
+        {
+          "speaker": "Paul",
+          "text_lu": "Nee, hatt kënnt net aus Däitschland. Hatt kënnt aus Indien.",
+          "text_en": "No, she is not from Germany. She comes from India."
+        }
+      ]
+    },
+    {
+      "id": "dlg_origin_4",
+      "title_en": "Where do you come from?",
+      "lines": [
+        {
+          "speaker": "Anna",
+          "text_lu": "Vu wou kënns du?",
+          "text_en": "Where are you from?"
+        },
+        {
+          "speaker": "Claire",
+          "text_lu": "Ech kommen aus Frankräich. Kënns du aus der Belsch?",
+          "text_en": "I come from France. Are you from Belgium?"
+        },
+        {
+          "speaker": "Anna",
+          "text_lu": "Nee, ech kommen aus Däitschland.",
+          "text_en": "No, I come from Germany."
+        }
+      ]
+    },
+    {
+      "id": "dlg_origin_5",
+      "title_en": "Formal: where do you come from?",
+      "lines": [
+        {
+          "speaker": "Natali",
+          "text_lu": "Kommt Dir aus Däitschland?",
+          "text_en": "Do you come from Germany?"
+        },
+        {
+          "speaker": "Här Weiss",
+          "text_lu": "Nee, ech kommen vu Lëtzebuerg. Kommt Dir aus Indien?",
+          "text_en": "No, I come from Luxembourg. Do you come from India?"
+        },
+        {
+          "speaker": "Natali",
+          "text_lu": "Jo, ech kommen aus Indien, vu Bangalore.",
+          "text_en": "Yes, I come from India, from Bangalore."
+        }
+      ]
+    },
+    {
+      "id": "dlg_language_1",
+      "title_en": "Do you speak Spanish?",
+      "lines": [
+        {
+          "speaker": "Claire",
+          "text_lu": "Schwätz du Spuenesch?",
+          "text_en": "Do you speak Spanish?"
+        },
+        {
+          "speaker": "Lena",
+          "text_lu": "Jo, ech schwätzen e bësse Spuenesch.",
+          "text_en": "Yes, I speak a little Spanish."
+        }
+      ]
+    },
+    {
+      "id": "dlg_language_2",
+      "title_en": "Do you speak Hindi?",
+      "lines": [
+        {
+          "speaker": "Marc",
+          "text_lu": "Schwätz du Hindi?",
+          "text_en": "Do you speak Hindi?"
+        },
+        {
+          "speaker": "Natali",
+          "text_lu": "Nee, ech schwätze keen Hindi.",
+          "text_en": "No, I don't speak Hindi."
+        }
+      ]
+    },
+    {
+      "id": "dlg_language_3",
+      "title_en": "What languages do you speak?",
+      "lines": [
+        {
+          "speaker": "Anna",
+          "text_lu": "Wat fir Sprooche schwätz du?",
+          "text_en": "What languages do you speak?"
+        },
+        {
+          "speaker": "Claire",
+          "text_lu": "Ech schwätzen Franséisch, Lëtzebuergesch an e bëssen Englesch.",
+          "text_en": "I speak French, Luxembourgish and a little English."
+        }
+      ]
+    },
+    {
+      "id": "dlg_language_4",
+      "title_en": "What is your nationality?",
+      "lines": [
+        {
+          "speaker": "Natali",
+          "text_lu": "Wat fir eng Nationalitéit hues du?",
+          "text_en": "What nationality are you?"
+        },
+        {
+          "speaker": "Claire",
+          "text_lu": "Ech si Franséisin.",
+          "text_en": "I am French."
+        }
       ]
     }
   ]

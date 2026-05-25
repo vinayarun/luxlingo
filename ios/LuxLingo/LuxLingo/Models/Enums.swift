@@ -17,6 +17,7 @@ enum ExerciseTypeNew: String, Codable {
     case audioDictation = "AUDIO_DICTATION"
     case articleChoice = "ARTICLE_CHOICE"
     case pronunciationPractice = "PRONUNCIATION_PRACTICE"
+    case dialogueCompletion = "DIALOGUE_COMPLETION"
 }
 
 // MARK: - Exercise Type (Legacy - JSON-based lessons)

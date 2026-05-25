@@ -68,6 +68,10 @@ struct ExerciseUiState {
     var isSpeedRunProposedCorrect: Bool = false
     var speedRunCountdown: Int = 0   // 3,2,1 before the card appears; 0 = live
 
+    // Dialogue Completion fields
+    var dialogueLines: [SeedDialogueLine] = []
+    var dialogueHiddenLineIndex: Int = 0
+
     // Tap-bleed protection: set when a new exercise loads, cleared after 350ms
     var exerciseLoadedAt: Date = .distantPast
 
@@ -109,6 +113,14 @@ final class ExerciseViewModel {
     // MARK: - Review mode
     private var isReviewMode = false
     private var reviewItems: [(senseId: String, lessonId: String)] = []
+
+    // MARK: - Dialogues (loaded once from seed, kept in memory)
+    private var allDialogues: [SeedDialogue] = {
+        guard let url = Bundle.main.url(forResource: "initial_seed", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let seed = try? JSONDecoder().decode(InitialSeedData.self, from: data) else { return [] }
+        return seed.dialogues ?? []
+    }()
 
     /// Normal lesson init.
     init(lessonId: String, repository: ContentRepository) {
@@ -320,6 +332,19 @@ final class ExerciseViewModel {
                 if repository.getArticleExercise(for: senseId) != nil {
                     type = .articleChoice
                 }
+            }
+        }
+
+        // Dialogue Completion: occasional conversational exercise using hand-authored dialogues.
+        // Only after the intro phase (mastery >= 8) and not in the first two lessons.
+        // Short dialogues (≤2 lines) unlock at mastery 8; longer ones at mastery 14.
+        if !allDialogues.isEmpty && mastery >= 8 && lessonNum >= 3 && Float.random(in: 0...1) < 0.12 {
+            let eligible = mastery < 14
+                ? allDialogues.filter { $0.lines.count <= 2 }
+                : allDialogues
+            if !eligible.isEmpty {
+                prepareDialogueCompletion(from: eligible)
+                return
             }
         }
 
@@ -776,6 +801,19 @@ final class ExerciseViewModel {
     func checkAnswer() {
         let type = uiState.currentExerciseType
 
+        // Dialogue Completion: sentence-free MCQ — evaluate against correctOption directly.
+        if type == .dialogueCompletion {
+            let userInput = normalizeText(uiState.userInput)
+            let correct   = normalizeText(uiState.correctOption ?? "")
+            let feedback: AnswerFeedback = userInput == correct ? .correct : .wrong
+            uiState.feedback         = feedback
+            uiState.isFeedbackVisible = true
+            uiState.failureCount     = feedback == .wrong ? uiState.failureCount + 1 : 0
+            uiState.masteryChange    = 0
+            uiState.sessionXP       += feedback == .correct ? 8 : 1
+            return
+        }
+
         // Matching auto-advances silently after a short delay — no feedback banner.
         // The guard ensures the timer is a no-op if the user already tapped Continue.
         if type == .matching {
@@ -868,6 +906,12 @@ final class ExerciseViewModel {
             } else {
                 feedback = .wrong; result = .error
             }
+        case .dialogueCompletion:
+            if userInput == normalizeText(uiState.correctOption ?? "") {
+                feedback = .correct; result = .multipleChoice
+            } else {
+                feedback = .wrong; result = .error
+            }
         case .pronunciationPractice:
             // Pronunciation exercises are submitted async — score arrives via PronunciationService.
             // Mark as "practised" so it won't repeat for this sense this session.
@@ -908,11 +952,13 @@ final class ExerciseViewModel {
 
         uiState.feedback = feedback
         uiState.isFeedbackVisible = true
-        // For MC, strip punctuation so correctOption matches the displayed option string exactly.
+        // For MC and dialogue, correctOption is already set during prepare — don't overwrite it.
         let punctSet = CharacterSet(charactersIn: ".,!?;:'\"()")
-        uiState.correctOption = (type == .multipleChoice)
-            ? comparisonTargetRaw.trimmingCharacters(in: punctSet)
-            : comparisonTargetRaw
+        if type != .dialogueCompletion {
+            uiState.correctOption = (type == .multipleChoice)
+                ? comparisonTargetRaw.trimmingCharacters(in: punctSet)
+                : comparisonTargetRaw
+        }
         uiState.failureCount = (feedback == .wrong) ? uiState.failureCount + 1 : 0
 
         // Map to correct result type
@@ -968,10 +1014,13 @@ final class ExerciseViewModel {
             case .zipfSpeedRun:
                 mChange = 5
                 xpGained = 8
-            case .cloze: 
+            case .dialogueCompletion:
+                mChange = 0   // dialogue exercises don't update vocabulary mastery
+                xpGained = 8
+            case .cloze:
                 mChange = 10
                 xpGained = (feedback == .correct) ? 25 : 10
-            default: 
+            default:
                 mChange = 1
                 xpGained = 5
             }
@@ -1225,6 +1274,57 @@ final class ExerciseViewModel {
         if mastery >= 15 { pool.append(.jumbledLu) }
         if mastery >= 20 { pool.append(.cloze) }
         return pool.filter { $0 != excluding }
+    }
+
+    // MARK: - Dialogue Completion
+
+    private func prepareDialogueCompletion(from pool: [SeedDialogue] = []) {
+        let source = pool.isEmpty ? allDialogues : pool
+        guard let dialogue = source.randomElement(), dialogue.lines.count >= 2 else {
+            loadNextExercise(); return
+        }
+        // Hide any line except the first (first line starts the exchange, less interesting to blank)
+        let hiddenIdx = Int.random(in: 1..<dialogue.lines.count)
+        let hiddenLine = dialogue.lines[hiddenIdx]
+
+        // Generate 3 distractors: first from other lines in this dialogue, then from other dialogues
+        var distractorPool = dialogue.lines
+            .enumerated()
+            .filter { $0.offset != hiddenIdx }
+            .map { $0.element.textLu }
+        let otherLines = allDialogues
+            .filter { $0.id != dialogue.id }
+            .flatMap { $0.lines }
+            .map { $0.textLu }
+            .shuffled()
+            .prefix(6)
+        distractorPool += otherLines
+        let distractors = Array(distractorPool
+            .filter { $0 != hiddenLine.textLu }
+            .shuffled()
+            .prefix(3))
+
+        let options = (distractors + [hiddenLine.textLu]).shuffled()
+
+        uiState.isLoading        = false
+        uiState.failureCount     = 0
+        uiState.isFeedbackVisible = false
+        uiState.feedback         = .none
+        uiState.userInput        = ""
+        uiState.selectedOption   = nil
+        uiState.correctOption    = nil
+        uiState.masteryChange    = 0
+        uiState.shuffledTokens   = []
+        uiState.matchingPairs    = []
+        uiState.currentExerciseType  = .dialogueCompletion
+        uiState.dialogueLines        = dialogue.lines
+        uiState.dialogueHiddenLineIndex = hiddenIdx
+        uiState.multipleChoiceOptions = options
+        uiState.correctOption        = hiddenLine.textLu
+        uiState.promptText           = dialogue.titleEn
+        uiState.promptSubtitle       = "Complete the conversation"
+        uiState.phase                = "Conversation"
+        uiState.exerciseLoadedAt     = Date()
     }
 
     private func findNRuleCandidate(in sentence: String) -> Int? {

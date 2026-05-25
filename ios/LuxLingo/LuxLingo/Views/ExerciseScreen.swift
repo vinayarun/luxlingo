@@ -659,6 +659,21 @@ struct ExerciseScreen: View {
                 grammarTipsLink
             }
 
+        case .dialogueCompletion:
+            DialogueCompletionExercise(
+                lines:       viewModel.uiState.dialogueLines,
+                hiddenIndex: viewModel.uiState.dialogueHiddenLineIndex,
+                options:     viewModel.uiState.multipleChoiceOptions,
+                selectedOption: viewModel.uiState.selectedOption,
+                correctOption:  viewModel.uiState.correctOption,
+                isFeedbackVisible: viewModel.uiState.isFeedbackVisible,
+                isWrongAnswer: viewModel.uiState.feedback == .wrong,
+                onSelect: { option in
+                    viewModel.onInputChanged(option)
+                    viewModel.uiState.selectedOption = option
+                }
+            )
+
         case .matching:
             VStack(spacing: 12) {
                 Text("Tap a word, then tap its translation")

@@ -27,8 +27,8 @@ private let characters: [Character] = [
         name: "Anna",
         assetName: "character_anna",
         ageLu: "11 Joer al",
-        descriptionLu: "Anna ass 11 Joer al a kënnt vun Däitschland. Si ass dem Paul seng grouss Schwëster a spillt am léifsten mat hirem Hond Bello am Gaart. Wann si net spillt, liest si gär Bicher.",
-        descriptionEn: "Anna is 11 years old and comes from Germany. She is Paul's big sister and loves playing with her dog Bello in the garden. When she isn't playing, she enjoys reading books.",
+        descriptionLu: "Anna ass 11 Joer al a kënnt vun Däitschland. Si ass dem Paul seng kleng Schwëster a spillt am léifsten mat hirem Hond Bello am Gaart. Wann si net spillt, liest si gär Bicher.",
+        descriptionEn: "Anna is 11 years old and comes from Germany. She is Paul's little sister and loves playing with her dog Bello in the garden. When she isn't playing, she enjoys reading books.",
         accentColor: Color(red: 0.9, green: 0.4, blue: 0.4)
     ),
     Character(
