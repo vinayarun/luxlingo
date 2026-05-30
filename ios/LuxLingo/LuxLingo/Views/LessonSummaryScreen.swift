@@ -132,32 +132,38 @@ private struct LessonCompleteScreen: View {
                 // LazyVGrid (not FlexWrap/GeometryReader) so ScrollView gets the
                 // correct height and nothing below overlaps the chips.
                 if !masteredSenses.isEmpty {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Words practiced")
-                            .font(.headline)
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Label("Words practiced", systemImage: "checkmark.seal.fill")
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Text("\(masteredSenses.count)")
+                                .font(.luxNumeric(size: 14))
+                                .foregroundColor(.secondary)
+                        }
 
                         LazyVGrid(
-                            columns: [GridItem(.adaptive(minimum: 72, maximum: 180), spacing: 8)],
+                            columns: [GridItem(.adaptive(minimum: 80, maximum: 180), spacing: 8)],
                             spacing: 8
                         ) {
                             ForEach(masteredSenses, id: \.self) { sense in
                                 Text(sense)
-                                    .font(.caption)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.primary)
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 6)
-                                    .background(Color(.systemGray6))
-                                    .cornerRadius(20)
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundColor(.luxGreen)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 7)
+                                    .background(Color.luxGreen.opacity(0.10))
+                                    .clipShape(Capsule())
                                     .lineLimit(1)
                             }
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(16)
+                    .padding(20)
                     .background(Color(.systemBackground))
-                    .cornerRadius(16)
-                    .shadow(color: .black.opacity(0.06), radius: 6, y: 3)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .shadow(color: .black.opacity(0.06), radius: 10, y: 3)
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
                 }
@@ -214,22 +220,18 @@ private struct LessonCompleteScreen: View {
         // Pinned footer — shadow on top edge, solid background, no gradient overlap
         .safeAreaInset(edge: .bottom, spacing: 0) {
             Button(action: {
+                LuxHaptic.medium()
                 PronunciationService.shared.markAllResultsViewed()
                 onBackToMenu()
             }) {
                 Text("Continue")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.luxGreen)
-                    .foregroundColor(.white)
-                    .cornerRadius(14)
             }
+            .buttonStyle(LuxPrimaryButtonStyle())
             .padding(.horizontal, 16)
-            .padding(.top, 10)
-            .padding(.bottom, 12)
+            .padding(.top, 12)
+            .padding(.bottom, 14)
             .background(Color(.systemBackground))
-            .shadow(color: .black.opacity(0.08), radius: 8, y: -3)
+            .shadow(color: .black.opacity(0.07), radius: 12, y: -3)
         }
     }
 }
@@ -242,20 +244,39 @@ private struct StatPill: View {
     let label: String
     let color: Color
 
+    @State private var appeared = false
+
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 6) {
             Image(systemName: icon)
-                .font(.system(size: 18, weight: .medium))
+                .font(.system(size: 22, weight: .semibold))
                 .foregroundColor(color)
             Text(value)
-                .font(.title3).fontWeight(.bold)
+                .font(.luxNumeric(size: 22))
+                .foregroundColor(.primary)
             Text(label)
-                .font(.caption2).foregroundColor(.secondary)
+                .font(.caption2.weight(.medium))
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 14)
-        .background(color.opacity(0.08))
-        .cornerRadius(14)
+        .padding(.vertical, 18)
+        .padding(.horizontal, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(color.opacity(0.09))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(color.opacity(0.20), lineWidth: 1)
+                )
+        )
+        .scaleEffect(appeared ? 1 : 0.82)
+        .opacity(appeared ? 1 : 0)
+        .onAppear {
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.60).delay(0.1)) {
+                appeared = true
+            }
+        }
     }
 }
 
@@ -460,15 +481,13 @@ struct ReviewSummaryScreen: View {
 
             Spacer()
 
-            Button(action: onBackToMenu) {
+            Button(action: {
+                LuxHaptic.medium()
+                onBackToMenu()
+            }) {
                 Text("Back to Lessons")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.luxAmber)
-                    .foregroundColor(.white)
-                    .cornerRadius(14)
             }
+            .buttonStyle(LuxPrimaryButtonStyle(color: .luxAmber))
             .padding(.horizontal, 24)
             .padding(.bottom, 32)
         }

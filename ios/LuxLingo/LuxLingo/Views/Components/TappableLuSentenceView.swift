@@ -72,6 +72,7 @@ struct TappableLuSentenceView: View {
     private func handleTap(word: String) {
         let clean = word.trimmingCharacters(in: Self.punct)
         guard !clean.isEmpty else { return }
+        LuxHaptic.light()
         if tappedWord?.lowercased() == clean.lowercased() { dismiss(); return }
 
         tappedWord = clean
@@ -115,10 +116,10 @@ private struct WordChip: View {
                 .fontWeight(isLemma ? .bold : isForm ? .semibold : .regular)
                 .foregroundColor(foregroundColor)
                 .underline(isForm, color: .luxAmber)
-                .padding(.horizontal, 4)
-                .padding(.vertical, 3)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 4)
                 .background(chipBackground)
-                .cornerRadius(5)
+                .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.12), value: isTapped)
@@ -161,14 +162,14 @@ struct WordLookupCard: View {
                             .padding(.horizontal, 6).padding(.vertical, 2)
                             .background(Color.luxGreen.opacity(0.15))
                             .foregroundColor(.luxGreen)
-                            .cornerRadius(4)
+                            .clipShape(Capsule())
                     } else if let pos = result?.partOfSpeech {
                         Text(pos)
                             .font(.caption2)
                             .padding(.horizontal, 6).padding(.vertical, 2)
                             .background(Color.accentColor.opacity(0.12))
                             .foregroundColor(.accentColor)
-                            .cornerRadius(4)
+                            .clipShape(Capsule())
                     }
                 }
 
@@ -220,16 +221,19 @@ struct WordLookupCard: View {
 
             Spacer()
 
-            Button(action: onDismiss) {
+            Button {
+                LuxHaptic.light()
+                onDismiss()
+            } label: {
                 Image(systemName: "xmark.circle.fill")
                     .foregroundColor(Color(.tertiaryLabel))
                     .font(.title3)
             }
         }
-        .padding(12)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
+        .padding(14)
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .shadow(color: .black.opacity(0.10), radius: 12, y: 4)
     }
 }
 

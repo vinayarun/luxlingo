@@ -29,11 +29,17 @@ final class TTSService {
 
     private init() {
         playerDelegate.onFinish = { [weak self] in
-            self?.playState = .idle
-            self?.activeText = ""
-            // Deactivate the session so background audio (podcasts, music) resumes at full volume.
-            // .notifyOthersOnDeactivation is the iOS signal that tells Spotify/Podcasts to un-duck.
-            try? AVAudioSession.sharedInstance().setActive(false)
+            guard let self else { return }
+            self.playState = .idle
+            self.activeText = ""
+            // Deactivate with a brief delay so a rapid follow-up tap can start its
+            // setActive(true) BEFORE we issue setActive(false) — otherwise the two
+            // calls race and the audio session ends up in a broken state on real device.
+            Task { @MainActor [weak self] in
+                try? await Task.sleep(for: .milliseconds(500))
+                guard let self, self.playState == .idle else { return }
+                try? AVAudioSession.sharedInstance().setActive(false)
+            }
         }
         // .duckOthers: when this app's audio plays, background audio lowers to ~20% volume
         // and automatically restores when we deactivate — the Google Maps navigation pattern.
@@ -70,8 +76,14 @@ final class TTSService {
             p.rate = Self.speechRate
             p.delegate = playerDelegate
             player = p
+            guard p.play() else {
+                // play() returned false — AVFoundation won't call the delegate,
+                // so reset state manually to unblock future taps.
+                playState = .idle
+                activeText = ""
+                return
+            }
             playState = .playing
-            p.play()
             lastUsed = Date()
         } catch {
             playState = .idle
@@ -92,6 +104,10 @@ final class TTSService {
         playState = .loading
         activeText = text
 
+        await _attemptSpeak(text: text, allowRetry: true)
+    }
+
+    private func _attemptSpeak(text: String, allowRetry: Bool) async {
         do {
             let sid = try await validSession()
             let requestId = try await submitTTS(sid: sid, text: text)
@@ -101,11 +117,21 @@ final class TTSService {
 
             try AVAudioSession.sharedInstance().setActive(true)
             let p = try AVAudioPlayer(data: wav)
+            p.enableRate = true
+            p.rate = Self.speechRate
             p.delegate = playerDelegate
             player = p
+            guard p.play() else {
+                playState = .idle
+                activeText = ""
+                return
+            }
             playState = .playing
-            p.play()
             lastUsed = Date()
+        } catch TTSError.sessionExpired where allowRetry {
+            // Server rejected the session — clear it and retry once with a fresh one
+            sessionId = nil
+            await _attemptSpeak(text: text, allowRetry: false)
         } catch {
             playState = .idle
             activeText = ""
@@ -174,7 +200,14 @@ final class TTSService {
 // MARK: - AVAudioPlayerDelegate bridge
 private final class _PlayerDelegate: NSObject, AVAudioPlayerDelegate {
     var onFinish: (() -> Void)?
+
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully _: Bool) {
-        DispatchQueue.main.async { self.onFinish?() }
+        Task { @MainActor in self.onFinish?() }
+    }
+
+    // Decode errors also skip audioPlayerDidFinishPlaying — handle them here
+    // so playState never gets stuck after a corrupted audio file.
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        Task { @MainActor in self.onFinish?() }
     }
 }

@@ -88,90 +88,107 @@ struct TodayCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 16) {
 
             // ── Stats row ──────────────────────────────────────────────────
-            HStack(alignment: .top) {
-                // Streak
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 5) {
-                        Image(systemName: "flame.fill")
-                            .foregroundColor(.orange)
+            HStack(alignment: .center) {
+                // Streak pill
+                HStack(spacing: 6) {
+                    Image(systemName: streak > 0 ? "flame.fill" : "flame")
+                        .foregroundColor(streak > 0 ? .orange : .secondary)
+                        .font(.system(size: 18, weight: .semibold))
+                    VStack(alignment: .leading, spacing: 0) {
                         Text(streak > 0 ? "\(streak)" : "0")
-                            .font(.title2).fontWeight(.bold)
+                            .font(.luxNumeric(size: 20))
+                            .foregroundColor(streak > 0 ? .primary : .secondary)
+                        Text(streak > 0 ? "day streak" : "Start today!")
+                            .font(.caption2).foregroundColor(.secondary)
                     }
-                    Text(streak > 0 ? "day streak" : "Start today!")
-                        .font(.caption2).foregroundColor(.secondary)
                 }
 
                 Spacer()
 
-                // Daily XP
-                VStack(alignment: .trailing, spacing: 2) {
-                    HStack(spacing: 5) {
+                // Daily XP pill
+                HStack(spacing: 6) {
+                    VStack(alignment: .trailing, spacing: 0) {
                         Text(goalMet ? "Goal reached!" : "\(todayXp) / \(goal) XP")
-                            .font(.subheadline).fontWeight(.semibold)
+                            .font(.luxNumeric(size: 15, weight: .semibold))
                             .foregroundColor(goalMet ? .luxGreen : .primary)
-                        Image(systemName: goalMet ? "checkmark.circle.fill" : "star.fill")
-                            .foregroundColor(goalMet ? .luxGreen : .luxAmber)
+                        Text(goalTimeLabel).font(.caption2).foregroundColor(.secondary)
                     }
-                    Text(goalTimeLabel).font(.caption2).foregroundColor(.secondary)
+                    Image(systemName: goalMet ? "checkmark.circle.fill" : "star.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(goalMet ? .luxGreen : .luxAmber)
                 }
             }
 
             // ── XP progress bar ────────────────────────────────────────────
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 3)
+                    Capsule()
                         .fill(Color(.systemGray5))
-                        .frame(height: 6)
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(goalMet ? Color.luxGreen : Color.luxGreen.opacity(0.8))
-                        .frame(width: max(8, geo.size.width * fraction), height: 6)
-                        .animation(.easeOut(duration: 0.4), value: fraction)
+                        .frame(height: 8)
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: goalMet
+                                    ? [Color.luxGreen, Color(red: 0.20, green: 0.75, blue: 0.10)]
+                                    : [Color.luxGreen, Color(red: 0.30, green: 0.85, blue: 0.10)],
+                                startPoint: .leading, endPoint: .trailing
+                            )
+                        )
+                        .frame(width: max(8, geo.size.width * CGFloat(fraction)), height: 8)
+                        .animation(.spring(response: 0.5, dampingFraction: 0.75), value: fraction)
                 }
             }
-            .frame(height: 6)
+            .frame(height: 8)
 
             // ── Continue CTA ───────────────────────────────────────────────
             if let title = nextLessonTitle {
                 Button(action: onContinue) {
-                    HStack(spacing: 10) {
+                    HStack(spacing: 12) {
                         Image(systemName: "play.circle.fill")
-                            .font(.title3)
+                            .font(.system(size: 22, weight: .medium))
                             .foregroundColor(.white)
-                        VStack(alignment: .leading, spacing: 1) {
-                            Text("Continue").font(.caption).foregroundColor(.white.opacity(0.8))
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Continue").font(.caption.weight(.medium)).foregroundColor(.white.opacity(0.8))
                             Text(title)
-                                .font(.subheadline).fontWeight(.semibold)
+                                .font(.subheadline.weight(.semibold))
                                 .foregroundColor(.white)
                                 .lineLimit(1)
                         }
                         Spacer()
                         Image(systemName: "chevron.right")
-                            .font(.subheadline)
+                            .font(.subheadline.weight(.semibold))
                             .foregroundColor(.white.opacity(0.65))
                     }
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 11)
-                    .background(Color.luxGreen)
-                    .cornerRadius(10)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 13)
+                    .background(
+                        LinearGradient(
+                            colors: [Color.luxGreen, Color(red: 0.28, green: 0.75, blue: 0.05)],
+                            startPoint: .leading, endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .shadow(color: Color.luxGreen.opacity(0.30), radius: 8, y: 3)
                 }
                 .buttonStyle(.plain)
             } else {
                 // All lessons done
-                HStack(spacing: 6) {
+                HStack(spacing: 8) {
                     Image(systemName: "checkmark.seal.fill").foregroundColor(.luxAmber)
+                        .font(.system(size: 18))
                     Text("All lessons complete — amazing!")
-                        .font(.subheadline).fontWeight(.medium)
+                        .font(.subheadline.weight(.medium))
                     Spacer()
                 }
             }
         }
-        .padding(16)
+        .padding(20)
         .background(Color(.systemBackground))
-        .cornerRadius(14)
-        .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .shadow(color: .black.opacity(0.07), radius: 12, y: 3)
     }
 }
 
@@ -187,27 +204,29 @@ struct LessonProgressRing: View {
 
     var body: some View {
         ZStack {
-            // Background track
+            // Track
             Circle()
-                .stroke(Color(.systemGray5), lineWidth: 4)
+                .stroke(Color(.systemGray5), lineWidth: 5)
 
             // Progress arc
             Circle()
                 .trim(from: 0, to: fraction)
                 .stroke(
-                    lesson.isCompleted ? Color.luxGreen : Color.luxGreen.opacity(0.55),
-                    style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                    lesson.isCompleted
+                        ? LinearGradient(colors: [.luxGreen, Color(red: 0.28, green: 0.85, blue: 0.10)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        : LinearGradient(colors: [Color.luxGreen.opacity(0.60), Color.luxGreen.opacity(0.40)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                    style: StrokeStyle(lineWidth: 5, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
-                .animation(.easeOut(duration: 0.4), value: fraction)
+                .animation(.spring(response: 0.5, dampingFraction: 0.75), value: fraction)
 
             if lesson.isCompleted {
                 Image(systemName: "checkmark")
-                    .font(.system(size: 14, weight: .bold))
+                    .font(.system(size: 13, weight: .heavy))
                     .foregroundColor(.luxGreen)
-            } else {
+            } else if lesson.practicedWords > 0 {
                 Text("\(lesson.practicedWords)/\(lesson.totalWords)")
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.system(size: 9, weight: .bold, design: .rounded))
                     .foregroundColor(.primary)
             }
         }
@@ -372,21 +391,22 @@ struct UnitCard: View {
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
-                        .frame(height: 130)
+                        .frame(height: 150)
                         .clipped()
 
+                    // Deeper gradient for better text legibility
                     LinearGradient(
-                        colors: [.clear, .black.opacity(0.55)],
+                        colors: [.clear, .black.opacity(0.25), .black.opacity(0.68)],
                         startPoint: .top,
                         endPoint: .bottom
                     )
 
                     Text(unit.title)
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(.title2.weight(.bold))
                         .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
                         .padding(.horizontal, 16)
-                        .padding(.bottom, 12)
+                        .padding(.bottom, 14)
 
                     // Word-count badge — top-right, only when words are encountered
                     if encounteredCount > 0 {
@@ -394,12 +414,12 @@ struct UnitCard: View {
                             Image(systemName: "text.book.closed.fill")
                             Text("\(encounteredCount)")
                         }
-                        .font(.caption2).fontWeight(.semibold)
-                        .foregroundColor(.white.opacity(0.85))
-                        .padding(.horizontal, 8).padding(.vertical, 4)
-                        .background(Color.black.opacity(0.35))
-                        .cornerRadius(8)
-                        .padding(8)
+                        .font(.caption2.weight(.semibold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 8).padding(.vertical, 5)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Capsule())
+                        .padding(10)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     }
                 }
@@ -449,34 +469,39 @@ struct UnitCard: View {
                     VStack(spacing: 0) {
                         ForEach(Array(unit.lessons.enumerated()), id: \.element.id) { index, lesson in
                             Button {
+                                LuxHaptic.selection()
                                 onLessonSelected(unit.id, lesson.id)
                             } label: {
-                                HStack(spacing: 16) {
+                                HStack(spacing: 14) {
                                     LessonProgressRing(lesson: lesson)
 
-                                    VStack(alignment: .leading, spacing: 2) {
+                                    VStack(alignment: .leading, spacing: 3) {
                                         Text(lesson.title)
-                                            .font(.callout).fontWeight(.semibold)
+                                            .font(.callout.weight(.semibold))
                                             .foregroundColor(.primary)
                                             .lineLimit(1)
                                         let objectiveText = (!lesson.isCompleted && lesson.practicedWords == 0)
                                             ? "\(lesson.objective) · ~\(max(3, lesson.totalWords)) min"
                                             : lesson.objective
                                         Text(objectiveText)
-                                            .font(.caption).foregroundColor(.secondary)
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
                                             .lineLimit(1).truncationMode(.tail)
                                     }
 
                                     Spacer()
 
                                     Image(systemName: "chevron.right")
-                                        .foregroundColor(.secondary)
+                                        .font(.caption.weight(.semibold))
+                                        .foregroundColor(Color(.systemGray3))
                                 }
-                                .padding(.vertical, 8)
+                                .padding(.vertical, 12)
+                                .contentShape(Rectangle())
                             }
+                            .buttonStyle(.plain)
 
                             if index < unit.lessons.count - 1 {
-                                Divider().padding(.leading, 56)
+                                Divider().padding(.leading, 58)
                             }
                         }
 
@@ -493,8 +518,8 @@ struct UnitCard: View {
             .padding(16)
         }
         .background(Color(.systemBackground))
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .shadow(color: .black.opacity(0.09), radius: 14, y: 4)
     }
 }
 
@@ -505,33 +530,40 @@ struct ReviewCard: View {
     let onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
+        Button(action: {
+            LuxHaptic.selection()
+            onTap()
+        }) {
             HStack(spacing: 14) {
                 ZStack {
                     Circle()
                         .fill(Color.luxAmber.opacity(0.15))
-                        .frame(width: 48, height: 48)
+                        .frame(width: 52, height: 52)
                     Image(systemName: "arrow.clockwise.circle.fill")
-                        .font(.system(size: 26))
+                        .font(.system(size: 28, weight: .medium))
                         .foregroundColor(.luxAmber)
                 }
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 3) {
                     Text("Review")
                         .font(.headline)
                         .foregroundColor(.primary)
-                    Text("\(wordCount) words in progress across your lessons")
+                    Text("\(wordCount) words in progress")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(Color(.systemGray3))
             }
-            .padding(14)
+            .padding(16)
             .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(Color.luxAmber.opacity(0.25), lineWidth: 1.5)
+            )
+            .shadow(color: Color.luxAmber.opacity(0.12), radius: 10, y: 3)
         }
         .buttonStyle(.plain)
     }

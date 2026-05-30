@@ -140,6 +140,7 @@ struct ExerciseScreen: View {
                         .padding(.vertical, 22)
                     } else {
                     Button(action: {
+                        LuxHaptic.light()
                         if viewModel.uiState.currentExerciseType == .reading {
                             viewModel.onReadingContinue()
                         } else if viewModel.uiState.currentExerciseType == .flashcard {
@@ -163,14 +164,19 @@ struct ExerciseScreen: View {
                         }
                     }) {
                         Text(buttonLabel)
-                            .font(.headline)
+                            .font(.headline.weight(.semibold))
                             .frame(maxWidth: .infinity)
-                            .padding()
+                            .padding(.vertical, 16)
                             .background(isCheckEnabled ? Color.luxGreen : Color(.systemGray4))
                             .foregroundColor(.white)
-                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .shadow(
+                                color: isCheckEnabled ? Color.luxGreen.opacity(0.28) : .clear,
+                                radius: 10, y: 4
+                            )
                     }
                     .disabled(!isCheckEnabled)
+                    .animation(.luxQuick, value: isCheckEnabled)
                     .padding(.horizontal, 16)
                     .padding(.bottom, 16)
                     } // else (flashcard revealed / non-flashcard)
@@ -321,12 +327,14 @@ struct ExerciseScreen: View {
             guard viewModel.uiState.isFeedbackVisible else { return }
             switch viewModel.uiState.feedback {
             case .correct, .typo, .nRule:
+                LuxHaptic.success()
                 if viewModel.uiState.currentExerciseType == .reading {
                     AudioFeedbackService.shared.playReading()
                 } else {
                     AudioFeedbackService.shared.playCorrect()
                 }
             case .wrong:
+                LuxHaptic.error()
                 AudioFeedbackService.shared.playWrong()
             default:
                 break
@@ -802,84 +810,95 @@ struct ExerciseScreen: View {
     }
 
     private var feedbackBanner: some View {
-        VStack(spacing: 16) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    let isPronunciation = viewModel.uiState.currentExerciseType == .pronunciationPractice
-                    Text(isPronunciation ? "Recording submitted!" : (isWrongAnswer ? "Not quite!" : "Great job!"))
-                        .font(.title2)
-                        .fontWeight(.bold)
+        let wrong = isWrongAnswer
+        let bannerColor: Color = wrong ? .feedbackRed : .feedbackGreen
 
-                    if isWrongAnswer {
+        return VStack(spacing: 0) {
+            // Content row
+            HStack(alignment: .top, spacing: 14) {
+                // Icon
+                Image(systemName: wrong ? "xmark.circle.fill" : "checkmark.circle.fill")
+                    .font(.system(size: 36, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.top, 2)
+
+                VStack(alignment: .leading, spacing: 5) {
+                    let isPronunciation = viewModel.uiState.currentExerciseType == .pronunciationPractice
+                    Text(isPronunciation ? "Recording submitted!" : (wrong ? "Not quite!" : "Great job!"))
+                        .font(.title3.weight(.bold))
+                        .foregroundColor(.white)
+
+                    if wrong {
                         if viewModel.uiState.failureCount >= 2 {
-                            Text("Correct answer: \(correctAnswerText)")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
+                            Text("Answer: \(correctAnswerText)")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundColor(.white.opacity(0.92))
                         } else {
-                            Text("Try again!")
+                            Text("Give it another try!")
                                 .font(.subheadline)
-                                .fontWeight(.semibold)
+                                .foregroundColor(.white.opacity(0.88))
                         }
-                    } else if viewModel.uiState.currentExerciseType == .pronunciationPractice {
+                    } else if isPronunciation {
                         Text("Result coming shortly — continue your lesson.")
                             .font(.subheadline)
+                            .foregroundColor(.white.opacity(0.88))
                     } else if viewModel.uiState.feedback == .typo
                                && viewModel.uiState.currentExerciseType == .audioDictation {
-                        Text("Close! Correct spelling: \(correctAnswerText)")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
+                        Text("Correct spelling: \(correctAnswerText)")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(.white.opacity(0.92))
                     } else {
-                        Text(FeedbackColors.message(for: viewModel.uiState.feedback))
-                            .font(.subheadline)
+                        let msg = FeedbackColors.message(for: viewModel.uiState.feedback)
+                        if !msg.isEmpty {
+                            Text(msg).font(.subheadline).foregroundColor(.white.opacity(0.88))
+                        }
                     }
-                    
-                    // Show EN translation only for exercises where sentence context adds value
+
+                    // EN translation for context-rich exercise types
                     let exerciseType = viewModel.uiState.currentExerciseType
                     let sentenceContextTypes: Set<ExerciseTypeNew> = [.cloze, .multipleChoice, .reading, .nRuleHunter]
                     if sentenceContextTypes.contains(exerciseType),
                        let sentence = viewModel.uiState.currentSentence {
                         Text(sentence.textEn)
                             .font(.subheadline)
-                            .opacity(0.85)
-                            .padding(.top, 2)
+                            .foregroundColor(.white.opacity(0.80))
+                            .padding(.top, 1)
                     }
                 }
-                Spacer()
-                Image(systemName: isWrongAnswer ? "xmark.circle.fill" : "checkmark.circle.fill")
-                    .font(.system(size: 44))
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 24)
-            .foregroundColor(.white)
 
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 22)
+            .padding(.bottom, 16)
+
+            // Continue / Try again button
             Button(action: {
-                let isRetry = isWrongAnswer && viewModel.uiState.failureCount < 2
+                let isRetry = wrong && viewModel.uiState.failureCount < 2
                 if !isRetry, let result = pronService.newResultAvailable {
-                    // Show pronunciation result before advancing
                     pronService.newResultAvailable = nil
                     showingPronunciationResult = true
-                    // Store it temporarily so the overlay can display it
                     viewModel.uiState.pendingPronunciationResult = result
                 } else {
                     viewModel.onContinueAfterFeedback()
                 }
             }) {
-                let label = isWrongAnswer && viewModel.uiState.failureCount < 2 ? "Try again" : "Continue"
+                let label = wrong && viewModel.uiState.failureCount < 2 ? "Try again" : "Continue"
                 Text(label)
-                    .font(.headline)
+                    .font(.headline.weight(.semibold))
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .padding(.vertical, 15)
                     .background(.white)
-                    .foregroundColor(isWrongAnswer ? .luxRed : .luxGreen)
-                    .cornerRadius(12)
+                    .foregroundColor(wrong ? .feedbackRed : .feedbackGreen)
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 24)
         }
-        .background(isWrongAnswer ? Color.luxRed : Color.luxGreen)
-        .cornerRadius(32, corners: [.topLeft, .topRight])
-        .shadow(radius: 10)
-        .transition(.move(edge: .bottom))
+        .background(bannerColor)
+        .cornerRadius(28, corners: [.topLeft, .topRight])
+        .shadow(color: bannerColor.opacity(0.35), radius: 20, y: -4)
+        .transition(.move(edge: .bottom).combined(with: .opacity))
     }
 }
 
@@ -894,7 +913,7 @@ struct ExerciseHeader: View {
     var onFeedback: (() -> Void)? = nil
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 8) {
             HStack(alignment: .center, spacing: 0) {
                 Text(progressText)
                     .font(.caption2)
@@ -902,24 +921,23 @@ struct ExerciseHeader: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
 
-                // mastery delta deliberately hidden — showing penalties harms learning confidence
-
                 Spacer(minLength: 8)
 
-                HStack(spacing: 3) {
+                // XP counter in SF Pro Rounded — pops when it changes
+                HStack(spacing: 4) {
                     Image(systemName: "star.fill")
-                        .font(.caption2)
+                        .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(.luxAmber)
                     Text("\(sessionXP)")
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .monospacedDigit()
+                        .font(.luxNumeric(size: 12))
                         .foregroundColor(.primary)
+                        .contentTransition(.numericText(value: Double(sessionXP)))
+                        .animation(.luxSpring, value: sessionXP)
                 }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.luxAmber.opacity(0.12))
-                .cornerRadius(20)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 5)
+                .background(Color.luxAmber.opacity(0.14))
+                .clipShape(Capsule())
 
                 if let onFeedback {
                     Button(action: onFeedback) {
@@ -927,7 +945,7 @@ struct ExerciseHeader: View {
                             .font(.system(size: 13, weight: .medium))
                             .foregroundColor(.secondary)
                     }
-                    .padding(.leading, 6)
+                    .padding(.leading, 8)
                 }
             }
 

@@ -138,8 +138,8 @@ private struct CharacterCard: View {
                 }
             }
             .frame(width: 80, height: 130)
-            .cornerRadius(10)
-            .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
 
             // Text
             VStack(alignment: .leading, spacing: 6) {
@@ -151,7 +151,7 @@ private struct CharacterCard: View {
                         .foregroundColor(.secondary)
                         .padding(.horizontal, 8).padding(.vertical, 3)
                         .background(character.accentColor.opacity(0.12))
-                        .cornerRadius(8)
+                        .clipShape(Capsule())
                 }
 
                 // Luxembourgish
@@ -166,7 +166,7 @@ private struct CharacterCard: View {
                         .foregroundColor(character.accentColor)
                         .padding(.horizontal, 5).padding(.vertical, 2)
                         .background(character.accentColor.opacity(0.12))
-                        .cornerRadius(4)
+                        .clipShape(Capsule())
                         .fixedSize()
                     JustifiedText(text: character.descriptionEn,
                                   uiFont: .preferredFont(forTextStyle: .caption1),

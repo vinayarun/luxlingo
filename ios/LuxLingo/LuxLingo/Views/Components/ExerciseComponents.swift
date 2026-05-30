@@ -11,34 +11,89 @@ struct MCQOptionButton: View {
     let revealColors: Bool
     let onTap: () -> Void
 
+    @State private var bounceScale: CGFloat = 1.0
+
+    private var bgColor: Color {
+        if revealColors {
+            if isCorrect  { return .feedbackGreen }
+            if isSelected { return .feedbackRed }
+            return Color(.systemGray6)
+        }
+        if isSelected { return Color.luxGreen.opacity(0.14) }
+        return Color(.systemGray6)
+    }
+
+    private var fgColor: Color {
+        if revealColors && (isCorrect || isSelected) { return .white }
+        return .primary
+    }
+
+    private var strokeColor: Color {
+        if revealColors {
+            if isCorrect  { return .feedbackGreen }
+            if isSelected { return .feedbackRed }
+            return .clear
+        }
+        return isSelected ? Color.luxGreen : .clear
+    }
+
     var body: some View {
-        Button(action: onTap) {
-            HStack {
-                Text(option).font(.headline)
+        Button(action: {
+            LuxHaptic.selection()
+            onTap()
+        }) {
+            HStack(spacing: 12) {
+                Text(option)
+                    .font(.headline)
+                    .multilineTextAlignment(.leading)
                 Spacer()
                 if revealColors && isCorrect {
-                    Image(systemName: "checkmark.circle.fill").foregroundColor(.white)
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                        .transition(.scale.combined(with: .opacity))
                 } else if revealColors && isSelected && !isCorrect {
-                    Image(systemName: "xmark.circle.fill").foregroundColor(.white)
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                        .transition(.scale.combined(with: .opacity))
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                revealColors
-                    ? (isCorrect ? Color.luxGreen : (isSelected ? Color.luxRed : Color(.systemGray6)))
-                    : (isSelected ? Color.luxGreen.opacity(0.15) : Color(.systemGray6))
-            )
-            .foregroundColor(revealColors && (isCorrect || isSelected) ? .white : .primary)
-            .cornerRadius(12)
+            .padding(.vertical, 15)
+            .padding(.horizontal, 16)
+            .background(bgColor)
+            .foregroundColor(fgColor)
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(isSelected && !showFeedback ? Color.luxGreen : Color.clear, lineWidth: 2)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(strokeColor, lineWidth: 2)
+            )
+            .shadow(
+                color: revealColors && isCorrect ? Color.feedbackGreen.opacity(0.25) : .clear,
+                radius: 8, y: 3
             )
         }
         .buttonStyle(.plain)
         .disabled(showFeedback)
-        .animation(.easeInOut(duration: 0.15), value: isSelected)
+        .scaleEffect(bounceScale)
+        .animation(.luxSnapSpring, value: isSelected)
+        .animation(.luxSpring, value: revealColors)
+        .onChange(of: isSelected) { _, selected in
+            if selected && !showFeedback {
+                withAnimation(.spring(response: 0.2, dampingFraction: 0.5)) { bounceScale = 0.96 }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.55)) { bounceScale = 1.0 }
+                }
+            }
+        }
+        .onChange(of: revealColors) { _, revealed in
+            guard revealed && isCorrect else { return }
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.45)) { bounceScale = 1.05 }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.65)) { bounceScale = 1.0 }
+            }
+        }
     }
 }
 
@@ -50,29 +105,92 @@ struct MCQOptionButton: View {
 private struct AudioPromptButton: View {
     let word:         String
     let audioUrl:     String?
-    let introVisible: Bool      // captured by value at task-start time
+    let introVisible: Bool
 
-    // Tracks last word we played so re-renders don't re-trigger unnecessarily
     @State private var lastPlayedWord = ""
+    @State private var pulseScale: CGFloat = 1.0
+    @State private var pulseOpacity: Double = 0.6
+
+    private var tts: TTSService { TTSService.shared }
+    private var isActive:  Bool { tts.activeText == word }
+    private var isPlaying: Bool { isActive && tts.playState == .playing }
+    private var isLoading: Bool { isActive && tts.playState == .loading }
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 12) {
             ZStack {
+                // Outer pulse ring — visible only when playing
+                if isPlaying {
+                    Circle()
+                        .stroke(Color.accentColor.opacity(0.20), lineWidth: 3)
+                        .frame(width: 130, height: 130)
+                        .scaleEffect(pulseScale)
+                        .opacity(pulseOpacity)
+                        .animation(
+                            .easeOut(duration: 1.1).repeatForever(autoreverses: false),
+                            value: pulseScale
+                        )
+                }
+
+                // Main button circle
                 Circle()
-                    .fill(Color.accentColor.opacity(0.10))
-                    .frame(width: 96, height: 96)
-                SpeakerButton(text: word, audioUrl: audioUrl)
-                    .font(.system(size: 38, weight: .medium))
-                    .foregroundColor(.accentColor)
+                    .fill(
+                        isActive
+                            ? LinearGradient(colors: [Color.accentColor.opacity(0.18), Color.accentColor.opacity(0.10)],
+                                             startPoint: .topLeading, endPoint: .bottomTrailing)
+                            : LinearGradient(colors: [Color(.systemGray5), Color(.systemGray6)],
+                                             startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                    .frame(width: 112, height: 112)
+                    .shadow(color: isActive ? Color.accentColor.opacity(0.20) : .black.opacity(0.06),
+                            radius: isActive ? 14 : 6, y: 3)
+
+                // Speaker icon or loading
+                if isLoading {
+                    ProgressView()
+                        .scaleEffect(1.2)
+                        .tint(.accentColor)
+                } else {
+                    Image(systemName: isPlaying ? "speaker.wave.3.fill" : "speaker.wave.2.fill")
+                        .font(.system(size: 40, weight: .medium))
+                        .foregroundColor(isActive ? .accentColor : Color(.systemGray2))
+                        .contentTransition(.symbolEffect(.replace))
+                        .symbolEffect(.bounce, value: isPlaying)
+                }
             }
-            Text("Tap to replay")
-                .font(.caption).foregroundColor(.secondary)
+            .frame(width: 130, height: 130)
+            .onTapGesture {
+                LuxHaptic.light()
+                Task {
+                    if let url = audioUrl {
+                        await TTSService.shared.speakUrl(url, identifier: word)
+                    } else {
+                        await TTSService.shared.speak(word)
+                    }
+                }
+            }
+            .animation(.luxSpring, value: isActive)
+            .animation(.luxSpring, value: isPlaying)
+            .onChange(of: isPlaying) { _, playing in
+                if playing {
+                    pulseScale = 1.0
+                    pulseOpacity = 0.6
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        pulseScale   = 1.6
+                        pulseOpacity = 0
+                    }
+                }
+            }
+
+            Text(isPlaying ? "Playing…" : "Tap to hear")
+                .font(.caption.weight(.medium))
+                .foregroundColor(.secondary)
+                .animation(.luxQuick, value: isPlaying)
         }
         .frame(maxWidth: .infinity)
         .task(id: word) {
             guard word != lastPlayedWord else { return }
             lastPlayedWord = word
-            // If the lesson intro overlay is still animating, wait past it
             if introVisible {
                 try? await Task.sleep(nanoseconds: 2_700_000_000)
             }
@@ -267,8 +385,9 @@ struct ConjugationMatchExercise: View {
                     .multilineTextAlignment(.center)
                     .padding(16)
                     .frame(maxWidth: .infinity)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .shadow(color: .black.opacity(0.06), radius: 8, y: 3)
             }
 
             ForEach(options, id: \.self) { option in
@@ -360,8 +479,9 @@ struct ParadigmPickerExercise: View {
             }
             .padding(16)
             .frame(maxWidth: .infinity)
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .shadow(color: .black.opacity(0.06), radius: 8, y: 3)
 
             // Conjugation table (all rows, blank the target pronoun row)
             if !paradigmRows.isEmpty {
@@ -395,8 +515,9 @@ struct ParadigmPickerExercise: View {
                         if idx < paradigmRows.count - 1 { Divider().padding(.leading, 12) }
                     }
                 }
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
+                .background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .shadow(color: .black.opacity(0.06), radius: 8, y: 3)
             }
 
             Text("Pick the correct form for '\(pronoun)'")
@@ -936,7 +1057,7 @@ struct MatchingExerciseView: View {
                 : Color(.systemGray6)
             )
             .foregroundColor(isJustMatched || isWrong || isSelected ? .white : .primary)
-            .cornerRadius(12)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .scaleEffect(isJustMatched ? 1.04 : 1.0)
         }
         .buttonStyle(.plain)
@@ -947,6 +1068,7 @@ struct MatchingExerciseView: View {
     private enum Side { case lu, en }
 
     private func handleTap(pairId: String, side: Side) {
+        LuxHaptic.selection()
         switch side {
         case .lu:
             selectedLU = (selectedLU == pairId) ? nil : pairId
@@ -1054,17 +1176,17 @@ struct JumbledWordRow: View {
 
                     if usedCount < totalCount {
                         Button {
+                            LuxHaptic.selection()
                             onTokenSelected(token)
                         } label: {
                             Text(token)
-                                .font(.subheadline)
-                                .fontWeight(.bold)
+                                .font(.subheadline.weight(.semibold))
                                 .padding(.horizontal, 14)
                                 .padding(.vertical, 10)
-                                .background(Color(.systemGray5))
+                                .background(Color(.systemBackground))
                                 .foregroundColor(.primary)
-                                .cornerRadius(10)
-                                .shadow(color: .black.opacity(0.06), radius: 2, y: 1)
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                .shadow(color: .black.opacity(0.10), radius: 4, y: 2)
                         }
                         .buttonStyle(.plain)
                         .transition(.scale.combined(with: .opacity))
@@ -1120,8 +1242,9 @@ struct ArticleChoiceExercise: View {
                     .multilineTextAlignment(.center)
                     .padding(16)
                     .frame(maxWidth: .infinity)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .shadow(color: .black.opacity(0.06), radius: 8, y: 3)
                 Text(sentenceEn)
                     .font(.caption).foregroundColor(.secondary).italic()
             }
@@ -1348,7 +1471,7 @@ struct PronunciationExercise: View {
             .frame(maxWidth: .infinity)
             .padding(20)
             .background(Color.luxGreen.opacity(0.06))
-            .cornerRadius(16)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
             // ── Reference audio: lod.lu for non-verbs (more natural), TTS for verbs.
             // lod.lu verb entries include the full title (e.g. "Hëllefsverb hunn, Participe passé gehat")
@@ -1376,6 +1499,7 @@ struct PronunciationExercise: View {
                 .cornerRadius(10)
             }
             .buttonStyle(.plain)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .disabled(TTSService.shared.playState != .idle || phase == .recording)
 
             // ── Amplitude bars ───────────────────────────────────────────────
@@ -1436,7 +1560,7 @@ struct PronunciationExercise: View {
                 }
                 .padding(10)
                 .background(Color.luxRed.opacity(0.08))
-                .cornerRadius(10)
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
 
             // ── Review controls (Redo + Playback only — Check button is the standard bottom bar) ──
@@ -1446,26 +1570,38 @@ struct PronunciationExercise: View {
                         .font(.caption).foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
 
-                    HStack(spacing: 16) {
+                    HStack(spacing: 12) {
                         // Redo
                         Button {
-                            service.recordingURL = nil   // clear so Check button disables
+                            LuxHaptic.light()
+                            service.recordingURL = nil
                             phase = .listen; recordingURL = nil
                         } label: {
                             Label("Redo", systemImage: "arrow.counterclockwise")
-                                .font(.subheadline)
+                                .font(.subheadline.weight(.medium))
+                                .padding(.horizontal, 16).padding(.vertical, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(Color(.systemGray5))
+                                .foregroundColor(.primary)
+                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                         }
-                        .buttonStyle(.bordered)
+                        .buttonStyle(.plain)
 
                         // Play back your recording
                         Button {
+                            LuxHaptic.light()
                             playBack(url: url)
                         } label: {
                             Label(isPlayingBack ? "Playing…" : "Play back",
                                   systemImage: isPlayingBack ? "pause.fill" : "play.fill")
-                                .font(.subheadline)
+                                .font(.subheadline.weight(.medium))
+                                .padding(.horizontal, 16).padding(.vertical, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(isPlayingBack ? Color.luxGreen.opacity(0.12) : Color(.systemGray5))
+                                .foregroundColor(isPlayingBack ? .luxGreen : .primary)
+                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                         }
-                        .buttonStyle(.bordered)
+                        .buttonStyle(.plain)
                         .disabled(isPlayingBack)
                     }
                 }
@@ -1682,24 +1818,24 @@ struct DialogueCompletionExercise: View {
                                 .font(.body).fontWeight(.semibold)
                                 .foregroundColor(.accentColor)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.vertical, 6).padding(.horizontal, 10)
+                                .padding(.vertical, 8).padding(.horizontal, 12)
                                 .background(Color.accentColor.opacity(0.08))
-                                .cornerRadius(8)
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                         } else {
                             Text(line.textLu)
                                 .font(.body)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.vertical, 6).padding(.horizontal, 10)
-                                .background(Color(.systemGray6))
-                                .cornerRadius(8)
+                                .padding(.vertical, 8).padding(.horizontal, 12)
+                                .background(Color(.secondarySystemBackground))
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                         }
                     }
                 }
             }
-            .padding(12)
+            .padding(14)
             .background(Color(.systemBackground))
-            .cornerRadius(14)
-            .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .shadow(color: .black.opacity(0.08), radius: 12, y: 4)
 
             // MCQ options
             VStack(spacing: 10) {
