@@ -449,9 +449,16 @@ struct LanguageGuideScreen: View {
                     )
                     Divider()
                     ArticleRoleRow(
-                        icon: "link", color: .luxGreen,
+                        icon: "gift", color: .luxGreen,
+                        role: "The recipient (giving)",
+                        detail: "Who receives something — the indirect object. In English: \"I give **the** boy a book.\" This is called the dative. No preposition needed; the article change signals it.",
+                        masc: "dem Mann", fem: "der Fra", neut: "dem Kand"
+                    )
+                    Divider()
+                    ArticleRoleRow(
+                        icon: "link", color: .teal,
                         role: "After prepositions",
-                        detail: "After words like mat (with), an (in), op (on), fir (for). Think \"I spoke with **the** teacher.\" The article changes for all genders here.",
+                        detail: "After words like mat (with), an (in), op (on), fir (for). Uses the same dative articles as the recipient role above.",
                         masc: "dem Mann", fem: "der Fra", neut: "dem Kand"
                     )
                 }
@@ -459,9 +466,34 @@ struct LanguageGuideScreen: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
 
+                // Giving / indirect object callout
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "gift.fill")
+                            .font(.caption).foregroundColor(.luxGreen)
+                        Text("The giving pattern: ginn + dem/der")
+                            .font(.caption).fontWeight(.semibold).foregroundColor(.luxGreen)
+                    }
+                    JustifiedText(
+                        text: "When you **give** something to someone, the recipient takes the dative article — even though there is no preposition. This is the most common place beginners first meet **dem**.",
+                        uiFont: .preferredFont(forTextStyle: .caption1)
+                    )
+                    VStack(alignment: .leading, spacing: 4) {
+                        GuideExampleRow(lu: "Ech ginn dem Marc e Buch.", en: "I give Marc a book.  (Marc is masc → dem)")
+                        GuideExampleRow(lu: "Ech ginn der Anna Brout.", en: "I give Anna bread.  (Anna is fem → der)")
+                        GuideExampleRow(lu: "Ech ginn dem Bello Waasser.", en: "I give Bello water.  (Bello is masc → dem)")
+                    }
+                    Text("Same rule applies to other verbs of giving or showing: weisen (show), schécken (send), bréngen (bring).")
+                        .font(.caption2).foregroundColor(.secondary).italic()
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(12)
+                .background(Color.luxGreen.opacity(0.07))
+                .cornerRadius(10)
+
                 VStack(alignment: .leading, spacing: 6) {
                     JustifiedText(
-                        text: "Good news — the only change most learners notice is **de → den** for masculine nouns when they are the object, and **de/d' → dem/der** after prepositions. Everything else stays d'.",
+                        text: "Good news — the only change most learners notice is **de → den** for masculine nouns when they are the direct object, and **de/d' → dem/der** for recipients and after prepositions. Everything else stays d'.",
                         uiFont: .preferredFont(forTextStyle: .caption1)
                     )
                     JustifiedText(

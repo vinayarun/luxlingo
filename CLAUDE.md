@@ -40,9 +40,8 @@ luxlingo/
 │   │       └── SpeakerButton.swift
 │   ├── Utils/EifelerRegel.swift    # Luxembourgish n-rule logic
 │   └── Resources/
-│       └── initial_seed.json       # ALL lesson content (v8.57) — bump version to re-seed
-├── tools/
-│   └── export_sentences.py         # Exports initial_seed.json → luxlingo_review.xlsx
+│       └── initial_seed.json       # ALL lesson content (v8.68) — bump version to re-seed
+├── scripts/                        # All Python content pipeline scripts
 ├── content/
 │   └── thematic_lessons.json       # 16 thematic A1 lessons (greetings, numbers, etc.)
 ├── docs/
@@ -80,9 +79,9 @@ UserProgressEntity composite_key(PK), sense_id, mastery(0-20), exposure, cloze_e
 
 ## Seed File
 
-`initial_seed.json` (v8.57) is bundled in the app and loaded into SwiftData on first install. **To deploy content changes**: bump `"version"` in the JSON — the app detects a newer version and re-seeds on next launch. Users must delete and reinstall the app to get a fresh seed during development.
+`initial_seed.json` (v8.68) is bundled in the app and loaded into SwiftData on first install. **To deploy content changes**: bump `"version"` in the JSON — the app detects a newer version and re-seeds on next launch. Users must delete and reinstall the app to get a fresh seed during development.
 
-Current counts: 468 vocabulary · 469 senses · 7,662 sentences · 70 core lessons · 4 bonus lessons · 25 article exercises
+Current counts: 468 vocabulary · 469 senses · 7,976 sentences · 70 core lessons · 4 bonus lessons · 25 article exercises · 19 dialogues
 
 ## Key Architecture Decisions
 
@@ -125,7 +124,7 @@ The Excel reviewer needs the **surface form from cloze_index**, not `word_lu`. T
 
 | File | What it contains |
 |---|---|
-| `ios/LuxLingo/LuxLingo/Resources/initial_seed.json` | **The master content file** — all vocab, senses, sentences, curriculum, article exercises. Bundled inside the iOS app. v8.57. |
+| `ios/LuxLingo/LuxLingo/Resources/initial_seed.json` | **The master content file** — all vocab, senses, sentences, curriculum, article exercises. Bundled inside the iOS app. v8.68. |
 | `content/thematic_lessons.json` | 16 thematic A1 lessons (greetings, numbers, colours, family etc.) — assembled but not yet integrated into the app. |
 | `luxlingo_review.xlsx` | Two-sheet Excel for native speaker review. Sheet 1 = all app sentences (with actual surface word at cloze_index). Sheet 2 = thematic content. |
 | `sentence_generation_prompt.md` | Prompt template fed to an LLM to generate new English sentences per vocabulary word, before translation to Luxembourgish. |
@@ -145,16 +144,19 @@ The full pipeline for adding new sentences:
    → translate_batches.py  (calls LuxMT API, injects text_lu into seed)
 
 3. Annotate linguistic metadata
-   → annotate_sentences.py  (sets cloze_index, n_rule_word_index, exact_form)
+   → scripts/annotate_sentences.py  (sets cloze_index, n_rule_word_index, exact_form)
+   ⚠️  After running, verify cloze positions are correct — the script has produced off-by-one
+       errors in the past (684 sentences were bulk-fixed in v8.68).
 
 4. Add verb paradigms from LOD.lu
-   → seed_paradigms.py  (fetches present tense conjugations, past participle)
+   → scripts/seed_paradigms.py  (fetches present tense conjugations, past participle)
 
 5. Validate the seed
-   → validate_seed.py  (checks structure, required fields, sense_id references)
+   → scripts/validate_seed.py  (checks structure, required fields, sense_id references)
+   ⚠️  Must be run from the project root — it hardcodes 'initial_seed.json' as a relative path.
 
 6. Quality-fix known issues
-   → fix_seed_quality.py  (fixes common errors: de→den n-rule, Ech hu→Ech hunn etc.)
+   → scripts/fix_seed_quality.py  (fixes common errors: de→den n-rule, Ech hu→Ech hunn etc.)
 
 7. Bump version in initial_seed.json and reinstall app
 ```
@@ -165,21 +167,21 @@ The full pipeline for adding new sentences:
 
 | Script | Purpose |
 |---|---|
-| `validate_seed.py` | Validates `initial_seed.json` structure — checks all sense_id references, required fields, JSON integrity. Run this after any seed edits. |
-| `annotate_sentences.py` | Sets `cloze_index` (which word is the target), `n_rule_word_index`, and `n_rule_form` on sentences. Uses paradigm data to find the correct form. |
-| `fix_seed_quality.py` | Batch-fixes known quality issues — n-rule errors (de Auto → den Auto), Ech hu → Ech hunn normalisations, etc. |
-| `seed_paradigms.py` | Fetches verb paradigms (present tense table, past participle, auxiliary) from LOD.lu and injects them as JSON into `SensesEntity.paradigm`. |
-| `translate_batches.py` | Calls LuxMT API to translate English sentences → Luxembourgish and injects them into the seed. Manages batch state in `LuxMT/translate_batches_state.json`. |
-| `import_sentences.py` | Imports LLM-generated English sentences, translates via LuxMT, validates, and injects into seed. Entry point for adding new sentence batches. |
-| `reimport_sentences.py` | Re-translates rows from `luxlingo_review.xlsx` where the English was manually corrected. Patches seed in place. |
+| `scripts/validate_seed.py` | Validates `initial_seed.json` structure — checks all sense_id references, required fields, JSON integrity. Run from project root after any seed edits. |
+| `scripts/annotate_sentences.py` | Sets `cloze_index` (which word is the target), `n_rule_word_index`, and `n_rule_form` on sentences. Uses paradigm data to find the correct form. |
+| `scripts/fix_seed_quality.py` | Batch-fixes known quality issues — n-rule errors (de Auto → den Auto), Ech hu → Ech hunn normalisations, etc. |
+| `scripts/seed_paradigms.py` | Fetches verb paradigms (present tense table, past participle, auxiliary) from LOD.lu and injects them as JSON into `SensesEntity.paradigm`. |
+| `scripts/translate_batches.py` | Calls LuxMT API to translate English sentences → Luxembourgish and injects them into the seed. Manages batch state in `LuxMT/translate_batches_state.json`. |
+| `scripts/import_sentences.py` | Imports LLM-generated English sentences, translates via LuxMT, validates, and injects into seed. Entry point for adding new sentence batches. |
+| `scripts/reimport_sentences.py` | Re-translates rows from `luxlingo_review.xlsx` where the English was manually corrected. Patches seed in place. |
 | `scripts/export_sentences.py` | Exports seed → `luxlingo_review.xlsx` for native speaker review. Sheet 1 uses `cloze_index` to show the actual inflected word used in each sentence. |
 
 **Quality / verification:**
 
 | Script | Purpose |
 |---|---|
-| `deepl_verify.py` | Cross-checks LuxMT translations against DeepL. Flags sentences where the two translations diverge significantly (possible translation errors). |
-| `apply_deepl_fixes.py` | Applies corrections from `deepl_verify.py` output — three tiers by severity (complete replacement, partial fix, flag for manual review). |
+| `scripts/deepl_verify.py` | Cross-checks LuxMT translations against DeepL. Flags sentences where the two translations diverge significantly (possible translation errors). |
+| `scripts/apply_deepl_fixes.py` | Applies corrections from `deepl_verify.py` output — three tiers by severity (complete replacement, partial fix, flag for manual review). |
 | `LuxMT/apply_review.py` | Applies fixes to sentences in `LuxMT/still_unfixed.json` — substitution, replacement, or manual override strategies. |
 | `LuxMT/fix_missing_word_sentences.py` | Two-pass fix for sentences where the target Luxembourgish word is completely absent from `text_lu`. |
 
@@ -231,16 +233,30 @@ python3 scripts/export_sentences.py
 # Output: luxlingo_review.xlsx (Sheet 1: app sentences, Sheet 2: thematic content)
 ```
 
-### Building and installing on iPhone
+### Building and installing on iPhone (real device)
 - Open Xcode: `ios/LuxLingo/LuxLingo.xcodeproj`
 - Select iPhone as destination → ⌘R to build and run
-- Terminal builds fail (Apple ID credentials require Xcode GUI)
+- Real-device builds require Apple ID credentials and must be done via Xcode GUI
+
+### Building and running on simulator
+```bash
+# Build
+cd /Users/nv/Projects/luxlingo/ios/LuxLingo
+xcodebuild -scheme LuxLingo -destination 'platform=iOS Simulator,id=5E12061C-5032-4B45-BA1F-36040FE5558C' -configuration Debug build 2>&1 | grep -E "error:|BUILD"
+
+# Install + launch (uninstall first for a fresh seed)
+xcrun simctl uninstall 5E12061C-5032-4B45-BA1F-36040FE5558C com.vinayarun.luxlingo
+xcrun simctl install   5E12061C-5032-4B45-BA1F-36040FE5558C \
+  /Users/nv/Library/Developer/Xcode/DerivedData/LuxLingo-gokbcreafxhzpudbxtfwxydvuyhp/Build/Products/Debug-iphonesimulator/LuxLingo.app
+xcrun simctl launch    5E12061C-5032-4B45-BA1F-36040FE5558C com.vinayarun.luxlingo
+```
+Simulator ID `5E12061C-5032-4B45-BA1F-36040FE5558C` = iPhone 17 Pro. Bundle ID = `com.vinayarun.luxlingo`.
 
 ### Checking real build errors
 SourceKit errors shown in the editor are often macOS-context noise (UIKit, SwiftData entities not visible from macOS). To see real iOS build errors:
 ```bash
 cd ios/LuxLingo
-xcodebuild -scheme LuxLingo -destination 'platform=iOS Simulator,name=iPhone 16' build 2>&1 | grep "error:"
+xcodebuild -scheme LuxLingo -destination 'platform=iOS Simulator,id=5E12061C-5032-4B45-BA1F-36040FE5558C' build 2>&1 | grep "error:"
 ```
 
 ## Luxembourgish-Specific Rules
@@ -263,7 +279,7 @@ xcodebuild -scheme LuxLingo -destination 'platform=iOS Simulator,name=iPhone 16'
 ## App State
 
 - **Version**: 1.0 (App Store not yet submitted)
-- **Seed version**: 8.57
+- **Seed version**: 8.68
 - **Status**: Functional iOS app, real-device tested, pre-App Store
 - **GitHub**: https://github.com/vinayarun/luxlingo (main branch)
 - **Feedback email**: luxlingo.app@gmail.com
